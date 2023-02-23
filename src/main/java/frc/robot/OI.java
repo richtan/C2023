@@ -33,8 +33,9 @@ public class OI {
     operator.X.onTrue(new PositionIntake(elevator, arm, intake::isConeColor, Position.MIDDLE));
     operator.A.onTrue(new PositionIntake(elevator, arm, intake::isConeColor, Position.BOTTOM));
     operator.B.onTrue(new PositionIntake(elevator, arm, intake::isConeColor, Position.SHELF));
-    operator.RB.whileTrue(new StartIntake(intake, elevator, arm)).onFalse(new Stow(intake, elevator, arm));
-    operator.RT.whileTrue(new Outtake(intake)).onFalse(new Stow(intake, elevator, arm));
+    // TODO: Add debounce for RB and RT triggers so the mechanisms don't start stowing due to accidental release of triggers
+    operator.RB.onTrue(new StartIntake(intake, elevator, arm)).onFalse(new Stow(intake, elevator, arm));
+    operator.RT.onTrue(new Outtake(intake)).onFalse(new Stow(intake, elevator, arm));
     operator.LB.onTrue(new Stow(intake, elevator, arm));
   }
 

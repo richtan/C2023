@@ -24,8 +24,4 @@ public class StartIntake extends SequentialCommandGroup {
       new StopIntake(intake)
     );
   }
-
-  public enum Level {
-    GROUND, SHELF
-  }
 }
