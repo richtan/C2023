@@ -63,9 +63,16 @@ public class Arm extends SubsystemBase {
     m_pid.setSmartMotionMaxAccel(ArmConstants.kMaxAngularAccel, 0);
   }
 
+  /**
+   * Get absolute encoder position in degrees
+   * @return
+   */
+  private double getAbsEncoder() {
+    return m_absEncoder.getAbsolutePosition() * ArmConstants.kAbsEncoderDistancePerRotation;
+  }
+
   private void calibrateEncoder() {
-    double absEncoderError = (m_absEncoder.getAbsolutePosition() * ArmConstants.kAbsEncoderDistancePerRotation)
-        - ArmConstants.kAbsEncoderZeroAngle;
+    double absEncoderError = getAbsEncoder() - ArmConstants.kAbsEncoderZeroAngle;
     m_encoder.setPosition(absEncoderError);
   }
 
@@ -113,6 +120,11 @@ public class Arm extends SubsystemBase {
   }
 
   public void setupShuffleboard() {
-    m_armTab.addDouble("Current angle", this::getAngle);
+    m_armTab.addDouble("Current angle (deg)", this::getAngle);
+    m_armTab.addDouble("Desired angle (deg)", () -> m_desiredAngle);
+    m_armTab.addDouble("Desired Power", () -> m_desiredPower);
+    m_armTab.addBoolean("Reached Desired Angle", this::reachedDesiredAngle);
+    m_armTab.addDouble("Absolute encoder (deg)", this::getAbsEncoder);
+    m_armTab.addString("Mode", () -> m_mode.toString());
   }
 }

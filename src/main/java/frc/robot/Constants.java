@@ -35,8 +35,10 @@ public final class Constants {
   public static final String kRioCAN = "rio";
   public static final String kCANivoreCAN = "CANivore";
 
-  public static final double kFieldLength = Units.inchesToMeters(54*12 + 3.25);
-  public static final double kFieldWidth = Units.inchesToMeters(26*12 + 3.5);
+  public static final class FieldConstants {
+    public static final double kLength = Units.inchesToMeters(54*12 + 3.25);
+    public static final double kWidth = Units.inchesToMeters(26*12 + 3.5);
+  }
 
   public static final class OIConstants {
     public static final double kDeadband = 0.05;
@@ -53,28 +55,29 @@ public final class Constants {
     public static final double kMaxAngularSpeed = Math.PI; // rad/s
     public static final double kMaxAngularAccel = Math.PI; // rad/s^2
 
-    public static final double kXControllerP = 1;
-    public static final double kYControllerP = 1;
-    public static final double kRotationControllerP = 1;
+    public static final double kXControllerP = 1; // FIXME: Auto
+    public static final double kYControllerP = 1; // FIXME: Auto
+    public static final double kRotationControllerP = 1; // FIXME: Auto
   }
 
   // Units are degrees, zero is max deploy position, positive is towards the robot,
   // angle measurement is angle of polycarb plates on intake from horizontal
   public static final class ArmConstants {
-    public static final int kMotorID = -1;
+    public static final int kMotorID = -1; // FIXME: Arm
     public static final IdleMode kIdleMode = IdleMode.kBrake;
-    public static final boolean kMotorInvert = false;
+    public static final boolean kMotorInvert = false; // FIXME: Arm
     public static final double kGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0);
     public static final double kMotorEncoderDistancePerRotation = 360.0 / kGearRatio;
 
-    public static final int kAbsEncoderID = -1;
-    public static final double kAbsEncoderZeroAngle = 0.1;
-    public static final boolean kAbsEncoderInvert = false;
+    public static final int kAbsEncoderID = -1; // FIXME: Arm
+    public static final double kAbsEncoderZeroAngle = 0.1; // FIXME: Arm
+    public static final boolean kAbsEncoderInvert = false; // FIXME: Arm
     public static final double kAbsEncoderDistancePerRotation = 360.0 * (kAbsEncoderInvert ? -1 : 1);
 
-    public static final double kAngleTolerance = 0.5;
-    public static final double kVelocityTolerance = 0;
+    public static final double kAngleTolerance = 0.5; // FIXME: Arm
+    public static final double kVelocityTolerance = 0; // FIXME: Arm
 
+    // FIXME: Arm
     public static final double kStowAngle = 55;
     public static final double kIntakeConeAngle = 0.2;
     public static final double kIntakeCubeAngle = 0.2;
@@ -88,20 +91,20 @@ public final class Constants {
     public static final double kShelfCubeAngle = 0.2;
     public static final double kDeployAngle = 0;
 
-    public static final double kP = 1;
+    public static final double kP = 1; // FIXME: Arm
     public static final double kI = 0;
     public static final double kD = 0;
 
-    public static final double kMaxAngularVelocity = 0;
-    public static final double kMaxAngularAccel = 0;
+    public static final double kMaxAngularVelocity = 0; // FIXME: Arm
+    public static final double kMaxAngularAccel = 0; // FIXME: Arm
   }
 
   // Positive is outtaking direction
   public static final class IntakeConstants {
-    public static final int kLeftMotorID = -1;
-    public static final int kRightMotorID = -1;
-    public static final boolean kLeftMotorInvert = true;
-    public static final boolean kRightMotorInvert = false;
+    public static final int kLeftMotorID = -1; // FIXME: Intake
+    public static final int kRightMotorID = -1; // FIXME: Intake
+    public static final boolean kLeftMotorInvert = true; // FIXME: Intake
+    public static final boolean kRightMotorInvert = false; // FIXME: Intake
     public static final IdleMode kLeftMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kRightMotorIdleMode = IdleMode.kBrake;
 
@@ -110,11 +113,11 @@ public final class Constants {
     public static final double kEjectPower = 0.6;
 
     public static final I2C.Port kColorSensorPort = I2C.Port.kOnboard;
-    public static final int kConeProximityThreshold = 1000;
-    public static final int kCubeProximityThreshold = 1000;
-    public static final int kEmptyProximityThreshold = 500;
-    public static final Color kConeColor = new Color(0, 0, 0);
-    public static final Color kCubeColor = new Color(0, 0, 0);
+    public static final int kConeProximityThreshold = 1000; // FIXME: Intake
+    public static final int kCubeProximityThreshold = 1000; // FIXME: Intake
+    public static final int kEmptyProximityThreshold = 500; // FIXME: Intake
+    public static final Color kConeColor = new Color(0, 0, 0); // FIXME: Intake
+    public static final Color kCubeColor = new Color(0, 0, 0); // FIXME: Intake
   }
 
   public static final class VisionConstants {
@@ -159,7 +162,7 @@ public final class Constants {
   public static final class ElevatorConstants {
     public static final int kMotorID = 13;
     public static final String kElevatorCAN = kRioCAN;
-    public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.Clockwise; // Clockwise goes up
+    public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.Clockwise; // Clockwise goes up // FIXME: Elevator
     public static final NeutralMode kNeutralMode = NeutralMode.Brake;
 
     public static final double kGearRatio = (50.0 / 12.0) * (50.0 / 30.0) * (36.0 / 24.0);
@@ -171,14 +174,14 @@ public final class Constants {
     public static final int kTopLimitSwitchPort = 9;
 
     public static final double kPositionTolerance = 0.05;
-    public static final double kVelocityTolerance = 0.05;
+    public static final double kVelocityTolerance = 0.05; // FIXME: Elevator
     
     // Whether limit switch is normally-closed (activated = open circuit) or normally-open (activated = closed circuit)
     public static final boolean kTopLimitSwitchNC = true;
     public static final boolean kBottomLimitSwitchNC = true;
 
     // Slot 0
-    public static final double kBottomP = 1;
+    public static final double kBottomP = 1; // FIXME: Elevator
     public static final double kBottomI = 0;
     public static final double kBottomD = 0;
     public static final double kBottomF = 0;
@@ -201,12 +204,12 @@ public final class Constants {
     public static final double kTopWithConeD = kTopD;
     public static final double kTopWithConeF = kTopF;
 
-    public static final int kContinuousCurrentLimit = 30;
+    public static final int kContinuousCurrentLimit = 30; // FIXME: Elevator
     public static final int kPeakCurrentLimit = 50;
     public static final double kPeakCurrentDuration = 0.1;
     public static final boolean kEnableCurrentLimit = false;
 
-    public static final double kIntakeConeHeight = 0.2;
+    public static final double kIntakeConeHeight = 0.2; // FIXME: Elevator
     public static final double kIntakeCubeHeight = 0.2;
     public static final double kTopConeHeight = 0.2;
     public static final double kTopCubeHeight = 0.2;
@@ -236,7 +239,7 @@ public final class Constants {
     public static final String kCANCoderCAN = kCANivoreCAN;
     public static final String kPigeonCAN = kCANivoreCAN;
 
-    public static final boolean kInvertGyro = false; // Make sure gyro is CCW+ CW-
+    public static final boolean kInvertGyro = false; // Make sure gyro is CCW+ CW- // FIXME: Swerve
 
     public static final COTSFalconSwerveConstants kModuleConstants =
         COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);   
@@ -280,14 +283,14 @@ public final class Constants {
     public static final double kClosedLoopRamp = 0.0;
 
     /* Drive Motor PID Values */
-    public static final double kDriveP = 0.05;
+    public static final double kDriveP = 0.05; // FIXME: Swerve
     public static final double kDriveI = 0.0;
     public static final double kDriveD = 0.0;
     public static final double kDriveF = 0.0;
 
     /* Drive Motor Characterization Values 
       * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
-    public static final double kDriveKS = (kIsComp ? 0.32 : 0) / 12.0;
+    public static final double kDriveKS = (kIsComp ? 0.32 : 0) / 12.0; // FIXME: Swerve
     public static final double kDriveKV = (kIsComp ? 1.51 : 0) / 12.0;
     public static final double kDriveKA = (kIsComp ? 0.27 : 0) / 12.0;
 
@@ -313,7 +316,7 @@ public final class Constants {
         public static final int kDriveMotorID = kIsComp ? 20 : 1;
         public static final int kAngleMotorID = kIsComp ? 15 : 2;
         public static final int kCANcoderID = kIsComp ? 40 : 3;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0);
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }
@@ -325,7 +328,7 @@ public final class Constants {
         public static final int kDriveMotorID = kIsComp ? 33 : 4;
         public static final int kAngleMotorID = kIsComp ? 30 : 5;
         public static final int kCANcoderID = kIsComp ? 41 : 6;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0);
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }
@@ -337,7 +340,7 @@ public final class Constants {
         public static final int kDriveMotorID = kIsComp ? 16 : 7;
         public static final int kAngleMotorID = kIsComp ? 18 : 8;
         public static final int kCANcoderID = kIsComp ? 42 : 9;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0);
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }
@@ -349,7 +352,7 @@ public final class Constants {
         public static final int kDriveMotorID = kIsComp ? 32 : 10;
         public static final int kAngleMotorID = kIsComp ? 35 : 11;
         public static final int kCANcoderID = kIsComp ? 43 : 12;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0);
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }

@@ -22,6 +22,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
@@ -35,6 +36,8 @@ public class Swerve extends SubsystemBase {
   private final PIDController m_xController;
   private final PIDController m_yController;
   private final PIDController m_rotationController;
+
+  private final Field2d m_field;
 
   public Swerve(Vision vision, ShuffleboardTab swerveTab) {
     m_vision = vision;
@@ -66,8 +69,11 @@ public class Swerve extends SubsystemBase {
     m_yController = new PIDController(AutoConstants.kYControllerP, 0, 0);
     m_rotationController = new PIDController(AutoConstants.kRotationControllerP, 0, 0);
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
+
+    m_field = new Field2d();
   }
 
+  // PID controllers for PathPlanner auto
   public PIDController getXController() { return m_xController; }
   public PIDController getYController() { return m_yController; }
   public PIDController getRotationController() { return m_rotationController; }
@@ -94,6 +100,9 @@ public class Swerve extends SubsystemBase {
     }
   }
 
+  /**
+   * Stop driving
+   */
   public void stop() {
     drive(new Translation2d(0, 0), 0, true, true);
   }
@@ -176,12 +185,17 @@ public class Swerve extends SubsystemBase {
         )
       );
     }
+
+    m_field.setRobotPose(getPose());
   }
 
   public void setupShuffleboard() {
     for (SwerveModule mod : m_modules) {
       mod.setupShuffleboard();
     }
+
+    m_swerveTab.addDouble("Yaw (deg)", () -> getYaw().getDegrees());
+    m_swerveTab.add("Field", m_field);
   }
 
   @Override

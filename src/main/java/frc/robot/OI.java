@@ -31,11 +31,11 @@ public class OI {
     operator.LB.onTrue(new MoveArm(arm, ArmConstants.kStowAngle));
   }
 
-  public static void configureManualControls(GameController manual) {
+  public static void configureManualControls(GameController manual, Elevator elevator, Arm arm, Intake intake) {
 
   }
 
-  public static void configureTestControls(GameController test) {
+  public static void configureTestControls(GameController test, Elevator elevator, Arm arm, Intake intake) {
 
   }
 }

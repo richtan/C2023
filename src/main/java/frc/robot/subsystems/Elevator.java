@@ -150,7 +150,7 @@ public class Elevator extends SubsystemBase {
           && Math.abs(getVelocity()) < ElevatorConstants.kVelocityTolerance;
   }
 
-  public void updateClosedLoopSlot() {
+  private void updateClosedLoopSlot() {
     boolean hasCone = m_hasConeSupplier.getAsBoolean();
     if (getPosition() < ElevatorConstants.kCarriageMaxDistance) {
       m_motor.selectProfileSlot(hasCone ? 1 : 0, 0);
@@ -191,6 +191,9 @@ public class Elevator extends SubsystemBase {
     m_elevatorTab.addDouble("Current Position (m)", this::getPosition);
     m_elevatorTab.addDouble("Desired Position (m)", () -> m_desiredPosition);
     m_elevatorTab.addDouble("Desired Power", () -> m_desiredPower);
-    m_elevatorTab.addString("Mode", m_mode::toString);
+    m_elevatorTab.addBoolean("Reached desired position", this::reachedDesiredPosition);
+    m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);
+    m_elevatorTab.addBoolean("Reached Bottom Limit Switch", this::isBottomLimitSwitchReached);
+    m_elevatorTab.addString("Mode", () -> m_mode.toString());
   }
 }

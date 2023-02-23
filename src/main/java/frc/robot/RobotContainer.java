@@ -94,8 +94,8 @@ public class RobotContainer {
 
       // Setup compbot-only controls
       OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake);
-      OI.configureManualControls(m_manualJoy);
-      OI.configureTestControls(m_testJoy);
+      OI.configureManualControls(m_manualJoy, m_elevator, m_arm, m_intake);
+      OI.configureTestControls(m_testJoy, m_elevator, m_arm, m_intake);
     } else {
       System.out.println("Running TEST robot");
 

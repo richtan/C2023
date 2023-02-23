@@ -20,7 +20,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import frc.robot.Constants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
 
 public class Vision {
@@ -39,7 +39,7 @@ public class Vision {
     try {
       m_aprilTagFieldLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
     } catch (IOException e) {
-      m_aprilTagFieldLayout = new AprilTagFieldLayout(VisionConstants.kAprilTags, Constants.kFieldLength, Constants.kFieldWidth);
+      m_aprilTagFieldLayout = new AprilTagFieldLayout(VisionConstants.kAprilTags, FieldConstants.kLength, FieldConstants.kWidth);
       DriverStation.reportWarning("Could not find k2023ChargedUp.m_resourceFile, check that GradleRIO is updated to at least 2023.2.1 in build.gradle",  e.getStackTrace());
     }
     m_aprilTagFieldLayout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);

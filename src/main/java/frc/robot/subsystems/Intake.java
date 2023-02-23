@@ -6,6 +6,7 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -17,6 +18,10 @@ public class Intake extends SubsystemBase {
 
   private final ColorSensorV3 m_colorSensor;
   private final ColorMatch m_colorMatcher;
+
+  private double m_proximity;
+  private Color m_color;
+  private Color m_closestColor;
 
   private IntakeMode m_mode;
 
@@ -60,23 +65,23 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean isConeColor() {
-    return m_colorMatcher.matchClosestColor(m_colorSensor.getColor()).color == IntakeConstants.kConeColor;
+    return m_closestColor == IntakeConstants.kConeColor;
   }
 
   public boolean hasCone() {
-    return isConeColor() && m_colorSensor.getProximity() > IntakeConstants.kConeProximityThreshold;
+    return isConeColor() && m_proximity > IntakeConstants.kConeProximityThreshold;
   }
 
   public boolean isCubeColor() {
-    return m_colorMatcher.matchClosestColor(m_colorSensor.getColor()).color == IntakeConstants.kCubeColor;
+    return m_closestColor == IntakeConstants.kCubeColor;
   }
 
   public boolean hasCube() {
-    return isCubeColor() && m_colorSensor.getProximity() > IntakeConstants.kCubeProximityThreshold;
+    return isCubeColor() && m_proximity > IntakeConstants.kCubeProximityThreshold;
   }
 
   public boolean isEmpty() {
-    return m_colorSensor.getProximity() < IntakeConstants.kEmptyProximityThreshold;
+    return m_proximity < IntakeConstants.kEmptyProximityThreshold;
   }
 
   private void setMotorPowers(double power) {
@@ -84,10 +89,19 @@ public class Intake extends SubsystemBase {
     m_rightMotor.set(power);
   }
 
+  private void updateColorSensorValues() {
+    m_proximity = m_colorSensor.getProximity();
+    m_color = m_colorSensor.getColor();
+    m_closestColor = m_colorMatcher.matchClosestColor(m_color).color;
+  }
+
   @Override
   public void periodic() {
+    updateColorSensorValues();
+
     switch (m_mode) {
       case DISABLED:
+        setMotorPowers(0);
         break;
       case INTAKE:
         setMotorPowers(IntakeConstants.kIntakePower);
@@ -105,5 +119,9 @@ public class Intake extends SubsystemBase {
     m_intakeTab.addBoolean("Has Cone", this::hasCone);
     m_intakeTab.addBoolean("Has Cube", this::hasCube);
     m_intakeTab.addBoolean("Is Empty", this::isEmpty);
+    m_intakeTab.addDouble("Proximity (2400 [close] to 0 [far])", () -> m_proximity);
+    m_intakeTab.addString("Color (hex)", () -> m_color.toHexString());
+    m_intakeTab.addString("Closest color (hex)", () -> m_closestColor.toHexString());
+    m_intakeTab.addString("Mode", () -> m_mode.toString());
   }
 }
