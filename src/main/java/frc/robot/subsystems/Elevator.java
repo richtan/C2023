@@ -4,7 +4,6 @@ import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -23,7 +22,7 @@ public class Elevator extends SubsystemBase {
   private final WPI_TalonFX m_motor;
   private final DigitalInput m_bottomLimitSwitch;
   private final DigitalInput m_topLimitSwitch;
-  private double m_desiredHeight = 0;
+  private double m_desiredPosition = 0;
   private double m_desiredPower = 0;
 
   public Elevator(ShuffleboardTab elevatorTab, BooleanSupplier hasConeSupplier) {
@@ -34,7 +33,6 @@ public class Elevator extends SubsystemBase {
 
     m_motor = new WPI_TalonFX(ElevatorConstants.kMotorID, ElevatorConstants.kElevatorCAN);
     configElevatorMotor();
-    m_motor.setNeutralMode(NeutralMode.Brake);
 
     m_bottomLimitSwitch = new DigitalInput(ElevatorConstants.kBottomLimitSwitchPort);
     m_topLimitSwitch = new DigitalInput(ElevatorConstants.kTopLimitSwitchPort);
@@ -75,10 +73,12 @@ public class Elevator extends SubsystemBase {
     m_motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     m_motor.configForwardSoftLimitThreshold(
-      Conversions.MetersToFalcon(heightToLength(ElevatorConstants.kMaxTravelDistance),
-      ElevatorConstants.kSpoolCircumference,
-      ElevatorConstants.kGearRatio
-    ));
+      Conversions.MetersToFalcon(
+        ElevatorConstants.kMaxPosition,
+        ElevatorConstants.kSpoolCircumference,
+        ElevatorConstants.kGearRatio
+      )
+    );
     m_motor.configReverseSoftLimitThreshold(0);
 
     toggleSoftLimits(false);
@@ -106,45 +106,23 @@ public class Elevator extends SubsystemBase {
   }
 
   /**
-   * Calculate how far up along elevator length from bottom of elevator based on vertical height from ground
-   * @param height in meters
-   * @return length from elevator base to height in meters
-   */
-  public double heightToLength(double height) {
-    return (height - ElevatorConstants.kElevatorBaseHeight) / Math.sin(ElevatorConstants.kElevatorAngle);
-  }
-
-  /**
-   * Calculate how far up along elevator length from bottom of elevator based on vertical height from ground
-   * @param length in meters
-   * @return length from elevator base to height in meters
-   */
-  public double lengthToHeight(double length) {
-    return (length * Math.sin(ElevatorConstants.kElevatorAngle)) + ElevatorConstants.kElevatorBaseHeight;
-  }
-
-  /**
-   * Get position of carriage along length of elevator
+   * Get position of carriage above bottom position
    * @return position (m)
    */
   public double getPosition() {
-    return heightToLength(getHeight());
-  }
-
-  /**
-   * Get height of carriage above ground
-   * @return height (m)
-   */
-  public double getHeight() {
-    return Conversions.falconToMeters(m_motor.getSelectedSensorPosition(), ElevatorConstants.kSpoolCircumference, ElevatorConstants.kGearRatio);
+    return Conversions.falconToMeters(
+      m_motor.getSelectedSensorPosition(),
+      ElevatorConstants.kSpoolCircumference,
+      ElevatorConstants.kGearRatio
+    );
   }
 
   public enum ElevatorMode {
     CALIBRATION, MANUAL, MOTIONMAGIC, DISABLED
   }
 
-  public void setDesiredHeight(double desiredHeight) {
-    m_desiredHeight = desiredHeight;
+  public void setDesiredPosition(double desiredPosition) {
+    m_desiredPosition = desiredPosition;
   }
 
   public void setDesiredPower(double power) {
@@ -159,14 +137,22 @@ public class Elevator extends SubsystemBase {
     m_mode = mode;
   }
 
-  public boolean reachedDesiredHeight() {
-    return Math.abs(m_desiredHeight - getHeight()) < ElevatorConstants.kPositionTolerance
-          && Math.abs(m_motor.getSelectedSensorVelocity()) < ElevatorConstants.kVelocityTolerance;
+  public double getVelocity() {
+    return Conversions.falconToMPS(
+      m_motor.getSelectedSensorVelocity(),
+      ElevatorConstants.kSpoolCircumference,
+      ElevatorConstants.kGearRatio
+    );
+  }
+
+  public boolean reachedDesiredPosition() {
+    return Math.abs(m_desiredPosition - getPosition()) < ElevatorConstants.kPositionTolerance
+          && Math.abs(getVelocity()) < ElevatorConstants.kVelocityTolerance;
   }
 
   public void updateClosedLoopSlot() {
     boolean hasCone = m_hasConeSupplier.getAsBoolean();
-    if (getPosition() < ElevatorConstants.kFirstStageMaxTravelDistance) {
+    if (getPosition() < ElevatorConstants.kCarriageMaxDistance) {
       m_motor.selectProfileSlot(hasCone ? 1 : 0, 0);
     } else {
       m_motor.selectProfileSlot(hasCone ? 3 : 2, 0);
@@ -195,16 +181,15 @@ public class Elevator extends SubsystemBase {
         updateClosedLoopSlot();
         m_motor.set(
           ControlMode.MotionMagic,
-          Conversions.MetersToFalcon(heightToLength(m_desiredHeight), ElevatorConstants.kSpoolCircumference, ElevatorConstants.kGearRatio)
+          Conversions.MetersToFalcon(m_desiredPosition, ElevatorConstants.kSpoolCircumference, ElevatorConstants.kGearRatio)
         );
         break;
     }
   }
 
   public void setupShuffleboard() {
-    m_elevatorTab.addDouble("Current Height (m)", this::getHeight);
     m_elevatorTab.addDouble("Current Position (m)", this::getPosition);
-    m_elevatorTab.addDouble("Desired Height (m)", () -> m_desiredHeight);
+    m_elevatorTab.addDouble("Desired Position (m)", () -> m_desiredPosition);
     m_elevatorTab.addDouble("Desired Power", () -> m_desiredPower);
     m_elevatorTab.addString("Mode", m_mode::toString);
   }

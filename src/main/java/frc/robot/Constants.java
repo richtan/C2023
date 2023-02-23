@@ -58,41 +58,45 @@ public final class Constants {
     public static final double kRotationControllerP = 1;
   }
 
-  // Units are degrees, zero is deploy position, positive is towards the robot,
+  // Units are degrees, zero is max deploy position, positive is towards the robot,
   // angle measurement is angle of polycarb plates on intake from horizontal
   public static final class ArmConstants {
     public static final int kMotorID = -1;
     public static final IdleMode kIdleMode = IdleMode.kBrake;
     public static final boolean kMotorInvert = false;
     public static final double kGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0);
+    public static final double kMotorEncoderDistancePerRotation = 360.0 / kGearRatio;
 
     public static final int kAbsEncoderID = -1;
-    public static final double kAbsEncoderZeroPos = 0.1;
+    public static final double kAbsEncoderZeroAngle = 0.1;
+    public static final boolean kAbsEncoderInvert = false;
+    public static final double kAbsEncoderDistancePerRotation = 360.0 * (kAbsEncoderInvert ? -1 : 1);
 
-    public static final double kPositionTolerance = 0.5;
+    public static final double kAngleTolerance = 0.5;
     public static final double kVelocityTolerance = 0;
 
-    public static final double kStowPosition = 55;
-    public static final double kIntakeConePosition = 0.2;
-    public static final double kIntakeCubePosition = 0.2;
-    public static final double kTopConePosition = 0.2;
-    public static final double kTopCubePosition = 0.2;
-    public static final double kMiddleConePosition = 0.2;
-    public static final double kMiddleCubePosition = 0.2;
-    public static final double kBottomConePosition = 0.2;
-    public static final double kBottomCubePosition = 0.2;
-    public static final double kShelfConePosition = 0.2;
-    public static final double kShelfCubePosition = 0.2;
-    public static final double kDeployPosition = 0.0;
+    public static final double kStowAngle = 55;
+    public static final double kIntakeConeAngle = 0.2;
+    public static final double kIntakeCubeAngle = 0.2;
+    public static final double kTopConeAngle = 0.2;
+    public static final double kTopCubeAngle = 0.2;
+    public static final double kMiddleConeAngle = 0.2;
+    public static final double kMiddleCubeAngle = 0.2;
+    public static final double kBottomConeAngle = 0.2;
+    public static final double kBottomCubeAngle = 0.2;
+    public static final double kShelfConeAngle = 0.2;
+    public static final double kShelfCubeAngle = 0.2;
+    public static final double kDeployAngle = 0;
 
     public static final double kP = 1;
     public static final double kI = 0;
     public static final double kD = 0;
 
-    public static final double kMaxVelocity = 0;
-    public static final double kMaxAccel = 0;
+    public static final double kMaxAngularVelocity = 0;
+    public static final double kMaxAngularAccel = 0;
   }
 
+  // Positive is outtaking direction
   public static final class IntakeConstants {
     public static final int kLeftMotorID = -1;
     public static final int kRightMotorID = -1;
@@ -151,18 +155,23 @@ public final class Constants {
   }
 
   // Units are meters, zero is bottom, positive is upwards,
-  // height measured vertically from ground to center of bottom surface of carriage
+  // position measured along elevator axis from bottom carriage hardstop to bottom of carriage
   public static final class ElevatorConstants {
     public static final int kMotorID = 13;
     public static final String kElevatorCAN = kRioCAN;
     public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.Clockwise; // Clockwise goes up
     public static final NeutralMode kNeutralMode = NeutralMode.Brake;
 
+    public static final double kGearRatio = (50.0 / 12.0) * (50.0 / 30.0) * (36.0 / 24.0);
+    public static final double kSpoolDiameter = Units.inchesToMeters(1.375);
+    public static final double kStringThickness = Units.inchesToMeters(0.125);
+    public static final double kSpoolCircumference = (kSpoolDiameter + kStringThickness) * Math.PI;
+
     public static final int kBottomLimitSwitchPort = 8;
     public static final int kTopLimitSwitchPort = 9;
 
-    public static final double kPositionTolerance = 0;
-    public static final double kVelocityTolerance = 0;
+    public static final double kPositionTolerance = 0.05;
+    public static final double kVelocityTolerance = 0.05;
     
     // Whether limit switch is normally-closed (activated = open circuit) or normally-open (activated = closed circuit)
     public static final boolean kTopLimitSwitchNC = true;
@@ -197,11 +206,6 @@ public final class Constants {
     public static final double kPeakCurrentDuration = 0.1;
     public static final boolean kEnableCurrentLimit = false;
 
-    public static final double kGearRatio = (50.0 / 12.0) * (50.0 / 30.0) * (36.0 / 24.0);
-    public static final double kSpoolDiameter = Units.inchesToMeters(1.375);
-    public static final double kStringThickness = Units.inchesToMeters(0.125);
-    public static final double kSpoolCircumference = (kSpoolDiameter + kStringThickness) * Math.PI;
-
     public static final double kIntakeConeHeight = 0.2;
     public static final double kIntakeCubeHeight = 0.2;
     public static final double kTopConeHeight = 0.2;
@@ -213,41 +217,15 @@ public final class Constants {
     public static final double kShelfConeHeight = 0.2;
     public static final double kShelfCubeHeight = 0.2;
 
-    // Angle of elevator from horizontal
-    public static final double kElevatorAngle = Units.degreesToRadians(55);
-    // Height of center of intake from ground
-    public static final double kElevatorBaseHeight = Units.inchesToMeters(11.7935215);
     // Max distance that the carriage can travel
-    public static final double kCarriageMaxTravelDistance = Units.inchesToMeters(25);
+    public static final double kCarriageMaxDistance = Units.inchesToMeters(25);
     // Max distance that the first stage can travel
-    public static final double kFirstStageMaxTravelDistance = Units.inchesToMeters(26);
+    public static final double kFirstStageMaxDistance = Units.inchesToMeters(26);
     // Total max travel distance of elevator (how far it can extend)
-    public static final double kMaxTravelDistance = kCarriageMaxTravelDistance + kFirstStageMaxTravelDistance;
+    public static final double kMaxPosition = kCarriageMaxDistance + kFirstStageMaxDistance;
 
     public static final double kCalibrationPower = -0.2;
   }
-
-  // public enum Position {
-  //   TOP_CONE(1, 1),
-  //   TOP_CUBE(1, 1),
-  //   MIDDLE_CONE(1, 1),
-  //   MIDDLE_CUBE(1, 1),
-  //   BOTTOM_CONE(1, 1),
-  //   BOTTOM_CUBE(1, 1),
-  //   SHELF_CONE(1, 1),
-  //   SHELF_CUBE(1, 1),
-  //   INTAKE_CONE(1, 1),
-  //   INTAKE_CUBE(1, 1),
-  //   STOW(1, 1);
-
-  //   private final double height, position;
-  //   private Position(double height, double position) {
-  //     this.height = height;
-  //     this.position = position;
-  //   }
-  //   public double getHeight() { return this.height; }
-  //   public double getPosition() { return this.position; }
-  // }
 
   public static final class SwerveConstants {
     public static final int kPigeonID = kIsComp ? 0 : 13;

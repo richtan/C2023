@@ -21,34 +21,34 @@ public class PositionMechanisms extends SequentialCommandGroup {
     addCommands(
       new SelectCommand(Map.ofEntries(
         Map.entry(Position.TOP, new ConditionalCommand(
-          new MoveElevator(elevator, ElevatorConstants.kTopConeHeight).alongWith(new MoveArm(arm, ArmConstants.kTopConePosition)),
-          new MoveElevator(elevator, ElevatorConstants.kTopCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kTopCubePosition)),
+          new MoveElevator(elevator, ElevatorConstants.kTopConeHeight).alongWith(new MoveArm(arm, ArmConstants.kTopConeAngle)),
+          new MoveElevator(elevator, ElevatorConstants.kTopCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kTopCubeAngle)),
           isConeColorSupplier
         )),
         Map.entry(Position.MIDDLE, new ConditionalCommand(
-          new MoveElevator(elevator, ElevatorConstants.kMiddleConeHeight).alongWith(new MoveArm(arm, ArmConstants.kMiddleConePosition)),
-          new MoveElevator(elevator, ElevatorConstants.kMiddleCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kMiddleCubePosition)),
+          new MoveElevator(elevator, ElevatorConstants.kMiddleConeHeight).alongWith(new MoveArm(arm, ArmConstants.kMiddleConeAngle)),
+          new MoveElevator(elevator, ElevatorConstants.kMiddleCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kMiddleCubeAngle)),
           isConeColorSupplier
         )),
         Map.entry(Position.BOTTOM, new ConditionalCommand(
-          new MoveElevator(elevator, ElevatorConstants.kBottomConeHeight).alongWith(new MoveArm(arm, ArmConstants.kBottomConePosition)),
-          new MoveElevator(elevator, ElevatorConstants.kBottomCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kBottomCubePosition)),
+          new MoveElevator(elevator, ElevatorConstants.kBottomConeHeight).alongWith(new MoveArm(arm, ArmConstants.kBottomConeAngle)),
+          new MoveElevator(elevator, ElevatorConstants.kBottomCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kBottomCubeAngle)),
           isConeColorSupplier
         )),
         Map.entry(Position.SHELF, new ConditionalCommand(
-          new MoveElevator(elevator, ElevatorConstants.kShelfConeHeight).alongWith(new MoveArm(arm, ArmConstants.kShelfConePosition)),
-          new MoveElevator(elevator, ElevatorConstants.kShelfCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kShelfCubePosition)),
+          new MoveElevator(elevator, ElevatorConstants.kShelfConeHeight).alongWith(new MoveArm(arm, ArmConstants.kShelfConeAngle)),
+          new MoveElevator(elevator, ElevatorConstants.kShelfCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kShelfCubeAngle)),
           isConeColorSupplier
         )),
         Map.entry(Position.INTAKE, new ConditionalCommand(
-          new MoveElevator(elevator, ElevatorConstants.kIntakeConeHeight).alongWith(new MoveArm(arm, ArmConstants.kIntakeConePosition)),
-          new MoveElevator(elevator, ElevatorConstants.kIntakeCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kIntakeCubePosition)),
+          new MoveElevator(elevator, ElevatorConstants.kIntakeConeHeight).alongWith(new MoveArm(arm, ArmConstants.kIntakeConeAngle)),
+          new MoveElevator(elevator, ElevatorConstants.kIntakeCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kIntakeCubeAngle)),
           isConeColorSupplier
         ))
       ), () -> row),
       new ParallelCommandGroup(
-        new WaitUntilCommand(arm::reachedDesiredPosition),
-        new WaitUntilCommand(elevator::reachedDesiredHeight)
+        new WaitUntilCommand(arm::reachedDesiredAngle),
+        new WaitUntilCommand(elevator::reachedDesiredPosition)
       )
     );
   }

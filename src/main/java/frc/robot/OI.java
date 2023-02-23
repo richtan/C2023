@@ -28,7 +28,7 @@ public class OI {
     operator.B.onTrue(new PositionMechanisms(elevator, arm, intake::isConeColor, Position.SHELF));
     operator.RB.onTrue(new IntakeCommand(intake, elevator, arm)).onFalse(new StopIntake(intake));
     operator.RT.onTrue(new Outtake(intake)).onFalse(new StopIntake(intake));
-    operator.LB.onTrue(new MoveArm(arm, ArmConstants.kStowPosition));
+    operator.LB.onTrue(new MoveArm(arm, ArmConstants.kStowAngle));
   }
 
   public static void configureManualControls(GameController manual) {

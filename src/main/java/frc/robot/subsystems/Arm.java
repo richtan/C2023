@@ -18,24 +18,26 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax m_motor;
   private final DutyCycleEncoder m_absEncoder;
 
-  private SparkMaxPIDController m_pid;
-  private RelativeEncoder m_encoder;
+  private final SparkMaxPIDController m_pid;
+  private final RelativeEncoder m_encoder;
 
   private ArmMode m_mode;
-  private double m_desiredPosition;
+  private double m_desiredAngle;
   private double m_desiredPower;
 
   public Arm(ShuffleboardTab armTab) {
     m_armTab = armTab;
 
     m_motor = new CANSparkMax(ArmConstants.kMotorID, MotorType.kBrushless);
+    m_encoder = m_motor.getEncoder();
+    m_pid = m_motor.getPIDController();
     configArmMotor();
 
     m_absEncoder = new DutyCycleEncoder(ArmConstants.kAbsEncoderID);
     calibrateEncoder();
 
     m_mode = ArmMode.DISABLED;
-    m_desiredPosition = ArmConstants.kStowPosition;
+    m_desiredAngle = ArmConstants.kStowAngle;
     m_desiredPower = 0.0;
   }
 
@@ -46,30 +48,29 @@ public class Arm extends SubsystemBase {
 
     m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    m_motor.setSoftLimit(SoftLimitDirection.kForward, (float) ArmConstants.kDeployPosition);
-    m_motor.setSoftLimit(SoftLimitDirection.kReverse, (float) ArmConstants.kStowPosition);
+    m_motor.setSoftLimit(SoftLimitDirection.kForward, (float) ArmConstants.kStowAngle);
+    m_motor.setSoftLimit(SoftLimitDirection.kReverse, (float) ArmConstants.kDeployAngle);
     
-    m_encoder = m_motor.getEncoder();
-    m_encoder.setPositionConversionFactor(1.0 / ArmConstants.kGearRatio); // Rotations at motor to rotations at throughbore
-
-    m_pid = m_motor.getPIDController();
+    // Rotations at motor shaft to degrees at Throughbore
+    m_encoder.setPositionConversionFactor(ArmConstants.kMotorEncoderDistancePerRotation);
 
     m_pid.setFeedbackDevice(m_encoder);
     m_pid.setP(ArmConstants.kP);
     m_pid.setI(ArmConstants.kI);
     m_pid.setD(ArmConstants.kD);
 
-    m_pid.setSmartMotionMaxVelocity(ArmConstants.kMaxVelocity, 0);
-    m_pid.setSmartMotionMaxAccel(ArmConstants.kMaxAccel, 0);
+    m_pid.setSmartMotionMaxVelocity(ArmConstants.kMaxAngularVelocity, 0);
+    m_pid.setSmartMotionMaxAccel(ArmConstants.kMaxAngularAccel, 0);
   }
 
   private void calibrateEncoder() {
-    double absEncoderError = m_absEncoder.getAbsolutePosition() - ArmConstants.kAbsEncoderZeroPos;
+    double absEncoderError = (m_absEncoder.getAbsolutePosition() * ArmConstants.kAbsEncoderDistancePerRotation)
+        - ArmConstants.kAbsEncoderZeroAngle;
     m_encoder.setPosition(absEncoderError);
   }
 
   public enum ArmMode {
-    DISABLED, MANUAL, POSITION
+    DISABLED, MANUAL, SMART_MOTION
   }
 
   public void setMode(ArmMode mode) {
@@ -80,20 +81,20 @@ public class Arm extends SubsystemBase {
     return m_mode;
   }
 
-  public void setDesiredPosition(double desiredPosition) {
-    m_desiredPosition = desiredPosition;
+  public void setDesiredAngle(double desiredAngle) {
+    m_desiredAngle = desiredAngle;
   }
   
   public void setDesiredPower(double desiredPower) {
     m_desiredPower = desiredPower;
   }
 
-  public double getPosition() {
+  public double getAngle() {
     return m_encoder.getPosition();
   }
 
-  public boolean reachedDesiredPosition() {
-    return Math.abs(m_desiredPosition - getPosition()) < ArmConstants.kPositionTolerance
+  public boolean reachedDesiredAngle() {
+    return Math.abs(m_desiredAngle - getAngle()) < ArmConstants.kAngleTolerance
           && Math.abs(m_encoder.getVelocity()) < ArmConstants.kVelocityTolerance;
   }
 
@@ -106,12 +107,12 @@ public class Arm extends SubsystemBase {
       case MANUAL:
         m_pid.setReference(m_desiredPower, ControlType.kDutyCycle);
         break;
-      case POSITION:
-        m_pid.setReference(m_desiredPosition, ControlType.kSmartMotion);
+      case SMART_MOTION:
+        m_pid.setReference(m_desiredAngle, ControlType.kSmartMotion);
     }
   }
 
   public void setupShuffleboard() {
-    m_armTab.addDouble("Current position", this::getPosition);
+    m_armTab.addDouble("Current angle", this::getAngle);
   }
 }
