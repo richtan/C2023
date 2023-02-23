@@ -231,6 +231,7 @@ public final class Constants {
     public static final double kCalibrationPower = -0.2;
   }
 
+  // linear units are meters, angular units are radians
   public static final class SwerveConstants {
     public static final int kPigeonID = kIsComp ? 0 : 13;
 
@@ -241,6 +242,8 @@ public final class Constants {
     public static final String kPigeonCAN = kCANivoreCAN;
 
     public static final boolean kInvertGyro = false; // Make sure gyro is CCW+ CW- // FIXME: Swerve
+
+    public static final double kSlowDriveFactor = 0.5;
 
     public static final COTSFalconSwerveConstants kModuleConstants =
         COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);   
@@ -302,8 +305,11 @@ public final class Constants {
     public static final double kAngleF = kModuleConstants.angleKF;
 
     /* Swerve Profiling Values */
-    public static final double kMaxSpeed = (6380 / 60.0) * kModuleConstants.wheelCircumference / kModuleConstants.driveGearRatio ; // m/s
-    public static final double kMaxAngularVelocity = kMaxSpeed / Math.hypot(kTrackWidth / 2, kWheelBase / 2); // rad/s, omega = V/r
+    // I'll just use these values for now since theoretical max speeds are physically impossible
+    public static final double kMaxSpeed = 4.5; // m/s
+    public static final double kMaxAngularVelocity = 10.0; // rad/s
+    // public static final double kMaxSpeed = (6380 / 60.0) * kModuleConstants.wheelCircumference / kModuleConstants.driveGearRatio; // m/s
+    // public static final double kMaxAngularVelocity = kMaxSpeed / Math.hypot(kTrackWidth / 2, kWheelBase / 2); // rad/s, omega = V/r
 
     /* Neutral Modes */
     public static final NeutralMode kDriveNeutralMode = NeutralMode.Brake;
