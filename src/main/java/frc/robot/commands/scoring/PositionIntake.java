@@ -15,8 +15,8 @@ import frc.robot.commands.scoring.elevator.MoveElevator;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 
-public class PositionMechanisms extends SequentialCommandGroup {
-  public PositionMechanisms(Elevator elevator, Arm arm, BooleanSupplier isConeColorSupplier, Position row) {
+public class PositionIntake extends SequentialCommandGroup {
+  public PositionIntake(Elevator elevator, Arm arm, BooleanSupplier isConeColorSupplier, Position position) {
     addRequirements(elevator, arm);
     addCommands(
       new SelectCommand(Map.ofEntries(
@@ -44,8 +44,11 @@ public class PositionMechanisms extends SequentialCommandGroup {
           new MoveElevator(elevator, ElevatorConstants.kIntakeConeHeight).alongWith(new MoveArm(arm, ArmConstants.kIntakeConeAngle)),
           new MoveElevator(elevator, ElevatorConstants.kIntakeCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kIntakeCubeAngle)),
           isConeColorSupplier
-        ))
-      ), () -> row),
+        )),
+        Map.entry(Position.STOW, 
+          new MoveElevator(elevator, ElevatorConstants.kStowHeight).alongWith(new MoveArm(arm, ArmConstants.kStowAngle))
+        )
+      ), () -> position),
       new ParallelCommandGroup(
         new WaitUntilCommand(arm::reachedDesiredAngle),
         new WaitUntilCommand(elevator::reachedDesiredPosition)
@@ -54,6 +57,6 @@ public class PositionMechanisms extends SequentialCommandGroup {
   }
 
   public enum Position {
-    TOP, MIDDLE, BOTTOM, SHELF, INTAKE
+    TOP, MIDDLE, BOTTOM, SHELF, INTAKE, STOW
   }
 }

@@ -163,7 +163,7 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     // Make sure we aren't going past the limit switches
     if (isBottomLimitSwitchReached() || (isTopLimitSwitchReached() && m_mode != ElevatorMode.CALIBRATION)) {
-      m_motor.neutralOutput();
+      m_motor.stopMotor();
       return;
     }
 
@@ -172,7 +172,7 @@ public class Elevator extends SubsystemBase {
         m_motor.set(ControlMode.PercentOutput, ElevatorConstants.kCalibrationPower);
         break;
       case DISABLED:
-        m_motor.neutralOutput();
+        m_motor.stopMotor();
         break;
       case MANUAL:
         m_motor.set(ControlMode.PercentOutput, m_desiredPower);
@@ -195,5 +195,8 @@ public class Elevator extends SubsystemBase {
     m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);
     m_elevatorTab.addBoolean("Reached Bottom Limit Switch", this::isBottomLimitSwitchReached);
     m_elevatorTab.addString("Mode", () -> m_mode.toString());
+    m_elevatorTab.add("Elevator Motor", m_motor);
+    m_elevatorTab.add("Top Limit Switch", m_topLimitSwitch);
+    m_elevatorTab.add("Bottom Limit Switch", m_bottomLimitSwitch);
   }
 }

@@ -219,6 +219,7 @@ public final class Constants {
     public static final double kBottomCubeHeight = 0.2;
     public static final double kShelfConeHeight = 0.2;
     public static final double kShelfCubeHeight = 0.2;
+    public static final double kStowHeight = 0.2;
 
     // Max distance that the carriage can travel
     public static final double kCarriageMaxDistance = Units.inchesToMeters(25);

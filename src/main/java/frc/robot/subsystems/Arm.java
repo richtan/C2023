@@ -126,5 +126,8 @@ public class Arm extends SubsystemBase {
     m_armTab.addBoolean("Reached Desired Angle", this::reachedDesiredAngle);
     m_armTab.addDouble("Absolute encoder (deg)", this::getAbsEncoder);
     m_armTab.addString("Mode", () -> m_mode.toString());
+    m_armTab.add("Arm Motor", m_motor);
+    m_armTab.add("Absolute Encoder", m_absEncoder);
+    m_armTab.add("Motor Encoder", m_encoder);
   }
 }
