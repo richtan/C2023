@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -18,6 +19,7 @@ public class Elevator extends SubsystemBase {
 
   private final BooleanSupplier m_hasConeSupplier;
   private ElevatorMode m_mode;
+  private ElevatorStatus m_status;
 
   private final WPI_TalonFX m_motor;
   private final DigitalInput m_bottomLimitSwitch;
@@ -25,11 +27,14 @@ public class Elevator extends SubsystemBase {
   private double m_desiredPosition = 0;
   private double m_desiredPower = 0;
 
+  private double m_gravityCompensation = 0;
+
   public Elevator(ShuffleboardTab elevatorTab, BooleanSupplier hasConeSupplier) {
     m_elevatorTab = elevatorTab;
 
     m_hasConeSupplier = hasConeSupplier;
     m_mode = ElevatorMode.DISABLED;
+    m_status = ElevatorStatus.NONE;
 
     m_motor = new WPI_TalonFX(ElevatorConstants.kMotorID, ElevatorConstants.kElevatorCAN);
     configElevatorMotor();
@@ -150,13 +155,40 @@ public class Elevator extends SubsystemBase {
           && Math.abs(getVelocity()) < ElevatorConstants.kVelocityTolerance;
   }
 
-  private void updateClosedLoopSlot() {
+  enum ElevatorStatus {
+    BOTTOM, BOTTOM_CONE, TOP, TOP_CONE, NONE
+  }
+
+  private void updateElevatorStatus() {
     boolean hasCone = m_hasConeSupplier.getAsBoolean();
     if (getPosition() < ElevatorConstants.kCarriageMaxDistance) {
-      m_motor.selectProfileSlot(hasCone ? 1 : 0, 0);
+      m_status = hasCone ? ElevatorStatus.BOTTOM_CONE : ElevatorStatus.BOTTOM;
     } else {
-      m_motor.selectProfileSlot(hasCone ? 3 : 2, 0);
+      m_status = hasCone ? ElevatorStatus.TOP_CONE : ElevatorStatus.TOP;
     }
+  }
+
+  private void updateClosedLoopSlot() {
+    switch (m_status) {
+      case BOTTOM:
+        m_motor.selectProfileSlot(0, 0);
+        m_gravityCompensation = ElevatorConstants.kBottomGravityCompensation;
+        break;
+      case BOTTOM_CONE:
+        m_motor.selectProfileSlot(1, 0);
+        m_gravityCompensation = ElevatorConstants.kBottomWithConeGravityCompensation;
+        break;
+      case TOP:
+        m_motor.selectProfileSlot(2, 0);
+        m_gravityCompensation = ElevatorConstants.kTopGravityCompensation;
+        break;
+      case TOP_CONE:
+        m_motor.selectProfileSlot(3, 0);
+        m_gravityCompensation = ElevatorConstants.kTopWithConeGravityCompensation;
+        break;
+      case NONE:
+        break;
+    };
   }
 
   @Override
@@ -175,13 +207,17 @@ public class Elevator extends SubsystemBase {
         m_motor.stopMotor();
         break;
       case MANUAL:
+        updateElevatorStatus();
         m_motor.set(ControlMode.PercentOutput, m_desiredPower);
         break;
       case MOTIONMAGIC:
+        updateElevatorStatus();
         updateClosedLoopSlot();
         m_motor.set(
           ControlMode.MotionMagic,
-          Conversions.MetersToFalcon(m_desiredPosition, ElevatorConstants.kSpoolCircumference, ElevatorConstants.kGearRatio)
+          Conversions.MetersToFalcon(m_desiredPosition, ElevatorConstants.kSpoolCircumference, ElevatorConstants.kGearRatio),
+          DemandType.ArbitraryFeedForward,
+          m_gravityCompensation
         );
         break;
     }

@@ -185,24 +185,28 @@ public final class Constants {
     public static final double kBottomI = 0;
     public static final double kBottomD = 0;
     public static final double kBottomF = 0;
+    public static final double kBottomGravityCompensation = 0;
 
     // Slot 1
     public static final double kBottomWithConeP = kBottomP;
     public static final double kBottomWithConeI = kBottomI;
     public static final double kBottomWithConeD = kBottomD;
     public static final double kBottomWithConeF = kBottomF;
+    public static final double kBottomWithConeGravityCompensation = kBottomGravityCompensation;
 
     // Slot 2
     public static final double kTopP = 1;
     public static final double kTopI = 0;
     public static final double kTopD = 0;
     public static final double kTopF = 0;
+    public static final double kTopGravityCompensation = 0;
 
     // Slot 3
     public static final double kTopWithConeP = kTopP;
     public static final double kTopWithConeI = kTopI;
     public static final double kTopWithConeD = kTopD;
     public static final double kTopWithConeF = kTopF;
+    public static final double kTopWithConeGravityCompensation = kTopGravityCompensation;
 
     public static final int kContinuousCurrentLimit = 30; // FIXME: Elevator
     public static final int kPeakCurrentLimit = 50;
