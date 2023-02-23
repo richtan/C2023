@@ -131,6 +131,21 @@ public class SwerveModule {
     resetToAbsolute();
   }
 
+  public void setDriveCharacterizationVoltage(double voltage) {
+    m_angleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(0, SwerveConstants.kAngleGearRatio));
+    m_driveMotor.set(ControlMode.PercentOutput, voltage / 12.0);
+  }
+
+  public void setAngleCharacterizationVoltage(double voltage) {
+    m_angleMotor.set(ControlMode.PercentOutput, voltage / 12.0);
+    // Set the drive motor to just enough to overcome static friction
+    m_driveMotor.set(ControlMode.PercentOutput, 1.1 * SwerveConstants.kDriveKS);
+  }
+
+  public double getAngularVelocity() {
+    return Conversions.falconToRPM(m_angleMotor.getSelectedSensorVelocity(), SwerveConstants.kAngleGearRatio) * 2 * Math.PI / 60;
+  }
+
   private void configDriveMotor() {
     m_driveMotor.configFactoryDefault();
     m_driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(

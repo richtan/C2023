@@ -8,6 +8,7 @@ import frc.robot.commands.scoring.Stow;
 import frc.robot.commands.scoring.PositionIntake.Position;
 import frc.robot.commands.scoring.elevator.CalibrateElevator;
 import frc.robot.commands.scoring.intake.StartIntake;
+import frc.robot.commands.swerve.CharacterizeSwerve;
 import frc.robot.commands.swerve.LockModules;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.scoring.intake.Outtake;
@@ -27,6 +28,8 @@ public class OI {
       () -> false
     ));
     driver.X.onTrue(new LockModules(swerve));
+    driver.B.whileTrue(new CharacterizeSwerve(swerve, true, true));
+    driver.A.whileTrue(new CharacterizeSwerve(swerve, true, false));
   }
 
   public static void configureOperatorControls(GameController operator, Elevator elevator, Arm arm, Intake intake) {

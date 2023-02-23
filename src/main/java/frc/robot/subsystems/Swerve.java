@@ -82,6 +82,10 @@ public class Swerve extends SubsystemBase {
     return SwerveConstants.kKinematics.toChassisSpeeds(getModuleStates());
   }
 
+  public SwerveModule[] getModules() {
+    return m_modules;
+  }
+
   public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
     SwerveModuleState[] swerveModuleStates = SwerveConstants.kKinematics.toSwerveModuleStates(
         fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
