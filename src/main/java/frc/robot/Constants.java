@@ -299,9 +299,9 @@ public final class Constants {
 
     /* Drive Motor Characterization Values 
       * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
-    public static final double kDriveKS = (Constants.kIsComp ? 0.32 : 0) / 12.0; // FIXME: Swerve
-    public static final double kDriveKV = (Constants.kIsComp ? 1.51 : 0) / 12.0;
-    public static final double kDriveKA = (Constants.kIsComp ? 0.27 : 0) / 12.0;
+    public static final double kDriveKS = (Constants.kIsComp ? 0.32 : 0.65978) / 12.0; // FIXME: Swerve
+    public static final double kDriveKV = (Constants.kIsComp ? 1.51 : 2.05251) / 12.0;
+    public static final double kDriveKA = (Constants.kIsComp ? 0.27 : 0.00097) / 12.0;
 
     /* Angle Motor PID Values */
     public static final double kAngleP = kModuleConstants.angleKP;
