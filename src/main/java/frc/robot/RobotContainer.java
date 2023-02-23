@@ -17,6 +17,9 @@ import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.DoNothing;
 import frc.robot.commands.auto.MobilityAuto;
 import frc.robot.commands.swerve.TeleopDrive;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.PathLoader;
 import frc.robot.util.Vision;
@@ -38,12 +41,18 @@ public class RobotContainer {
 
   private final ShuffleboardTab m_swerveTab = Shuffleboard.getTab("Swerve");
   private final ShuffleboardTab m_autoTab = Shuffleboard.getTab("Auto");
+  private final ShuffleboardTab m_elevatorTab = Shuffleboard.getTab("Elevator");
+  private final ShuffleboardTab m_intakeTab = Shuffleboard.getTab("Intake");
+  private final ShuffleboardTab m_armTab = Shuffleboard.getTab("Arm");
   private final ShuffleboardTab m_visionTab = Shuffleboard.getTab("Vision");
 
   private final Vision m_vision;
 
   // Subsystems
   private final Swerve m_swerve;
+  private final Elevator m_elevator;
+  private final Intake m_intake;
+  private final Arm m_arm;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -68,22 +77,37 @@ public class RobotContainer {
     // Initialize subsystems
     m_swerve = new Swerve(m_vision, m_swerveTab);
 
-    // Setup controls
+    // Setup driver controls
     OI.configureDriverControls(m_driverJoy, m_swerve);
-    OI.configureOperatorControls(m_operatorJoy);
-    OI.configureManualControls(m_manualJoy);
-    OI.configureTestControls(m_testJoy);
 
     if (Constants.kIsComp) {
       System.out.println("Running COMPETITION robot");
+
+      m_intake = new Intake(m_intakeTab);
+      m_intake.setupShuffleboard();
+
+      m_elevator = new Elevator(m_elevatorTab, m_intake::hasCone);
+      m_elevator.setupShuffleboard();
+
+      m_arm = new Arm(m_armTab);
+      m_arm.setupShuffleboard();
+
+      // Setup compbot-only controls
+      OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake);
+      OI.configureManualControls(m_manualJoy);
+      OI.configureTestControls(m_testJoy);
     } else {
       System.out.println("Running TEST robot");
 
-      // Only run shuffleboard when not in competition
-      m_swerve.setupShuffleboard();
-      m_vision.setupShuffleboard();
-      setupSchedulerShuffleboard();
+      // These subsystems don't exist
+      m_elevator = null;
+      m_intake = null;
+      m_arm = null;
     }
+
+    m_swerve.setupShuffleboard();
+    m_vision.setupShuffleboard();
+    setupSchedulerShuffleboard();
 
     // Create auto chooser and add auto command options
     setupAutoChooser();

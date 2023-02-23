@@ -13,10 +13,8 @@ import frc.robot.Constants.SwerveConstants;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
@@ -110,34 +108,24 @@ public class SwerveModule {
 
   private void configCANcoder() {
     m_CANcoder.configFactoryDefault();
-
-    CANCoderConfiguration config = new CANCoderConfiguration();
-
-    config.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-    config.sensorDirection = SwerveConstants.kCANcoderInvert;
-    config.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-    config.sensorTimeBase = SensorTimeBase.PerSecond;
-
-    m_CANcoder.configAllSettings(config);
+    m_CANcoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
+    m_CANcoder.configSensorDirection(SwerveConstants.kCANcoderInvert);
+    m_CANcoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+    m_CANcoder.configFeedbackCoefficient(0.087890625, "deg", SensorTimeBase.PerSecond);
   }
 
   private void configAngleMotor() {
     m_angleMotor.configFactoryDefault();
-
-    TalonFXConfiguration config = new TalonFXConfiguration();
-    SupplyCurrentLimitConfiguration angleSupplyLimit = new SupplyCurrentLimitConfiguration(
-        SwerveConstants.kAngleEnableCurrentLimit,
-        SwerveConstants.kAngleContinuousCurrentLimit,
-        SwerveConstants.kAnglePeakCurrentLimit,
-        SwerveConstants.kAnglePeakCurrentDuration);
-    config.slot0.kP = SwerveConstants.kAngleP;
-    config.slot0.kI = SwerveConstants.kAngleI;
-    config.slot0.kD = SwerveConstants.kAngleD;
-    config.slot0.kF = SwerveConstants.kAngleF;
-    config.supplyCurrLimit = angleSupplyLimit;
-
-    m_angleMotor.configAllSettings(config);
-
+    m_angleMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
+      SwerveConstants.kAngleEnableCurrentLimit,
+      SwerveConstants.kAngleContinuousCurrentLimit,
+      SwerveConstants.kAnglePeakCurrentLimit,
+      SwerveConstants.kAnglePeakCurrentDuration
+    ));
+    m_angleMotor.config_kP(0, SwerveConstants.kAngleP);
+    m_angleMotor.config_kI(0, SwerveConstants.kAngleI);
+    m_angleMotor.config_kD(0, SwerveConstants.kAngleD);
+    m_angleMotor.config_kF(0, SwerveConstants.kAngleF);
     m_angleMotor.setInverted(SwerveConstants.kAngleMotorInvert);
     m_angleMotor.setNeutralMode(SwerveConstants.kAngleNeutralMode);
     resetToAbsolute();
@@ -145,23 +133,18 @@ public class SwerveModule {
 
   private void configDriveMotor() {
     m_driveMotor.configFactoryDefault();
-
-    TalonFXConfiguration config = new TalonFXConfiguration();
-    SupplyCurrentLimitConfiguration driveSupplyLimit = new SupplyCurrentLimitConfiguration(
-        SwerveConstants.kDriveEnableCurrentLimit,
-        SwerveConstants.kDriveContinuousCurrentLimit,
-        SwerveConstants.kDrivePeakCurrentLimit,
-        SwerveConstants.kDrivePeakCurrentDuration);
-    config.slot0.kP = SwerveConstants.kDriveP;
-    config.slot0.kI = SwerveConstants.kDriveI;
-    config.slot0.kD = SwerveConstants.kDriveD;
-    config.slot0.kF = SwerveConstants.kDriveF;
-    config.supplyCurrLimit = driveSupplyLimit;
-    config.openloopRamp = SwerveConstants.kOpenLoopRamp;
-    config.closedloopRamp = SwerveConstants.kClosedLoopRamp;
-
-    m_driveMotor.configAllSettings(config);
-
+    m_driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
+      SwerveConstants.kDriveEnableCurrentLimit,
+      SwerveConstants.kDriveContinuousCurrentLimit,
+      SwerveConstants.kDrivePeakCurrentLimit,
+      SwerveConstants.kDrivePeakCurrentDuration
+    ));
+    m_driveMotor.config_kP(0, SwerveConstants.kDriveP);
+    m_driveMotor.config_kI(0, SwerveConstants.kDriveI);
+    m_driveMotor.config_kD(0, SwerveConstants.kDriveD);
+    m_driveMotor.config_kF(0, SwerveConstants.kDriveF);
+    m_driveMotor.configOpenloopRamp(SwerveConstants.kOpenLoopRamp);
+    m_driveMotor.configClosedloopRamp(SwerveConstants.kClosedLoopRamp);
     m_driveMotor.setInverted(SwerveConstants.kDriveMotorInvert);
     m_driveMotor.setNeutralMode(SwerveConstants.kDriveNeutralMode);
     m_driveMotor.setSelectedSensorPosition(0);

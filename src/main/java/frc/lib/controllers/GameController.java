@@ -10,7 +10,7 @@ public class GameController {
 
   public final JoystickButton A, B, X, Y, LB, RB, BACK, START, LEFT_JOY, RIGHT_JOY;
   public final POVButton DPAD_UNPRESSED, DPAD_UP, DPAD_UP_RIGHT, DPAD_RIGHT, DPAD_DOWN_RIGHT, DPAD_DOWN, DPAD_DOWN_LEFT, DPAD_LEFT, DPAD_UP_LEFT;
-  public final Trigger LEFT_TRIGGER_BUTTON, RIGHT_TRIGGER_BUTTON, ALL_UP, ALL_DOWN, ALL_LEFT, ALL_RIGHT;
+  public final Trigger LT, RT, ALL_UP, ALL_DOWN, ALL_LEFT, ALL_RIGHT;
 
   public GameController(int port) {
     m_controller = new Joystick(port);
@@ -36,8 +36,8 @@ public class GameController {
     DPAD_LEFT = new POVButton(m_controller, 270);
     DPAD_UP_LEFT = new POVButton(m_controller, 315);
 
-    LEFT_TRIGGER_BUTTON = new Trigger(() -> LEFT_TRIGGER() > 0.5);
-    RIGHT_TRIGGER_BUTTON = new Trigger(() -> RIGHT_TRIGGER() > 0.5);
+    LT = new Trigger(() -> LEFT_TRIGGER() > 0.5);
+    RT = new Trigger(() -> RIGHT_TRIGGER() > 0.5);
     ALL_UP = new Trigger(DPAD_UP.or(DPAD_UP_LEFT).or(DPAD_UP_RIGHT));
     ALL_DOWN = new Trigger(DPAD_DOWN.or(DPAD_DOWN_LEFT).or(DPAD_DOWN_RIGHT));
     ALL_LEFT = new Trigger(DPAD_LEFT.or(DPAD_UP_LEFT).or(DPAD_DOWN_LEFT));
