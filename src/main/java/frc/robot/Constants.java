@@ -28,7 +28,7 @@ import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
-  public static final boolean kIsComp = true;
+  public static final boolean kIsComp = false;
 
   public static final double kLoopTime = 0.02; // Periodic loop time in seconds
 
@@ -55,9 +55,9 @@ public final class Constants {
     public static final double kMaxAngularSpeed = Math.PI; // rad/s
     public static final double kMaxAngularAccel = Math.PI; // rad/s^2
 
-    public static final double kXControllerP = 1; // FIXME: Auto
-    public static final double kYControllerP = 1; // FIXME: Auto
-    public static final double kRotationControllerP = 1; // FIXME: Auto
+    public static final double kXControllerP = 3; // FIXME: Auto
+    public static final double kYControllerP = 3; // FIXME: Auto
+    public static final double kRotationControllerP = 3; // FIXME: Auto
   }
 
   // Units are degrees, zero is max deploy position, positive is towards the robot,
@@ -133,7 +133,7 @@ public final class Constants {
     ));
 
     public static final ArrayList<Pair<String, Transform3d>> kCameras = new ArrayList<Pair<String, Transform3d>>(
-      kIsComp ? List.of(
+      Constants.kIsComp ? List.of(
 
       ) : List.of(
       new Pair<String, Transform3d>(
@@ -237,10 +237,10 @@ public final class Constants {
 
   // linear units are meters, angular units are radians
   public static final class SwerveConstants {
-    public static final int kPigeonID = kIsComp ? 0 : 13;
+    public static final int kPigeonID = Constants.kIsComp ? 0 : 13;
 
     /* CAN buses */
-    public static final String kDriveMotorCAN = kIsComp ? kCANivoreCAN : kRioCAN;
+    public static final String kDriveMotorCAN = Constants.kIsComp ? kCANivoreCAN : kRioCAN;
     public static final String kAngleMotorCAN = kCANivoreCAN;
     public static final String kCANCoderCAN = kCANivoreCAN;
     public static final String kPigeonCAN = kCANivoreCAN;
@@ -253,8 +253,8 @@ public final class Constants {
         COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);   
 
     /* Robot dimensions */
-    public static final double kTrackWidth = Units.inchesToMeters(kIsComp ? 20.75 : 22.75); // Center to Center distance of left and right modules
-    public static final double kWheelBase = Units.inchesToMeters(kIsComp ? 20.75 : 22.75); // Center to Center distance of front and rear module wheels
+    public static final double kTrackWidth = Units.inchesToMeters(Constants.kIsComp ? 20.75 : 22.75); // Center to Center distance of left and right modules
+    public static final double kWheelBase = Units.inchesToMeters(Constants.kIsComp ? 20.75 : 22.75); // Center to Center distance of front and rear module wheels
     public static final double kWheelCircumference = kModuleConstants.wheelCircumference; 
 
     public static final SwerveDriveKinematics kKinematics = new SwerveDriveKinematics(
@@ -298,9 +298,9 @@ public final class Constants {
 
     /* Drive Motor Characterization Values 
       * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
-    public static final double kDriveKS = (kIsComp ? 0.32 : 0) / 12.0; // FIXME: Swerve
-    public static final double kDriveKV = (kIsComp ? 1.51 : 0) / 12.0;
-    public static final double kDriveKA = (kIsComp ? 0.27 : 0) / 12.0;
+    public static final double kDriveKS = (Constants.kIsComp ? 0.32 : 0) / 12.0; // FIXME: Swerve
+    public static final double kDriveKV = (Constants.kIsComp ? 1.51 : 0) / 12.0;
+    public static final double kDriveKA = (Constants.kIsComp ? 0.27 : 0) / 12.0;
 
     /* Angle Motor PID Values */
     public static final double kAngleP = kModuleConstants.angleKP;
@@ -324,10 +324,10 @@ public final class Constants {
     public static final class FL {
         public static final String kModuleName = "Front Left";
         public static final String kModuleAbbr = "FL"; // Module abbreviation
-        public static final int kDriveMotorID = kIsComp ? 20 : 1;
-        public static final int kAngleMotorID = kIsComp ? 15 : 2;
-        public static final int kCANcoderID = kIsComp ? 40 : 3;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0); // FIXME: Swerve
+        public static final int kDriveMotorID = Constants.kIsComp ? 20 : 1;
+        public static final int kAngleMotorID = Constants.kIsComp ? 15 : 2;
+        public static final int kCANcoderID = Constants.kIsComp ? 40 : 3;
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 0.0 : 268.9); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }
@@ -336,10 +336,10 @@ public final class Constants {
     public static final class FR {
         public static final String kModuleName = "Front Right";
         public static final String kModuleAbbr = "FR"; // Module abbreviation
-        public static final int kDriveMotorID = kIsComp ? 33 : 4;
-        public static final int kAngleMotorID = kIsComp ? 30 : 5;
-        public static final int kCANcoderID = kIsComp ? 41 : 6;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0); // FIXME: Swerve
+        public static final int kDriveMotorID = Constants.kIsComp ? 33 : 4;
+        public static final int kAngleMotorID = Constants.kIsComp ? 30 : 5;
+        public static final int kCANcoderID = Constants.kIsComp ? 41 : 6;
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 0.0 : 110.3); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }
@@ -348,10 +348,10 @@ public final class Constants {
     public static final class BL {
         public static final String kModuleName = "Back Left";
         public static final String kModuleAbbr = "BL"; // Module abbreviation
-        public static final int kDriveMotorID = kIsComp ? 16 : 7;
-        public static final int kAngleMotorID = kIsComp ? 18 : 8;
-        public static final int kCANcoderID = kIsComp ? 42 : 9;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0); // FIXME: Swerve
+        public static final int kDriveMotorID = Constants.kIsComp ? 16 : 7;
+        public static final int kAngleMotorID = Constants.kIsComp ? 18 : 8;
+        public static final int kCANcoderID = Constants.kIsComp ? 42 : 9;
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 0.0 : 179.85); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }
@@ -360,10 +360,10 @@ public final class Constants {
     public static final class BR {
         public static final String kModuleName = "Back Right";
         public static final String kModuleAbbr = "BR"; // Module abbreviation
-        public static final int kDriveMotorID = kIsComp ? 32 : 10;
-        public static final int kAngleMotorID = kIsComp ? 35 : 11;
-        public static final int kCANcoderID = kIsComp ? 43 : 12;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(kIsComp ? 0.0 : 0.0); // FIXME: Swerve
+        public static final int kDriveMotorID = Constants.kIsComp ? 32 : 10;
+        public static final int kAngleMotorID = Constants.kIsComp ? 35 : 11;
+        public static final int kCANcoderID = Constants.kIsComp ? 43 : 12;
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 0.0 : 338.03); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }

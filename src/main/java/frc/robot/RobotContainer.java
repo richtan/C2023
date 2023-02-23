@@ -114,9 +114,9 @@ public class RobotContainer {
 
     m_swerve.setDefaultCommand(new TeleopDrive(
       m_swerve,
-      m_driverJoy::LEFT_Y,
-      m_driverJoy::LEFT_X,
-      m_driverJoy::RIGHT_X,
+      () -> m_driverJoy.LEFT_Y(),
+      () -> m_driverJoy.LEFT_X(),
+      () -> m_driverJoy.RIGHT_X(),
       m_driverJoy.LB
     ));
   }
