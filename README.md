@@ -6,4 +6,6 @@ Code for Charged Up 2023 by richtan
 - Add PID to Shuffleboard
 - Add rotating bar subsystem
 - Add command to balance on charge station
+- Make sysid config for swerve
+- Add logging
 - Cope
