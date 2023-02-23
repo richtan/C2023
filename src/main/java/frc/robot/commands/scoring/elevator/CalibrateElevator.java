@@ -25,6 +25,7 @@ public class CalibrateElevator extends CommandBase {
   public void end(boolean interrupted) {
     m_elevator.zeroEncoder();
     m_elevator.toggleSoftLimits(true);
+    m_elevator.setIsCalibrated();
     m_elevator.setDesiredPosition(0);
     m_elevator.setMode(ElevatorMode.MOTIONMAGIC);
   }

@@ -8,4 +8,5 @@ Code for Charged Up 2023 by richtan
 - Add command to balance on charge station
 - Make sysid config for swerve
 - Add logging
+- Current limiting manager
 - Cope

@@ -26,6 +26,7 @@ public class Elevator extends SubsystemBase {
   private final DigitalInput m_topLimitSwitch;
   private double m_desiredPosition = 0;
   private double m_desiredPower = 0;
+  private boolean m_isCalibrated;
 
   private double m_gravityCompensation = 0;
 
@@ -35,6 +36,7 @@ public class Elevator extends SubsystemBase {
     m_hasConeSupplier = hasConeSupplier;
     m_mode = ElevatorMode.DISABLED;
     m_status = ElevatorStatus.NONE;
+    m_isCalibrated = false;
 
     m_motor = new WPI_TalonFX(ElevatorConstants.kMotorID, ElevatorConstants.kElevatorCAN);
     configElevatorMotor();
@@ -191,6 +193,10 @@ public class Elevator extends SubsystemBase {
     };
   }
 
+  public void setIsCalibrated() {
+    m_isCalibrated = true;
+  }
+
   @Override
   public void periodic() {
     // Make sure we aren't going past the limit switches
@@ -207,10 +213,12 @@ public class Elevator extends SubsystemBase {
         m_motor.stopMotor();
         break;
       case MANUAL:
+        if (!m_isCalibrated) break;
         updateElevatorStatus();
         m_motor.set(ControlMode.PercentOutput, m_desiredPower);
         break;
       case MOTIONMAGIC:
+        if (!m_isCalibrated) break;
         updateElevatorStatus();
         updateClosedLoopSlot();
         m_motor.set(
