@@ -66,13 +66,14 @@ public final class Constants {
     public static final int kMotorID = -1; // FIXME: Arm
     public static final IdleMode kIdleMode = IdleMode.kBrake;
     public static final boolean kMotorInvert = false; // FIXME: Arm
-    public static final double kGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0);
-    public static final double kMotorEncoderDistancePerRotation = 360.0 / kGearRatio;
+    public static final double kMotorToAbsEncoderGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0);
+    public static final double kAbsEncoderToEndEffectorGearRatio = 48.0 / 32.0;
+    public static final double kMotorEncoderDistancePerRotation = 360.0 / kMotorToAbsEncoderGearRatio / kAbsEncoderToEndEffectorGearRatio;
 
     public static final int kAbsEncoderID = -1; // FIXME: Arm
     public static final double kAbsEncoderZeroAngle = 0.1; // FIXME: Arm
     public static final boolean kAbsEncoderInvert = false; // FIXME: Arm
-    public static final double kAbsEncoderDistancePerRotation = 360.0 * (kAbsEncoderInvert ? -1 : 1);
+    public static final double kAbsEncoderDistancePerRotation = 360.0 * (kAbsEncoderInvert ? -1 : 1) / kAbsEncoderToEndEffectorGearRatio;
 
     public static final double kAngleTolerance = 0.5; // FIXME: Arm
     public static final double kVelocityTolerance = 0; // FIXME: Arm

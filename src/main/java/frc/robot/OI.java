@@ -24,7 +24,7 @@ public class OI {
       () -> driver.LEFT_Y() * SwerveConstants.kSlowDriveFactor,
       () -> driver.LEFT_X() * SwerveConstants.kSlowDriveFactor,
       () -> driver.RIGHT_X() * SwerveConstants.kSlowDriveFactor,
-      driver.LB
+      () -> false
     ));
     driver.X.onTrue(new LockModules(swerve));
   }
