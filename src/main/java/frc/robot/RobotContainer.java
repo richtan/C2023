@@ -22,6 +22,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.PathLoader;
+import frc.robot.util.PowerManager;
 import frc.robot.util.Vision;
 
 /**
@@ -45,8 +46,10 @@ public class RobotContainer {
   private final ShuffleboardTab m_intakeTab = Shuffleboard.getTab("Intake");
   private final ShuffleboardTab m_armTab = Shuffleboard.getTab("Arm");
   private final ShuffleboardTab m_visionTab = Shuffleboard.getTab("Vision");
+  private final ShuffleboardTab m_powerTab = Shuffleboard.getTab("Power");
 
   private final Vision m_vision;
+  private final PowerManager m_powerManager;
 
   // Subsystems
   private final Swerve m_swerve;
@@ -73,6 +76,9 @@ public class RobotContainer {
 
     // Create vision util instance with cameras
     m_vision = new Vision(VisionConstants.kCameras, m_visionTab);
+
+    // Create current manager
+    m_powerManager = new PowerManager(m_powerTab);
 
     // Initialize subsystems
     m_swerve = new Swerve(m_vision, m_swerveTab);
@@ -110,7 +116,8 @@ public class RobotContainer {
       () -> m_driverJoy.LEFT_Y(),
       () -> m_driverJoy.LEFT_X(),
       () -> m_driverJoy.RIGHT_X(),
-      m_driverJoy.LB
+      () -> false,
+      m_driverJoy.RT
     ));
   }
 

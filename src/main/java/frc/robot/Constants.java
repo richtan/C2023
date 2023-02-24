@@ -23,6 +23,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
@@ -66,8 +67,8 @@ public final class Constants {
     public static final int kMotorID = -1; // FIXME: Arm
     public static final IdleMode kIdleMode = IdleMode.kBrake;
     public static final boolean kMotorInvert = false; // FIXME: Arm
-    public static final double kMotorToAbsEncoderGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0);
-    public static final double kAbsEncoderToEndEffectorGearRatio = 48.0 / 32.0;
+    public static final double kMotorToAbsEncoderGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0) * (18.0 / 16.0);
+    public static final double kAbsEncoderToEndEffectorGearRatio = (48.0 / 32.0);
     public static final double kMotorEncoderDistancePerRotation = 360.0 / kMotorToAbsEncoderGearRatio / kAbsEncoderToEndEffectorGearRatio;
 
     public static final int kAbsEncoderID = -1; // FIXME: Arm
@@ -108,6 +109,8 @@ public final class Constants {
     public static final boolean kRightMotorInvert = false; // FIXME: Intake
     public static final IdleMode kLeftMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kRightMotorIdleMode = IdleMode.kBrake;
+
+    public static final double kGearRatio = (3.0 / 1.0);
 
     public static final double kIntakePower = -0.2;
     public static final double kOuttakePower = 0.2;
@@ -158,6 +161,11 @@ public final class Constants {
     public static final double kVisionPoseStdDevFactor = 0.1;
   }
 
+  public static final class PowerConstants {
+    public static final int kPDModuleID = 0;
+    public static final ModuleType kPDModuleType = ModuleType.kRev;
+  }
+
   // Units are meters, zero is bottom, positive is upwards,
   // position measured along elevator axis from bottom carriage hardstop within first stage to bottom of carriage
   public static final class ElevatorConstants {
@@ -166,7 +174,7 @@ public final class Constants {
     public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.Clockwise; // Clockwise goes up // FIXME: Elevator
     public static final NeutralMode kNeutralMode = NeutralMode.Brake;
 
-    public static final double kGearRatio = (50.0 / 12.0) * (50.0 / 30.0) * (36.0 / 24.0);
+    public static final double kGearRatio = (50.0 / 12.0) * (50.0 / 30.0) * (36.0 / 24.0); // 10.416:1
     public static final double kSpoolDiameter = Units.inchesToMeters(1.375);
     public static final double kStringThickness = Units.inchesToMeters(0.125);
     public static final double kSpoolCircumference = (kSpoolDiameter + kStringThickness) * Math.PI;

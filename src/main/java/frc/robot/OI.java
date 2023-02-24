@@ -10,7 +10,6 @@ import frc.robot.commands.scoring.elevator.CalibrateElevator;
 import frc.robot.commands.scoring.intake.StartIntake;
 import frc.robot.commands.swerve.CharacterizeSwerve;
 import frc.robot.commands.swerve.LockModules;
-import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.scoring.intake.Outtake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -20,13 +19,6 @@ import frc.robot.subsystems.Swerve;
 public class OI {
   public static void configureDriverControls(GameController driver, Swerve swerve) {
     driver.START.onTrue(new InstantCommand(swerve::zeroGyro, swerve));
-    driver.RT.whileTrue(new TeleopDrive(
-      swerve,
-      () -> driver.LEFT_Y() * SwerveConstants.kSlowDriveFactor,
-      () -> driver.LEFT_X() * SwerveConstants.kSlowDriveFactor,
-      () -> driver.RIGHT_X() * SwerveConstants.kSlowDriveFactor,
-      () -> false
-    ));
     driver.X.onTrue(new LockModules(swerve));
     driver.B.whileTrue(new CharacterizeSwerve(swerve, true, true));
     driver.A.whileTrue(new CharacterizeSwerve(swerve, false, true));

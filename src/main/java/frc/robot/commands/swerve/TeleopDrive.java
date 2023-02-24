@@ -16,8 +16,16 @@ public class TeleopDrive extends CommandBase {
   private final DoubleSupplier m_strafeSup;
   private final DoubleSupplier m_rotationSup;
   private final BooleanSupplier m_robotCentricSup;
+  private final BooleanSupplier m_slowModeSup;
 
-  public TeleopDrive(Swerve swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup) {
+  public TeleopDrive(
+    Swerve swerve,
+    DoubleSupplier translationSup,
+    DoubleSupplier strafeSup,
+    DoubleSupplier rotationSup,
+    BooleanSupplier robotCentricSup,
+    BooleanSupplier slowModeSup
+  ) {
     m_swerve = swerve;
     addRequirements(swerve);
 
@@ -25,6 +33,7 @@ public class TeleopDrive extends CommandBase {
     m_strafeSup = strafeSup;
     m_rotationSup = rotationSup;
     m_robotCentricSup = robotCentricSup;
+    m_slowModeSup = slowModeSup;
   }
 
   @Override
@@ -33,6 +42,8 @@ public class TeleopDrive extends CommandBase {
     double translationVal = MathUtil.applyDeadband(m_translationSup.getAsDouble(), OIConstants.kDeadband);
     double strafeVal = MathUtil.applyDeadband(m_strafeSup.getAsDouble(), OIConstants.kDeadband);
     double rotationVal = MathUtil.applyDeadband(m_rotationSup.getAsDouble(), OIConstants.kDeadband);
+
+    double slowFactor = m_slowModeSup.getAsBoolean() ? SwerveConstants.kSlowDriveFactor : 1;
 
     /* Drive */
     m_swerve.drive(
