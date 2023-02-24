@@ -12,11 +12,11 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.util.PathLoader;
 
 public class FollowPath extends SequentialCommandGroup {
-  public FollowPath(String pathGroupName, int pathIndex, Swerve swerve){
+  public FollowPath(String pathGroupName, int pathIndex, Swerve swerve) {
     this(PathLoader.getPathGroup(pathGroupName), pathIndex, swerve);
   }
 
-  public FollowPath(List<PathPlannerTrajectory> pathGroup, int pathIndex, Swerve swerve){
+  public FollowPath(List<PathPlannerTrajectory> pathGroup, int pathIndex, Swerve swerve) {
     addRequirements(swerve);
 
     PathPlannerTrajectory path = PathLoader.getPath(pathGroup, pathIndex);

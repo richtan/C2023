@@ -239,8 +239,5 @@ public class Elevator extends SubsystemBase {
     m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);
     m_elevatorTab.addBoolean("Reached Bottom Limit Switch", this::isBottomLimitSwitchReached);
     m_elevatorTab.addString("Mode", () -> m_mode.toString());
-    m_elevatorTab.add("Elevator Motor", m_motor);
-    m_elevatorTab.add("Top Limit Switch", m_topLimitSwitch);
-    m_elevatorTab.add("Bottom Limit Switch", m_bottomLimitSwitch);
   }
 }

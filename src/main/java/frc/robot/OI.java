@@ -29,7 +29,7 @@ public class OI {
     ));
     driver.X.onTrue(new LockModules(swerve));
     driver.B.whileTrue(new CharacterizeSwerve(swerve, true, true));
-    driver.A.whileTrue(new CharacterizeSwerve(swerve, true, false));
+    driver.A.whileTrue(new CharacterizeSwerve(swerve, false, true));
   }
 
   public static void configureOperatorControls(GameController operator, Elevator elevator, Arm arm, Intake intake) {

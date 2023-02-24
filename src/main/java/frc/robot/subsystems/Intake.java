@@ -123,8 +123,5 @@ public class Intake extends SubsystemBase {
     m_intakeTab.addString("Color (hex)", () -> m_color.toHexString());
     m_intakeTab.addString("Closest color (hex)", () -> m_closestColor.toHexString());
     m_intakeTab.addString("Mode", () -> m_mode.toString());
-    m_intakeTab.add("Left Motor", m_leftMotor);
-    m_intakeTab.add("Right Motor", m_rightMotor);
-    m_intakeTab.add("Color Sensor", m_colorSensor);
   }
 }

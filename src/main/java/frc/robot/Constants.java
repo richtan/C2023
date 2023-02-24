@@ -41,7 +41,7 @@ public final class Constants {
   }
 
   public static final class OIConstants {
-    public static final double kDeadband = 0.05;
+    public static final double kDeadband = 0.02;
 
     public static final int kDriverJoy = 0;
     public static final int kOperatorJoy = 1;
@@ -52,8 +52,8 @@ public final class Constants {
   public static final class AutoConstants {
     public static final double kMaxSpeed = 4.0; // m/s
     public static final double kMaxAccel = 3.0; // m/s^2
-    public static final double kMaxAngularSpeed = Math.PI; // rad/s
-    public static final double kMaxAngularAccel = Math.PI; // rad/s^2
+    public static final double kMaxAngularSpeed = 2 * Math.PI; // rad/s
+    public static final double kMaxAngularAccel = 4 * Math.PI; // rad/s^2
 
     public static final double kXControllerP = 3; // FIXME: Auto
     public static final double kYControllerP = 3; // FIXME: Auto
@@ -310,11 +310,8 @@ public final class Constants {
     public static final double kAngleF = kModuleConstants.angleKF;
 
     /* Swerve Profiling Values */
-    // I'll just use these values for now since theoretical max speeds are physically impossible
-    public static final double kMaxSpeed = 4.5; // m/s
-    public static final double kMaxAngularVelocity = 10.0; // rad/s
-    // public static final double kMaxSpeed = (6380 / 60.0) * kModuleConstants.wheelCircumference / kModuleConstants.driveGearRatio; // m/s
-    // public static final double kMaxAngularVelocity = kMaxSpeed / Math.hypot(kTrackWidth / 2, kWheelBase / 2); // rad/s, omega = V/r
+    public static final double kMaxSpeed = (6380 / 60.0) * kModuleConstants.wheelCircumference / kModuleConstants.driveGearRatio; // m/s
+    public static final double kMaxAngularVelocity = kMaxSpeed / Math.hypot(kTrackWidth / 2, kWheelBase / 2); // rad/s, omega = V/r
 
     /* Neutral Modes */
     public static final NeutralMode kDriveNeutralMode = NeutralMode.Brake;
