@@ -232,6 +232,10 @@ public final class Constants {
     public static final double kFirstStageMaxDistance = Units.inchesToMeters(26);
     // Total max travel distance of elevator (how far it can extend)
     public static final double kMaxPosition = kCarriageMaxDistance + kFirstStageMaxDistance;
+    // Vertical height of the center of the top surface of the tread hardstop for the carriage when elevator is at minimum height
+    public static final double kElevatorBaseHeight = Units.inchesToMeters(12.974338);
+    // Angle of elevator from the horizontal axis
+    public static final double kElevatorAngle = 55.0;
 
     public static final double kCalibrationPower = -0.2;
   }

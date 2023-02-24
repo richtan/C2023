@@ -9,7 +9,7 @@ public class MoveElevator extends SequentialCommandGroup {
   public MoveElevator(Elevator elevator, double desiredHeight) {
     addRequirements(elevator);
     addCommands(
-      new InstantCommand(() -> elevator.setDesiredPosition(desiredHeight), elevator),
+      new InstantCommand(() -> elevator.setDesiredHeight(desiredHeight), elevator),
       new InstantCommand(() -> elevator.setMode(ElevatorMode.MOTIONMAGIC), elevator)
     );
   }

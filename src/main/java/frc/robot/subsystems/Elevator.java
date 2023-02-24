@@ -114,6 +114,22 @@ public class Elevator extends SubsystemBase {
     return m_bottomLimitSwitch.get() != ElevatorConstants.kBottomLimitSwitchNC;
   }
 
+  public double heightToLength(double height) {
+    return (height - ElevatorConstants.kElevatorBaseHeight) / Math.sin(ElevatorConstants.kElevatorAngle);
+  }
+
+  public double lengthToHeight(double length) {
+    return (length * Math.sin(ElevatorConstants.kElevatorAngle)) + ElevatorConstants.kElevatorBaseHeight;
+  }
+
+  public double getHeight() {
+    return lengthToHeight(getPosition());
+  }
+
+  public void setDesiredHeight(double desiredHeight) {
+    setDesiredPosition(heightToLength(desiredHeight));
+  }
+
   /**
    * Get position of carriage above bottom position
    * @return position (m)
@@ -235,7 +251,9 @@ public class Elevator extends SubsystemBase {
 
   private void setupShuffleboard() {
     m_elevatorTab.addDouble("Current Position (m)", this::getPosition);
+    m_elevatorTab.addDouble("Current Height (m)", this::getHeight);
     m_elevatorTab.addDouble("Desired Position (m)", () -> m_desiredPosition);
+    m_elevatorTab.addDouble("Desired Position (m)", () -> lengthToHeight(m_desiredPosition));
     m_elevatorTab.addDouble("Desired Power", () -> m_desiredPower);
     m_elevatorTab.addBoolean("Reached desired position", this::reachedDesiredPosition);
     m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);
