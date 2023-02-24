@@ -81,9 +81,13 @@ public class SwerveModule {
   }
 
   private void setAngle(SwerveModuleState desiredState) {
+    double smallerAngle = Math.min(m_lastAngle.getDegrees(), desiredState.angle.getDegrees());
+    double largerAngle = Math.max(m_lastAngle.getDegrees(), desiredState.angle.getDegrees());
+    double minAngleDifference = Math.min(largerAngle - smallerAngle, smallerAngle + (360 - largerAngle));
     Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.kMaxSpeed * 0.01)
-        || m_lastAngle != desiredState.angle) ? m_lastAngle
-            : desiredState.angle; // Prevent rotating module if speed is less then 1%. Prevents Jittering.
+        && minAngleDifference <= 1) ? m_lastAngle
+            : desiredState.angle; // Prevent rotating module if speed < 1% and angle difference < 1 deg. Prevents
+                                  // Jittering.
 
     m_angleMotor.set(ControlMode.Position,
         Conversions.degreesToFalcon(angle.getDegrees(), SwerveConstants.kAngleGearRatio));
