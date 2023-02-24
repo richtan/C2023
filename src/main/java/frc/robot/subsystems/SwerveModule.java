@@ -54,6 +54,8 @@ public class SwerveModule {
     configDriveMotor();
 
     m_lastAngle = getState().angle;
+
+    setupShuffleboard();
   }
 
   public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
@@ -179,7 +181,7 @@ public class SwerveModule {
         getAngle());
   }
 
-  public void setupShuffleboard() {
+  private void setupShuffleboard() {
     m_swerveTab.addDouble(m_moduleAbbr + " CANcoder Angle (deg)", getCANcoder()::getDegrees);
     m_swerveTab.addDouble(m_moduleAbbr + " FX Angle (deg)", getPosition().angle::getDegrees);
     m_swerveTab.addDouble(m_moduleAbbr + " Velocity (m/s)", () -> getState().speedMetersPerSecond);

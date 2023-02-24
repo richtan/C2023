@@ -39,6 +39,8 @@ public class Arm extends SubsystemBase {
     m_mode = ArmMode.DISABLED;
     m_desiredAngle = ArmConstants.kStowAngle;
     m_desiredPower = 0.0;
+
+    setupShuffleboard();
   }
 
   private void configArmMotor() {
@@ -119,7 +121,7 @@ public class Arm extends SubsystemBase {
     }
   }
 
-  public void setupShuffleboard() {
+  private void setupShuffleboard() {
     m_armTab.addDouble("Current angle (deg)", this::getAngle);
     m_armTab.addDouble("Desired angle (deg)", () -> m_desiredAngle);
     m_armTab.addDouble("Desired Power", () -> m_desiredPower);

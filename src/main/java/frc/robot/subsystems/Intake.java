@@ -37,6 +37,8 @@ public class Intake extends SubsystemBase {
     configColorSensor();
 
     m_mode = IntakeMode.DISABLED;
+
+    setupShuffleboard();
   }
 
   private void configMotors() {
@@ -115,7 +117,7 @@ public class Intake extends SubsystemBase {
     }
   }
 
-  public void setupShuffleboard() {
+  private void setupShuffleboard() {
     m_intakeTab.addBoolean("Has Cone", this::hasCone);
     m_intakeTab.addBoolean("Has Cube", this::hasCube);
     m_intakeTab.addBoolean("Is Empty", this::isEmpty);

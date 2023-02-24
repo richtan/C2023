@@ -47,6 +47,8 @@ public class Vision {
     for (int i = 0; i < camList.size(); i++) {
       m_cameras.add(this.new VisionCamera(camList.get(i).getFirst(), camList.get(i).getSecond(), m_visionTab));
     }
+
+    setupShuffleboard();
   }
 
   public ArrayList<EstimatedRobotPose> getEstimatedPoses(Pose2d referencePose) {
@@ -72,10 +74,8 @@ public class Vision {
     return getAprilTagFieldLayout().getTagPose(id).get();
   }
 
-  public void setupShuffleboard() {
-    for (VisionCamera cam : m_cameras) {
-      cam.setupShuffleboard();
-    }
+  private void setupShuffleboard() {
+
   }
 
   class VisionCamera {
@@ -91,6 +91,8 @@ public class Vision {
       m_photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
       m_estimatedPose = new Pair<Pose2d, Double>(new Pose2d(), -1.0);
+
+      setupShuffleboard();
     }
   
     /**
@@ -109,7 +111,7 @@ public class Vision {
       return estimatedRobotPose;
     }
 
-    public void setupShuffleboard() {
+    private void setupShuffleboard() {
       m_visionTab.addDouble(m_camera.getName() + " Est. X (m)", () -> m_estimatedPose.getFirst().getTranslation().getX());
       m_visionTab.addDouble(m_camera.getName() + " Est. Y (m)", () -> m_estimatedPose.getFirst().getTranslation().getY());
       m_visionTab.addDouble(m_camera.getName() + " Est. Theta (deg)", () -> m_estimatedPose.getFirst().getRotation().getDegrees());

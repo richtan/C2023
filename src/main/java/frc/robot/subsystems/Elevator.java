@@ -43,6 +43,8 @@ public class Elevator extends SubsystemBase {
 
     m_bottomLimitSwitch = new DigitalInput(ElevatorConstants.kBottomLimitSwitchPort);
     m_topLimitSwitch = new DigitalInput(ElevatorConstants.kTopLimitSwitchPort);
+
+    setupShuffleboard();
   }
 
   private void configElevatorMotor() {
@@ -231,7 +233,7 @@ public class Elevator extends SubsystemBase {
     }
   }
 
-  public void setupShuffleboard() {
+  private void setupShuffleboard() {
     m_elevatorTab.addDouble("Current Position (m)", this::getPosition);
     m_elevatorTab.addDouble("Desired Position (m)", () -> m_desiredPosition);
     m_elevatorTab.addDouble("Desired Power", () -> m_desiredPower);

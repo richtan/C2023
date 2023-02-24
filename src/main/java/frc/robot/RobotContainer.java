@@ -84,13 +84,8 @@ public class RobotContainer {
       System.out.println("Running COMPETITION robot");
 
       m_intake = new Intake(m_intakeTab);
-      m_intake.setupShuffleboard();
-
       m_elevator = new Elevator(m_elevatorTab, m_intake::hasCone);
-      m_elevator.setupShuffleboard();
-
       m_arm = new Arm(m_armTab);
-      m_arm.setupShuffleboard();
 
       // Setup compbot-only controls
       OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake);
@@ -105,8 +100,6 @@ public class RobotContainer {
       m_arm = null;
     }
 
-    m_swerve.setupShuffleboard();
-    m_vision.setupShuffleboard();
     setupSchedulerShuffleboard();
 
     // Create auto chooser and add auto command options
