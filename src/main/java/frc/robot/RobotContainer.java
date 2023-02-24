@@ -89,8 +89,10 @@ public class RobotContainer {
     if (Constants.kIsComp) {
       System.out.println("Running COMPETITION robot");
 
-      m_intake = new Intake(m_intakeTab);
-      m_elevator = new Elevator(m_elevatorTab, m_intake::hasCone);
+      // m_intake = new Intake(m_intakeTab);
+      m_intake = null;
+      // m_elevator = new Elevator(m_elevatorTab, m_intake::hasCone);
+      m_elevator = null;
       m_arm = new Arm(m_armTab);
 
       // Setup compbot-only controls
