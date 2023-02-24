@@ -159,7 +159,7 @@ public final class Constants {
   }
 
   // Units are meters, zero is bottom, positive is upwards,
-  // position measured along elevator axis from bottom carriage hardstop to bottom of carriage
+  // position measured along elevator axis from bottom carriage hardstop within first stage to bottom of carriage
   public static final class ElevatorConstants {
     public static final int kMotorID = 13;
     public static final String kElevatorCAN = kRioCAN;
@@ -226,9 +226,9 @@ public final class Constants {
     public static final double kShelfCubeHeight = 0.2;
     public static final double kStowHeight = 0.2;
 
-    // Max distance that the carriage can travel
-    public static final double kCarriageMaxDistance = Units.inchesToMeters(25);
-    // Max distance that the first stage can travel
+    // Max distance that the carriage can travel within the first stage
+    public static final double kCarriageMaxDistance = Units.inchesToMeters(25 - 0.25); // The 0.25 inches is the bottom hardstop
+    // Max distance that the first stage can travel within the base stage
     public static final double kFirstStageMaxDistance = Units.inchesToMeters(26);
     // Total max travel distance of elevator (how far it can extend)
     public static final double kMaxPosition = kCarriageMaxDistance + kFirstStageMaxDistance;
