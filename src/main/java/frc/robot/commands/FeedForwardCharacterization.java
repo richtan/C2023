@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class FeedForwardCharacterization extends CommandBase {
     private static final double startDelaySecs = 0.0;
-    private static final double rampRateVoltsPerSecSquared = 0.1;
+    private static final double rampRateVoltsPerSecSquared = 0.25;
     private static final boolean disableSquaring = true;
 
     private final boolean forwards;
