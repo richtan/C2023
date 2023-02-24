@@ -29,7 +29,7 @@ import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
-  public static final boolean kIsComp = false;
+  public static final boolean kIsComp = true;
 
   public static final double kLoopTime = 0.02; // Periodic loop time in seconds
 
@@ -64,19 +64,19 @@ public final class Constants {
   // Units are degrees, zero is max deploy position, positive is towards the robot,
   // angle measurement is angle of polycarb plates on intake from horizontal
   public static final class ArmConstants {
-    public static final int kMotorID = -1; // FIXME: Arm
+    public static final int kMotorID = 5; // FIXME: Arm
     public static final IdleMode kIdleMode = IdleMode.kBrake;
     public static final boolean kMotorInvert = false; // FIXME: Arm
     public static final double kMotorToAbsEncoderGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0) * (18.0 / 16.0);
     public static final double kAbsEncoderToEndEffectorGearRatio = (48.0 / 32.0);
     public static final double kMotorEncoderDistancePerRotation = 360.0 / kMotorToAbsEncoderGearRatio / kAbsEncoderToEndEffectorGearRatio;
 
-    public static final int kAbsEncoderID = -1; // FIXME: Arm
+    public static final int kAbsEncoderID = 7; // FIXME: Arm
     public static final double kAbsEncoderZeroAngle = 0.1; // FIXME: Arm
     public static final boolean kAbsEncoderInvert = false; // FIXME: Arm
     public static final double kAbsEncoderDistancePerRotation = 360.0 * (kAbsEncoderInvert ? -1 : 1) / kAbsEncoderToEndEffectorGearRatio;
 
-    public static final double kAngleTolerance = 0.5; // FIXME: Arm
+    public static final double kAngleTolerance = 1; // FIXME: Arm
     public static final double kVelocityTolerance = 0; // FIXME: Arm
 
     // FIXME: Arm
@@ -97,14 +97,14 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0;
 
-    public static final double kMaxAngularVelocity = 0; // FIXME: Arm
-    public static final double kMaxAngularAccel = 0; // FIXME: Arm
+    public static final double kMaxAngularVelocity = 10; // FIXME: Arm
+    public static final double kMaxAngularAccel = 5; // FIXME: Arm
   }
 
   // Positive is outtaking direction
   public static final class IntakeConstants {
-    public static final int kLeftMotorID = -1; // FIXME: Intake
-    public static final int kRightMotorID = -1; // FIXME: Intake
+    public static final int kLeftMotorID = 6; // FIXME: Intake
+    public static final int kRightMotorID = 8; // FIXME: Intake
     public static final boolean kLeftMotorInvert = true; // FIXME: Intake
     public static final boolean kRightMotorInvert = false; // FIXME: Intake
     public static final IdleMode kLeftMotorIdleMode = IdleMode.kBrake;
@@ -162,7 +162,7 @@ public final class Constants {
   }
 
   public static final class PowerConstants {
-    public static final int kPDModuleID = 0;
+    public static final int kPDModuleID = 1;
     public static final ModuleType kPDModuleType = ModuleType.kRev;
   }
 
