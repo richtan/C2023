@@ -132,6 +132,12 @@ public class Swerve extends SubsystemBase {
     return m_poseEstimator.getEstimatedPosition();
   }
 
+  public void toggleAngleJitterPrevention(boolean enabled) {
+    for (SwerveModule mod : m_modules) {
+      mod.toggleAngleJitterPrevention(enabled);
+    }
+  }
+
   public void resetOdometry(Pose2d pose) {
     m_poseEstimator.resetPosition(getYaw(), getModulePositions(), pose);
   }

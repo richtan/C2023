@@ -32,6 +32,8 @@ public class SwerveModule {
   private final WPI_TalonFX m_driveMotor;
   private final WPI_CANCoder m_CANcoder;
 
+  private boolean m_angleJitterPreventionEnabled;
+
   SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(SwerveConstants.kDriveKS, SwerveConstants.kDriveKV,
       SwerveConstants.kDriveKA);
 
@@ -40,6 +42,8 @@ public class SwerveModule {
     m_moduleIndex = moduleNumber;
     m_moduleAbbr = moduleAbbr;
     m_angleOffset = moduleConstants.angleOffset;
+
+    m_angleJitterPreventionEnabled = true;
 
     /* Angle Encoder Config */
     m_CANcoder = new WPI_CANCoder(moduleConstants.cancoderID, SwerveConstants.kCANCoderCAN);
@@ -81,17 +85,16 @@ public class SwerveModule {
   }
 
   private void setAngle(SwerveModuleState desiredState) {
-    double smallerAngle = Math.min(m_lastAngle.getDegrees(), desiredState.angle.getDegrees());
-    double largerAngle = Math.max(m_lastAngle.getDegrees(), desiredState.angle.getDegrees());
-    double minAngleDifference = Math.min(largerAngle - smallerAngle, smallerAngle + (360 - largerAngle));
+    // Prevent rotating module if desired speed < 1%. Prevents // Jittering.
     Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.kMaxSpeed * 0.01)
-        && minAngleDifference <= 1) ? m_lastAngle
-            : desiredState.angle; // Prevent rotating module if speed < 1% and angle difference < 1 deg. Prevents
-                                  // Jittering.
+        && m_angleJitterPreventionEnabled) ? m_lastAngle : desiredState.angle;
 
-    m_angleMotor.set(ControlMode.Position,
-        Conversions.degreesToFalcon(angle.getDegrees(), SwerveConstants.kAngleGearRatio));
+    m_angleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), SwerveConstants.kAngleGearRatio));
     m_lastAngle = angle;
+  }
+
+  public void toggleAngleJitterPrevention(boolean enabled) {
+    m_angleJitterPreventionEnabled = enabled;
   }
 
   public int getModuleIndex() {

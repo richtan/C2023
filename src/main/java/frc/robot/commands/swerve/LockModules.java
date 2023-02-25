@@ -15,6 +15,11 @@ public class LockModules extends CommandBase {
   }
 
   @Override
+  public void initialize() {
+    m_swerve.toggleAngleJitterPrevention(false);
+  }
+
+  @Override
   public void execute() {
     m_swerve.setModuleStates(new SwerveModuleState[] {
       new SwerveModuleState(0, new Rotation2d(Units.degreesToRadians(45))),
@@ -22,5 +27,10 @@ public class LockModules extends CommandBase {
       new SwerveModuleState(0, new Rotation2d(Units.degreesToRadians(-45))),
       new SwerveModuleState(0, new Rotation2d(Units.degreesToRadians(45)))
     });
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    m_swerve.toggleAngleJitterPrevention(true);
   }
 }
