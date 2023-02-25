@@ -1,5 +1,7 @@
 package frc.lib.math;
 
+import frc.robot.Constants.ElevatorConstants;
+
 public class Conversions {
 
     /**
@@ -102,5 +104,13 @@ public class Conversions {
      */
     public static double MetersToFalcon(double meters, double circumference, double gearRatio){
         return meters / (circumference / (gearRatio * 2048.0));
+    }
+
+    public static double ElevatorHeightToLength(double height) {
+      return (height - ElevatorConstants.kElevatorBaseHeight) / Math.sin(ElevatorConstants.kElevatorAngle);
+    }
+
+    public static double ElevatorLengthToHeight(double length) {
+      return (length * Math.sin(ElevatorConstants.kElevatorAngle)) + ElevatorConstants.kElevatorBaseHeight;
     }
 }

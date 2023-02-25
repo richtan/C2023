@@ -22,14 +22,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.util.Color;
+import frc.lib.math.Conversions;
 import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
-import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.Rev2mDistanceSensor.Port;
-import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
 
 public final class Constants {
   public static final boolean kIsComp = true;
@@ -42,15 +39,21 @@ public final class Constants {
   public static final class FieldConstants {
     public static final double kLength = Units.inchesToMeters(54*12 + 3.25);
     public static final double kWidth = Units.inchesToMeters(26*12 + 3.5);
+    public static final double kBumperToShelf = Units.inchesToMeters(29.6); // From bumpers to apriltag next to shelf
   }
 
   public static final class OIConstants {
-    public static final double kDeadband = 0.02;
+    public static final double kDriverDeadband = 0.02;
 
     public static final int kDriverJoy = 0;
     public static final int kOperatorJoy = 1;
     public static final int kManualJoy = 2;
     public static final int kTestJoy = 3;
+  }
+
+  public static final class RobotConstants {
+    public static final double kBumperThickness = Units.inchesToMeters(3);
+    public static final double kBumperGap = Units.inchesToMeters(0.25);
   }
 
   public static final class AutoConstants {
@@ -67,34 +70,34 @@ public final class Constants {
   // Units are degrees, zero is max deploy position, positive is towards the robot,
   // angle measurement is angle of polycarb plates on intake from horizontal
   public static final class ArmConstants {
-    public static final int kMotorID = 5; // FIXME: Arm
+    public static final int kMotorID = 5;
     public static final IdleMode kIdleMode = IdleMode.kBrake;
     public static final boolean kMotorInvert = false; // FIXME: Arm
     public static final double kMotorToAbsEncoderGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0);
     public static final double kAbsEncoderToEndEffectorGearRatio = (18.0 / 16.0) * (48.0 / 32.0);
     public static final double kMotorEncoderDistancePerRotation = 360.0 / kMotorToAbsEncoderGearRatio / kAbsEncoderToEndEffectorGearRatio;
 
-    public static final int kAbsEncoderID = 7; // FIXME: Arm
-    public static final double kAbsEncoderZeroAngle = 194.59; // FIXME: Arm
-    public static final boolean kAbsEncoderInvert = false; // FIXME: Arm
-    public static final double kAbsEncoderDistancePerRotation = 360.0 * (kAbsEncoderInvert ? -1 : 1) / kAbsEncoderToEndEffectorGearRatio;
+    public static final int kAbsEncoderID = 7;
+    public static final double kAbsEncoderZeroAngle = 0;
+    public static final boolean kAbsEncoderInvert = false;
+    // public static final double kAbsEncoderDistancePerRotation = 360.0 * (kAbsEncoderInvert ? -1 : 1) / kAbsEncoderToEndEffectorGearRatio;
+    public static final double kAbsEncoderDistancePerRotation = 1;
 
-    public static final double kAngleTolerance = 1; // FIXME: Arm
-    public static final double kVelocityTolerance = 0; // FIXME: Arm
+    public static final double kAngleTolerance = 2;
+    public static final double kVelocityTolerance = 1;
 
-    // FIXME: Arm
-    public static final double kStowAngle = 55;
-    public static final double kIntakeConeAngle = 0.2;
-    public static final double kIntakeCubeAngle = 0.2;
-    public static final double kTopConeAngle = 0.2;
-    public static final double kTopCubeAngle = 0.2;
-    public static final double kMiddleConeAngle = 0.2;
-    public static final double kMiddleCubeAngle = 0.2;
-    public static final double kBottomConeAngle = 0.2;
-    public static final double kBottomCubeAngle = 0.2;
-    public static final double kShelfConeAngle = 0.2;
-    public static final double kShelfCubeAngle = 0.2;
+    public static final double kStowAngle = 55; // Might need to use 45 or 50 since IRL assembly is different from CAD
     public static final double kDeployAngle = 0;
+    public static final double kIntakeConeAngle = 0;
+    public static final double kIntakeCubeAngle = 0;
+    public static final double kTopConeAngle = 18;
+    public static final double kTopCubeAngle = 0;
+    public static final double kMiddleConeAngle = 28;
+    public static final double kMiddleCubeAngle = 25;
+    public static final double kBottomConeAngle = 0;
+    public static final double kBottomCubeAngle = 0;
+    public static final double kShelfConeAngle = 0;
+    public static final double kShelfCubeAngle = 0;
 
     public static final double kP = 1; // FIXME: Arm
     public static final double kI = 0;
@@ -115,14 +118,16 @@ public final class Constants {
 
     public static final double kGearRatio = (3.0 / 1.0);
 
-    public static final double kIntakePower = -0.2;
+    // TODO: separate cube and cone intaking power
+    public static final double kIntakePower = -0.5;
+    public static final double kShootingPower = 0.6;
     public static final double kOuttakePower = 0.2;
-    public static final double kEjectPower = 0.6;
+    public static final double kEjectPower = 0.4;
 
     public static final Port kDistanceSensorPort = Port.kOnboard;
-    public static final double kMaxConeRange = 1000; // FIXME: Intake
-    public static final double kMaxCubeRange = 1000; // FIXME: Intake
-    public static final double kCubeTimeThreshold = 500; // FIXME: Intake
+    public static final double kMaxConeRange = 1.0;
+    public static final double kMaxCubeRange = 3.6;
+    public static final double kCubeTimeThreshold = 0.8; // 0.8 seconds of an intaked cube counts as intaked
   }
 
   public static final class VisionConstants {
@@ -140,15 +145,22 @@ public final class Constants {
     // NWU: +X = forward, +Y = left, +Z = up; +roll = x-axis CCW, +pitch = y-axis CCW, +yaw = z-axis CCW; use right hand rule
     public static final ArrayList<Pair<String, Transform3d>> kCameras = new ArrayList<Pair<String, Transform3d>>(
       Constants.kIsComp ? List.of(
-
-      ) : List.of(
-      new Pair<String, Transform3d>(
-        "Camera_2",
-        new Transform3d(
-          new Translation3d(-Units.inchesToMeters(4.75), Units.inchesToMeters(10.375), Units.inchesToMeters(10)),
-          new Rotation3d(0, 0, 0)
+        new Pair<String, Transform3d>(
+          "Left_Camera",
+          new Transform3d(
+            new Translation3d(-Units.inchesToMeters(1.623424), Units.inchesToMeters(7.314853), Units.inchesToMeters(20.97428)),
+            new Rotation3d(0, 0, 0)
+          )
+        ),
+        new Pair<String, Transform3d>(
+          "Right_Camera",
+          new Transform3d(
+            new Translation3d(-Units.inchesToMeters(1.623424), Units.inchesToMeters(-7.314853), Units.inchesToMeters(20.97428)),
+            new Rotation3d(0, 0, 0)
+          )
         )
-      )
+      ) : List.of(
+
     ));
 
     // How much to trust vision measurements normally
@@ -160,7 +172,7 @@ public final class Constants {
 
     // Increasing this makes pose estimation trust vision measurements less as distance from Apriltags increases
     // This is how much is added to std dev for vision when closest visible Apriltag is 1 meter away
-    public static final double kVisionPoseStdDevFactor = 0.1;
+    public static final double kVisionPoseStdDevFactor = 0;
   }
 
   public static final class PowerConstants {
@@ -173,7 +185,7 @@ public final class Constants {
   public static final class ElevatorConstants {
     public static final int kMotorID = 13;
     public static final String kElevatorCAN = kRioCAN;
-    public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.Clockwise; // Clockwise goes up // FIXME: Elevator
+    public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.CounterClockwise; // CCW goes up
     public static final NeutralMode kNeutralMode = NeutralMode.Brake;
 
     public static final double kGearRatio = (50.0 / 12.0) * (50.0 / 30.0) * (36.0 / 24.0); // 10.416:1
@@ -184,7 +196,7 @@ public final class Constants {
     public static final int kBottomLimitSwitchPort = 8;
     public static final int kTopLimitSwitchPort = 9;
 
-    public static final double kPositionTolerance = 0.05;
+    public static final double kPositionTolerance = 0.04;
     public static final double kVelocityTolerance = 0.05; // FIXME: Elevator
     
     // Whether limit switch is normally-closed (activated = open circuit) or normally-open (activated = closed circuit)
@@ -224,28 +236,31 @@ public final class Constants {
     public static final double kPeakCurrentDuration = 0.1;
     public static final boolean kEnableCurrentLimit = false;
 
-    public static final double kIntakeConeHeight = 0.2; // FIXME: Elevator
-    public static final double kIntakeCubeHeight = 0.2;
-    public static final double kTopConeHeight = 0.2;
-    public static final double kTopCubeHeight = 0.2;
-    public static final double kMiddleConeHeight = 0.2;
-    public static final double kMiddleCubeHeight = 0.2;
-    public static final double kBottomConeHeight = 0.2;
-    public static final double kBottomCubeHeight = 0.2;
-    public static final double kShelfConeHeight = 0.2;
-    public static final double kShelfCubeHeight = 0.2;
-    public static final double kStowHeight = 0.2;
-
     // Max distance that the carriage can travel within the first stage
     public static final double kCarriageMaxDistance = Units.inchesToMeters(25 - 0.25); // The 0.25 inches is the bottom hardstop
     // Max distance that the first stage can travel within the base stage
     public static final double kFirstStageMaxDistance = Units.inchesToMeters(26);
     // Total max travel distance of elevator (how far it can extend)
     public static final double kMaxPosition = kCarriageMaxDistance + kFirstStageMaxDistance;
+    // Max height of elevator
+    public static final double kMaxHeight = Conversions.ElevatorLengthToHeight(kMaxPosition);
     // Vertical height of the center of the top surface of the tread hardstop for the carriage when elevator is at minimum height
     public static final double kElevatorBaseHeight = Units.inchesToMeters(12.974338);
     // Angle of elevator from the horizontal axis
     public static final double kElevatorAngle = 55.0;
+
+    public static final double kIntakeConeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
+    public static final double kIntakeCubeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
+    public static final double kTopConeHeight = Conversions.ElevatorLengthToHeight(kMaxPosition);
+    public static final double kTopCubeHeight = Units.inchesToMeters(47.15);
+    public static final double kMiddleConeHeight = Units.inchesToMeters(35);
+    public static final double kMiddleCubeHeight = Units.inchesToMeters(24.2);
+    public static final double kBottomConeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
+    public static final double kBottomCubeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
+    public static final double kShelfConeHeight = Units.inchesToMeters(52.1);
+    public static final double kShelfCubeHeight = Units.inchesToMeters(52.1);
+    public static final double kStowHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
+
 
     public static final double kCalibrationPower = -0.2;
   }

@@ -114,20 +114,12 @@ public class Elevator extends SubsystemBase {
     return m_bottomLimitSwitch.get() != ElevatorConstants.kBottomLimitSwitchNC;
   }
 
-  public double heightToLength(double height) {
-    return (height - ElevatorConstants.kElevatorBaseHeight) / Math.sin(ElevatorConstants.kElevatorAngle);
-  }
-
-  public double lengthToHeight(double length) {
-    return (length * Math.sin(ElevatorConstants.kElevatorAngle)) + ElevatorConstants.kElevatorBaseHeight;
-  }
-
   public double getHeight() {
-    return lengthToHeight(getPosition());
+    return Conversions.ElevatorLengthToHeight(getPosition());
   }
 
   public void setDesiredHeight(double desiredHeight) {
-    setDesiredPosition(heightToLength(desiredHeight));
+    setDesiredPosition(Conversions.ElevatorHeightToLength(desiredHeight));
   }
 
   /**
@@ -253,11 +245,13 @@ public class Elevator extends SubsystemBase {
     m_elevatorTab.addDouble("Current Position (m)", this::getPosition);
     m_elevatorTab.addDouble("Current Height (m)", this::getHeight);
     m_elevatorTab.addDouble("Desired Position (m)", () -> m_desiredPosition);
-    m_elevatorTab.addDouble("Desired Position (m)", () -> lengthToHeight(m_desiredPosition));
+    m_elevatorTab.addDouble("Desired Position (m)", () -> Conversions.ElevatorLengthToHeight(m_desiredPosition));
     m_elevatorTab.addDouble("Desired Power", () -> m_desiredPower);
     m_elevatorTab.addBoolean("Reached desired position", this::reachedDesiredPosition);
     m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);
     m_elevatorTab.addBoolean("Reached Bottom Limit Switch", this::isBottomLimitSwitchReached);
+    m_elevatorTab.addDouble("Supply current (A)", m_motor::getSupplyCurrent);
+    m_elevatorTab.addDouble("Stator current (A)", m_motor::getStatorCurrent);
     m_elevatorTab.addString("Mode", () -> m_mode.toString());
   }
 }

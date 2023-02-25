@@ -39,9 +39,9 @@ public class TeleopDrive extends CommandBase {
   @Override
   public void execute() {
     /* Get Values, Deadband*/
-    double translationVal = MathUtil.applyDeadband(m_translationSup.getAsDouble(), OIConstants.kDeadband);
-    double strafeVal = MathUtil.applyDeadband(m_strafeSup.getAsDouble(), OIConstants.kDeadband);
-    double rotationVal = MathUtil.applyDeadband(m_rotationSup.getAsDouble(), OIConstants.kDeadband);
+    double translationVal = MathUtil.applyDeadband(m_translationSup.getAsDouble(), OIConstants.kDriverDeadband);
+    double strafeVal = MathUtil.applyDeadband(m_strafeSup.getAsDouble(), OIConstants.kDriverDeadband);
+    double rotationVal = MathUtil.applyDeadband(m_rotationSup.getAsDouble(), OIConstants.kDriverDeadband);
 
     double slowFactor = m_slowModeSup.getAsBoolean() ? SwerveConstants.kSlowDriveFactor : 1;
 

@@ -21,8 +21,6 @@ public class OI {
   public static void configureDriverControls(GameController driver, Swerve swerve) {
     driver.START.onTrue(new InstantCommand(swerve::zeroGyro, swerve));
     driver.X.onTrue(new LockModules(swerve));
-    driver.B.whileTrue(new CharacterizeSwerve(swerve, true, true));
-    driver.A.whileTrue(new CharacterizeSwerve(swerve, false, true));
   }
 
   public static void configureOperatorControls(GameController operator, Elevator elevator, Arm arm, Intake intake) {
@@ -41,7 +39,8 @@ public class OI {
     manual.A.onTrue(new InstantCommand(() -> arm.setDesiredPower(0.3), arm).andThen(() -> arm.setMode(ArmMode.MANUAL), arm));
   }
 
-  public static void configureTestControls(GameController test, Elevator elevator, Arm arm, Intake intake) {
-
+  public static void configureTestControls(GameController test, Swerve swerve, Elevator elevator, Arm arm, Intake intake) {
+    test.B.whileTrue(new CharacterizeSwerve(swerve, true, true));
+    test.A.whileTrue(new CharacterizeSwerve(swerve, false, true));
   }
 }
