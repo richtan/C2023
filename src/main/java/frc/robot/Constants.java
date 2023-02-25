@@ -189,7 +189,7 @@ public final class Constants {
   public static final class ElevatorConstants {
     public static final int kMotorID = 13;
     public static final String kElevatorCAN = kCANivoreCAN;
-    public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.CounterClockwise; // CCW goes up
+    public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.Clockwise; // CW goes up
     public static final NeutralMode kNeutralMode = NeutralMode.Brake;
 
     public static final double kGearRatio = (50.0 / 12.0) * (50.0 / 30.0) * (36.0 / 24.0); // 10.416:1
@@ -208,8 +208,8 @@ public final class Constants {
     public static final boolean kBottomLimitSwitchNC = true;
 
     // Slot 0
-    public static final double kBottomP = 5; // FIXME: Elevator
-    public static final double kBottomI = 0.005;
+    public static final double kBottomP = 0.5; // FIXME: Elevator
+    public static final double kBottomI = 0;
     public static final double kBottomD = 0;
     public static final double kBottomF = 0;
     public static final double kBottomGravityCompensation = 0;
@@ -326,7 +326,7 @@ public final class Constants {
     public static final boolean kDriveEnableCurrentLimit = true;
 
     /* Ramp values for drive motors in open and closed loop driving */
-    public static final double kOpenLoopRamp = 0.25; // A small open loop ramp (0.25) helps with tread wear, tipping, etc
+    public static final double kOpenLoopRamp = 0.1; // A small open loop ramp (0.25) helps with tread wear, tipping, etc
     public static final double kClosedLoopRamp = 0.0;
 
     /* Drive Motor PID Values */
@@ -349,7 +349,7 @@ public final class Constants {
 
     /* Swerve Profiling Values */
     public static final double kMaxSpeed = (6380 / 60.0) * kModuleConstants.wheelCircumference / kModuleConstants.driveGearRatio; // m/s
-    public static final double kMaxAngularVelocity = kMaxSpeed / Math.hypot(kTrackWidth / 2, kWheelBase / 2); // rad/s, omega = V/r
+    public static final double kMaxAngularVelocity = 0.7 * kMaxSpeed / Math.hypot(kTrackWidth / 2, kWheelBase / 2); // rad/s, omega = V/r
 
     /* Neutral Modes */
     public static final NeutralMode kDriveNeutralMode = NeutralMode.Brake;
@@ -363,7 +363,7 @@ public final class Constants {
         public static final int kDriveMotorID = Constants.kIsComp ? 20 : 1;
         public static final int kAngleMotorID = Constants.kIsComp ? 15 : 2;
         public static final int kCANcoderID = Constants.kIsComp ? 40 : 3;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 0.0 : 268.9); // FIXME: Swerve
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 0.26367 : 268.9); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }
@@ -375,7 +375,7 @@ public final class Constants {
         public static final int kDriveMotorID = Constants.kIsComp ? 33 : 4;
         public static final int kAngleMotorID = Constants.kIsComp ? 30 : 5;
         public static final int kCANcoderID = Constants.kIsComp ? 41 : 6;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 0.0 : 110.3); // FIXME: Swerve
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 190.107 : 110.3); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }
@@ -387,7 +387,7 @@ public final class Constants {
         public static final int kDriveMotorID = Constants.kIsComp ? 16 : 7;
         public static final int kAngleMotorID = Constants.kIsComp ? 18 : 8;
         public static final int kCANcoderID = Constants.kIsComp ? 42 : 9;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 0.0 : 179.85); // FIXME: Swerve
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 219.46289 : 179.85); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }
@@ -399,7 +399,7 @@ public final class Constants {
         public static final int kDriveMotorID = Constants.kIsComp ? 32 : 10;
         public static final int kAngleMotorID = Constants.kIsComp ? 35 : 11;
         public static final int kCANcoderID = Constants.kIsComp ? 43 : 12;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 0.0 : 338.03); // FIXME: Swerve
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 150.732 : 338.03); // FIXME: Swerve
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }

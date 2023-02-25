@@ -49,7 +49,7 @@ public class RobotContainer {
   private final ShuffleboardTab m_powerTab = Shuffleboard.getTab("Power");
 
   private final Vision m_vision;
-  private final PowerManager m_powerManager;
+  // private final PowerManager m_powerManager;
 
   // Subsystems
   private final Swerve m_swerve;
@@ -78,7 +78,7 @@ public class RobotContainer {
     m_vision = new Vision(VisionConstants.kCameras, m_visionTab);
 
     // Create current manager
-    m_powerManager = new PowerManager(m_powerTab);
+    // m_powerManager = new PowerManager(m_powerTab);
 
     // Initialize subsystems
     m_swerve = new Swerve(m_vision, m_swerveTab);

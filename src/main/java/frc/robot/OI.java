@@ -7,6 +7,7 @@ import frc.robot.commands.scoring.PositionIntake;
 import frc.robot.commands.scoring.Stow;
 import frc.robot.commands.scoring.PositionIntake.Position;
 import frc.robot.commands.scoring.elevator.CalibrateElevator;
+import frc.robot.commands.scoring.elevator.MoveElevator;
 import frc.robot.commands.scoring.intake.StartIntake;
 import frc.robot.commands.swerve.CharacterizeSwerve;
 import frc.robot.commands.swerve.LockModules;
@@ -45,6 +46,7 @@ public class OI {
     manual.DPAD_RIGHT.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.DISABLED)));
     manual.DPAD_UP.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.OUTTAKE)));
     manual.BACK.onTrue(new CalibrateElevator(elevator));
+    manual.RT.onTrue(new MoveElevator(elevator, 0.8));
   }
 
   public static void configureTestControls(GameController test, Swerve swerve, Elevator elevator, Arm arm, Intake intake) {

@@ -48,7 +48,7 @@ public class TeleopDrive extends CommandBase {
     /* Drive */
     m_swerve.drive(
       new Translation2d(translationVal, strafeVal).times(SwerveConstants.kMaxSpeed).times(slowFactor), 
-      rotationVal * SwerveConstants.kMaxAngularVelocity, 
+      rotationVal * SwerveConstants.kMaxAngularVelocity * slowFactor, 
       !m_robotCentricSup.getAsBoolean(), 
       true
     );

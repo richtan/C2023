@@ -232,7 +232,7 @@ public class Elevator extends SubsystemBase {
         updateElevatorStatus();
         updateClosedLoopSlot();
         m_motor.set(
-          ControlMode.MotionMagic,
+          ControlMode.Position,
           Conversions.MetersToFalcon(m_desiredPosition, ElevatorConstants.kSpoolCircumference, ElevatorConstants.kGearRatio),
           DemandType.ArbitraryFeedForward,
           m_gravityCompensation
@@ -247,11 +247,13 @@ public class Elevator extends SubsystemBase {
     m_elevatorTab.addDouble("Desired Position (m)", () -> m_desiredPosition);
     m_elevatorTab.addDouble("Desired Height (m)", () -> Conversions.ElevatorLengthToHeight(m_desiredPosition));
     m_elevatorTab.addDouble("Desired Power", () -> m_desiredPower);
+    m_elevatorTab.addBoolean("Is Calibrated", () -> m_isCalibrated);
     m_elevatorTab.addBoolean("Reached desired position", this::reachedDesiredPosition);
     m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);
     m_elevatorTab.addBoolean("Reached Bottom Limit Switch", this::isBottomLimitSwitchReached);
     m_elevatorTab.addDouble("Supply current (A)", m_motor::getSupplyCurrent);
     m_elevatorTab.addDouble("Stator current (A)", m_motor::getStatorCurrent);
+    m_elevatorTab.addDouble("Commanded power", m_motor::get);
     m_elevatorTab.addString("Mode", () -> m_mode.toString());
   }
 }
