@@ -17,8 +17,8 @@ public class LockModules extends CommandBase {
   @Override
   public void execute() {
     m_swerve.setModuleStates(new SwerveModuleState[] {
-      new SwerveModuleState(0, new Rotation2d(Units.degreesToRadians(-45))),
       new SwerveModuleState(0, new Rotation2d(Units.degreesToRadians(45))),
+      new SwerveModuleState(0, new Rotation2d(Units.degreesToRadians(-45))),
       new SwerveModuleState(0, new Rotation2d(Units.degreesToRadians(-45))),
       new SwerveModuleState(0, new Rotation2d(Units.degreesToRadians(45)))
     });

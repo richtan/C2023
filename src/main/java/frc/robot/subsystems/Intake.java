@@ -1,14 +1,17 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
+
+import com.revrobotics.Rev2mDistanceSensor;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
+import com.revrobotics.Rev2mDistanceSensor.Unit;
 
 public class Intake extends SubsystemBase {
   private final ShuffleboardTab m_intakeTab;
@@ -16,12 +19,12 @@ public class Intake extends SubsystemBase {
   private final CANSparkMax m_leftMotor;
   private final CANSparkMax m_rightMotor;
 
-  private final ColorSensorV3 m_colorSensor;
-  private final ColorMatch m_colorMatcher;
+  private final Rev2mDistanceSensor m_distanceSensor;
 
-  private double m_proximity;
-  private Color m_color;
-  private Color m_closestColor;
+  private double m_range = -1;
+  private boolean m_hasCone = false;
+  private boolean m_hasCube = false;
+  private double m_cubeTrackingStartTime = 0;
 
   private IntakeMode m_mode;
 
@@ -32,9 +35,8 @@ public class Intake extends SubsystemBase {
     m_rightMotor = new CANSparkMax(IntakeConstants.kRightMotorID, MotorType.kBrushless);
     configMotors();
 
-    m_colorSensor = new ColorSensorV3(IntakeConstants.kColorSensorPort);
-    m_colorMatcher = new ColorMatch();
-    configColorSensor();
+    m_distanceSensor = new Rev2mDistanceSensor(IntakeConstants.kDistanceSensorPort, Unit.kInches, RangeProfile.kDefault);
+    configDistanceSensor();
 
     m_mode = IntakeMode.DISABLED;
 
@@ -49,9 +51,9 @@ public class Intake extends SubsystemBase {
     m_rightMotor.setIdleMode(IntakeConstants.kRightMotorIdleMode);
   }
 
-  private void configColorSensor() {
-    m_colorMatcher.addColorMatch(IntakeConstants.kConeColor);
-    m_colorMatcher.addColorMatch(IntakeConstants.kCubeColor);
+  private void configDistanceSensor() {
+    m_distanceSensor.setAutomaticMode(true);
+    m_distanceSensor.setEnabled(true);
   }
 
   public enum IntakeMode {
@@ -66,24 +68,16 @@ public class Intake extends SubsystemBase {
     return m_mode;
   }
 
-  public boolean isConeColor() {
-    return m_closestColor == IntakeConstants.kConeColor;
-  }
-
   public boolean hasCone() {
-    return isConeColor() && m_proximity > IntakeConstants.kConeProximityThreshold;
-  }
-
-  public boolean isCubeColor() {
-    return m_closestColor == IntakeConstants.kCubeColor;
+    return m_hasCone;
   }
 
   public boolean hasCube() {
-    return isCubeColor() && m_proximity > IntakeConstants.kCubeProximityThreshold;
+    return m_hasCube;
   }
 
   public boolean isEmpty() {
-    return m_proximity < IntakeConstants.kEmptyProximityThreshold;
+    return !hasCone() && !hasCube();
   }
 
   private void setMotorPowers(double power) {
@@ -91,15 +85,35 @@ public class Intake extends SubsystemBase {
     m_rightMotor.set(power);
   }
 
-  private void updateColorSensorValues() {
-    m_proximity = m_colorSensor.getProximity();
-    m_color = m_colorSensor.getColor();
-    m_closestColor = m_colorMatcher.matchClosestColor(m_color).color;
+  private void updateSensorValues() {
+    if (!m_distanceSensor.isRangeValid()) {
+      m_hasCone = false;
+      m_hasCube = false;
+    }
+    m_range = m_distanceSensor.getRange();
+    if (m_range <= IntakeConstants.kMaxConeRange) { // Has cone
+      m_cubeTrackingStartTime = Timer.getFPGATimestamp();
+      m_hasCone = true;
+      m_hasCube = false;
+    } else if (m_range <= IntakeConstants.kMaxCubeRange) {
+      if (Timer.getFPGATimestamp() - m_cubeTrackingStartTime >= IntakeConstants.kCubeTimeThreshold) { // Has cube
+        m_hasCone = false;
+        m_hasCube = true;
+      } else { // Cone is in the middle of entering intake
+        m_cubeTrackingStartTime = Timer.getFPGATimestamp();
+        m_hasCone = false;
+        m_hasCube = false;
+      }
+    } else { // Is empty
+      m_cubeTrackingStartTime = Timer.getFPGATimestamp();
+      m_hasCone = false;
+      m_hasCube = false;
+    }
   }
 
   @Override
   public void periodic() {
-    updateColorSensorValues();
+    updateSensorValues();
 
     switch (m_mode) {
       case DISABLED:
@@ -121,9 +135,7 @@ public class Intake extends SubsystemBase {
     m_intakeTab.addBoolean("Has Cone", this::hasCone);
     m_intakeTab.addBoolean("Has Cube", this::hasCube);
     m_intakeTab.addBoolean("Is Empty", this::isEmpty);
-    m_intakeTab.addDouble("Proximity (2400 [close] to 0 [far])", () -> m_proximity);
-    m_intakeTab.addString("Color (hex)", () -> m_color.toHexString());
-    m_intakeTab.addString("Closest color (hex)", () -> m_closestColor.toHexString());
+    m_intakeTab.addDouble("Range (in)", () -> m_range);
     m_intakeTab.addString("Mode", () -> m_mode.toString());
   }
 }

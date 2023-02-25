@@ -27,6 +27,9 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
+import com.revrobotics.Rev2mDistanceSensor;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
 
 public final class Constants {
   public static final boolean kIsComp = true;
@@ -116,12 +119,10 @@ public final class Constants {
     public static final double kOuttakePower = 0.2;
     public static final double kEjectPower = 0.6;
 
-    public static final I2C.Port kColorSensorPort = I2C.Port.kOnboard;
-    public static final int kConeProximityThreshold = 1000; // FIXME: Intake
-    public static final int kCubeProximityThreshold = 1000; // FIXME: Intake
-    public static final int kEmptyProximityThreshold = 500; // FIXME: Intake
-    public static final Color kConeColor = new Color(0, 0, 0); // FIXME: Intake
-    public static final Color kCubeColor = new Color(0, 0, 0); // FIXME: Intake
+    public static final Port kDistanceSensorPort = Port.kOnboard;
+    public static final double kMaxConeRange = 1000; // FIXME: Intake
+    public static final double kMaxCubeRange = 1000; // FIXME: Intake
+    public static final double kCubeTimeThreshold = 500; // FIXME: Intake
   }
 
   public static final class VisionConstants {
@@ -136,6 +137,7 @@ public final class Constants {
       new AprilTag(8, new Pose3d(Units.inchesToMeters( 40.45), Units.inchesToMeters( 42.19), Units.inchesToMeters(18.22), new Rotation3d(0.0, 0.0, 0.0)))
     ));
 
+    // NWU: +X = forward, +Y = left, +Z = up; +roll = x-axis CCW, +pitch = y-axis CCW, +yaw = z-axis CCW; use right hand rule
     public static final ArrayList<Pair<String, Transform3d>> kCameras = new ArrayList<Pair<String, Transform3d>>(
       Constants.kIsComp ? List.of(
 

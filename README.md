@@ -6,4 +6,5 @@ Code for Charged Up 2023 by richtan
 - Add rotating bar subsystem
 - Add command to balance on charge station
 - Add logging
+- Slow elevator when running drivetrain
 - Cope

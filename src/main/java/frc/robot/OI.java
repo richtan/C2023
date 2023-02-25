@@ -26,19 +26,19 @@ public class OI {
   }
 
   public static void configureOperatorControls(GameController operator, Elevator elevator, Arm arm, Intake intake) {
-    // operator.START.onTrue(new CalibrateElevator(elevator));
-    // operator.Y.onTrue(new PositionIntake(elevator, arm, intake::isConeColor, Position.TOP));
-    // operator.X.onTrue(new PositionIntake(elevator, arm, intake::isConeColor, Position.MIDDLE));
-    // operator.A.onTrue(new PositionIntake(elevator, arm, intake::isConeColor, Position.BOTTOM));
-    // operator.B.onTrue(new PositionIntake(elevator, arm, intake::isConeColor, Position.SHELF));
-    // // TODO: Add debounce for RB and RT triggers so the mechanisms don't start stowing due to accidental release of triggers
-    // operator.RB.onTrue(new StartIntake(intake, elevator, arm)).onFalse(new Stow(intake, elevator, arm));
-    // operator.RT.onTrue(new Outtake(intake)).onFalse(new Stow(intake, elevator, arm));
-    // operator.LB.onTrue(new Stow(intake, elevator, arm));
-    operator.A.onTrue(new InstantCommand(() -> arm.setDesiredPower(0.3), arm).andThen(() -> arm.setMode(ArmMode.MANUAL), arm));
+    operator.START.onTrue(new CalibrateElevator(elevator));
+    operator.Y.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.TOP));
+    operator.X.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.MIDDLE));
+    operator.A.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.BOTTOM));
+    operator.B.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.SHELF));
+    // TODO: Add debounce for RB and RT triggers so the mechanisms don't start stowing due to accidental release of triggers
+    operator.RB.onTrue(new StartIntake(intake, elevator, arm)).onFalse(new Stow(intake, elevator, arm));
+    operator.RT.onTrue(new Outtake(intake)).onFalse(new Stow(intake, elevator, arm));
+    operator.LB.onTrue(new Stow(intake, elevator, arm));
   }
 
   public static void configureManualControls(GameController manual, Elevator elevator, Arm arm, Intake intake) {
+    manual.A.onTrue(new InstantCommand(() -> arm.setDesiredPower(0.3), arm).andThen(() -> arm.setMode(ArmMode.MANUAL), arm));
   }
 
   public static void configureTestControls(GameController test, Elevator elevator, Arm arm, Intake intake) {

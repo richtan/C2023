@@ -12,7 +12,7 @@ public class Stow extends ParallelCommandGroup {
     addRequirements(intake, elevator, arm);
     addCommands(
       new StopIntake(intake),
-      new PositionIntake(elevator, arm, intake::isConeColor, Position.STOW)
+      new PositionIntake(elevator, arm, intake::hasCone, Position.STOW)
     );
   }
 }
