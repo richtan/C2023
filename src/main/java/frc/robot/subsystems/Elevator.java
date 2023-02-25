@@ -245,7 +245,7 @@ public class Elevator extends SubsystemBase {
     m_elevatorTab.addDouble("Current Position (m)", this::getPosition);
     m_elevatorTab.addDouble("Current Height (m)", this::getHeight);
     m_elevatorTab.addDouble("Desired Position (m)", () -> m_desiredPosition);
-    m_elevatorTab.addDouble("Desired Position (m)", () -> Conversions.ElevatorLengthToHeight(m_desiredPosition));
+    m_elevatorTab.addDouble("Desired Height (m)", () -> Conversions.ElevatorLengthToHeight(m_desiredPosition));
     m_elevatorTab.addDouble("Desired Power", () -> m_desiredPower);
     m_elevatorTab.addBoolean("Reached desired position", this::reachedDesiredPosition);
     m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);

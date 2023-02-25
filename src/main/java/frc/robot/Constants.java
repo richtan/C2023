@@ -71,20 +71,24 @@ public final class Constants {
   // angle measurement is angle of polycarb plates on intake from horizontal
   public static final class ArmConstants {
     public static final int kMotorID = 5;
-    public static final IdleMode kIdleMode = IdleMode.kBrake;
+    public static final IdleMode kIdleMode = IdleMode.kBrake; // 57.8750015 deg
     public static final boolean kMotorInvert = false; // FIXME: Arm
     public static final double kMotorToAbsEncoderGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0);
-    public static final double kAbsEncoderToEndEffectorGearRatio = (18.0 / 16.0) * (48.0 / 32.0);
-    public static final double kMotorEncoderDistancePerRotation = 360.0 / kMotorToAbsEncoderGearRatio / kAbsEncoderToEndEffectorGearRatio;
+    public static final double kAbsEncoderToEndEffectorGearRatio = (48.0 / 32.0);
+    // public static final double kMotorEncoderDistancePerRotation = 360.0 / kMotorToAbsEncoderGearRatio / kAbsEncoderToEndEffectorGearRatio;
+    public static final double kMotorEncoderDistancePerRotation = 3.55300894;
+
 
     public static final int kAbsEncoderID = 7;
-    public static final double kAbsEncoderZeroAngle = 0;
-    public static final boolean kAbsEncoderInvert = false;
+    public static final double kAbsEncoderZeroAngle = 60.33 - 22.33; // intake = 0.511, stow = 0.917
+    public static final boolean kAbsEncoderInvert = false; // stow = 82.159, intake = 5.206
     // public static final double kAbsEncoderDistancePerRotation = 360.0 * (kAbsEncoderInvert ? -1 : 1) / kAbsEncoderToEndEffectorGearRatio;
-    public static final double kAbsEncoderDistancePerRotation = 1;
+    public static final double kAbsEncoderDistancePerRotation = 126.502736;
+    // public static final double kAbsEncoderDistancePerRotation = 1;
 
-    public static final double kAngleTolerance = 2;
-    public static final double kVelocityTolerance = 1;
+
+    public static final double kAngleTolerance = 1;
+    public static final double kVelocityTolerance = 0.5; // start = 0.9355, end = 0.478
 
     public static final double kStowAngle = 55; // Might need to use 45 or 50 since IRL assembly is different from CAD
     public static final double kDeployAngle = 0;
@@ -99,27 +103,27 @@ public final class Constants {
     public static final double kShelfConeAngle = 0;
     public static final double kShelfCubeAngle = 0;
 
-    public static final double kP = 1; // FIXME: Arm
+    public static final double kP = 0.01271428571; // FIXME: Arm
     public static final double kI = 0;
     public static final double kD = 0;
 
-    public static final double kMaxAngularVelocity = 10; // FIXME: Arm
-    public static final double kMaxAngularAccel = 5; // FIXME: Arm
+    public static final double kMaxAngularVelocity = 20; // FIXME: Arm
+    public static final double kMaxAngularAccel = 15; // FIXME: Arm
   }
 
   // Positive is outtaking direction
   public static final class IntakeConstants {
     public static final int kLeftMotorID = 6; // FIXME: Intake
     public static final int kRightMotorID = 8; // FIXME: Intake
-    public static final boolean kLeftMotorInvert = true; // FIXME: Intake
-    public static final boolean kRightMotorInvert = false; // FIXME: Intake
+    public static final boolean kLeftMotorInvert = false; // FIXME: Intake
+    public static final boolean kRightMotorInvert = true; // FIXME: Intake
     public static final IdleMode kLeftMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kRightMotorIdleMode = IdleMode.kBrake;
 
     public static final double kGearRatio = (3.0 / 1.0);
 
     // TODO: separate cube and cone intaking power
-    public static final double kIntakePower = -0.5;
+    public static final double kIntakePower = -0.7;
     public static final double kShootingPower = 0.6;
     public static final double kOuttakePower = 0.2;
     public static final double kEjectPower = 0.4;
@@ -145,20 +149,20 @@ public final class Constants {
     // NWU: +X = forward, +Y = left, +Z = up; +roll = x-axis CCW, +pitch = y-axis CCW, +yaw = z-axis CCW; use right hand rule
     public static final ArrayList<Pair<String, Transform3d>> kCameras = new ArrayList<Pair<String, Transform3d>>(
       Constants.kIsComp ? List.of(
-        new Pair<String, Transform3d>(
-          "Left_Camera",
-          new Transform3d(
-            new Translation3d(-Units.inchesToMeters(1.623424), Units.inchesToMeters(7.314853), Units.inchesToMeters(20.97428)),
-            new Rotation3d(0, 0, 0)
-          )
-        ),
-        new Pair<String, Transform3d>(
-          "Right_Camera",
-          new Transform3d(
-            new Translation3d(-Units.inchesToMeters(1.623424), Units.inchesToMeters(-7.314853), Units.inchesToMeters(20.97428)),
-            new Rotation3d(0, 0, 0)
-          )
-        )
+        // new Pair<String, Transform3d>(
+        //   "Left_Camera",
+        //   new Transform3d(
+        //     new Translation3d(-Units.inchesToMeters(1.623424), Units.inchesToMeters(7.314853), Units.inchesToMeters(20.97428)),
+        //     new Rotation3d(0, 0, 0)
+        //   )
+        // ),
+        // new Pair<String, Transform3d>(
+        //   "Right_Camera",
+        //   new Transform3d(
+        //     new Translation3d(-Units.inchesToMeters(1.623424), Units.inchesToMeters(-7.314853), Units.inchesToMeters(20.97428)),
+        //     new Rotation3d(0, 0, 0)
+        //   )
+        // )
       ) : List.of(
 
     ));

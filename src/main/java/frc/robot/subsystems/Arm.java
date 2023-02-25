@@ -7,7 +7,9 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
@@ -34,6 +36,7 @@ public class Arm extends SubsystemBase {
     configArmMotor();
 
     m_absEncoder = new DutyCycleEncoder(ArmConstants.kAbsEncoderID);
+    Timer.delay(1);
     calibrateEncoder();
 
     m_mode = ArmMode.DISABLED;
@@ -50,8 +53,8 @@ public class Arm extends SubsystemBase {
 
     m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    m_motor.setSoftLimit(SoftLimitDirection.kForward, (float) ArmConstants.kStowAngle);
-    m_motor.setSoftLimit(SoftLimitDirection.kReverse, (float) ArmConstants.kDeployAngle);
+    m_motor.setSoftLimit(SoftLimitDirection.kForward, (float) 45);
+    m_motor.setSoftLimit(SoftLimitDirection.kReverse, (float) 10);
     
     // Rotations at motor shaft to degrees at Throughbore
     m_encoder.setPositionConversionFactor(ArmConstants.kMotorEncoderDistancePerRotation);
@@ -74,8 +77,14 @@ public class Arm extends SubsystemBase {
   }
 
   private void calibrateEncoder() {
+    System.out.println(getAbsEncoder());
+    System.out.println("Connected? " + m_absEncoder.isConnected());
     double absEncoderError = getAbsEncoder() - ArmConstants.kAbsEncoderZeroAngle;
     m_encoder.setPosition(absEncoderError);
+  }
+
+  public void zeroEncoder() {
+    m_encoder.setPosition(0);
   }
 
   public enum ArmMode {
@@ -117,7 +126,7 @@ public class Arm extends SubsystemBase {
         m_pid.setReference(m_desiredPower, ControlType.kDutyCycle);
         break;
       case SMART_MOTION:
-        m_pid.setReference(m_desiredAngle, ControlType.kSmartMotion);
+        m_pid.setReference(m_desiredAngle, ControlType.kPosition, 0, 1.5 * Math.cos(Units.degreesToRadians(getAngle()))); // 
     }
   }
 

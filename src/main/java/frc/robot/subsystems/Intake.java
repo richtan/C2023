@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
-import com.revrobotics.Rev2mDistanceSensor;
-import com.revrobotics.Rev2mDistanceSensor.Port;
-import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
-import com.revrobotics.Rev2mDistanceSensor.Unit;
+// import com.revrobotics.Rev2mDistanceSensor;
+// import com.revrobotics.Rev2mDistanceSensor.Port;
+// import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
+// import com.revrobotics.Rev2mDistanceSensor.Unit;
 
 public class Intake extends SubsystemBase {
   private final ShuffleboardTab m_intakeTab;
@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
   private final CANSparkMax m_leftMotor;
   private final CANSparkMax m_rightMotor;
 
-  private final Rev2mDistanceSensor m_distanceSensor;
+  // private final Rev2mDistanceSensor m_distanceSensor;
 
   private double m_range = -1;
   private boolean m_hasCone = false;
@@ -35,8 +35,8 @@ public class Intake extends SubsystemBase {
     m_rightMotor = new CANSparkMax(IntakeConstants.kRightMotorID, MotorType.kBrushless);
     configMotors();
 
-    m_distanceSensor = new Rev2mDistanceSensor(IntakeConstants.kDistanceSensorPort, Unit.kInches, RangeProfile.kDefault);
-    configDistanceSensor();
+    // m_distanceSensor = new Rev2mDistanceSensor(IntakeConstants.kDistanceSensorPort, Unit.kInches, RangeProfile.kDefault);
+    // configDistanceSensor();
 
     m_mode = IntakeMode.DISABLED;
 
@@ -52,8 +52,8 @@ public class Intake extends SubsystemBase {
   }
 
   private void configDistanceSensor() {
-    m_distanceSensor.setAutomaticMode(true);
-    m_distanceSensor.setEnabled(true);
+    // m_distanceSensor.setAutomaticMode(true);
+    // m_distanceSensor.setEnabled(true);
   }
 
   public enum IntakeMode {
@@ -86,29 +86,29 @@ public class Intake extends SubsystemBase {
   }
 
   private void updateSensorValues() {
-    if (!m_distanceSensor.isRangeValid()) {
-      m_hasCone = false;
-      m_hasCube = false;
-    }
-    m_range = m_distanceSensor.getRange();
-    if (m_range <= IntakeConstants.kMaxConeRange) { // Has cone
-      m_cubeTrackingStartTime = Timer.getFPGATimestamp();
-      m_hasCone = true;
-      m_hasCube = false;
-    } else if (m_range <= IntakeConstants.kMaxCubeRange) {
-      if (Timer.getFPGATimestamp() - m_cubeTrackingStartTime >= IntakeConstants.kCubeTimeThreshold) { // Has cube
-        m_hasCone = false;
-        m_hasCube = true;
-      } else { // Cone is in the middle of entering intake
-        m_cubeTrackingStartTime = Timer.getFPGATimestamp();
-        m_hasCone = false;
-        m_hasCube = false;
-      }
-    } else { // Is empty
-      m_cubeTrackingStartTime = Timer.getFPGATimestamp();
-      m_hasCone = false;
-      m_hasCube = false;
-    }
+    // if (!m_distanceSensor.isRangeValid()) {
+    //   m_hasCone = false;
+    //   m_hasCube = false;
+    // }
+    // m_range = m_distanceSensor.getRange();
+    // if (m_range <= IntakeConstants.kMaxConeRange) { // Has cone
+    //   m_cubeTrackingStartTime = Timer.getFPGATimestamp();
+    //   m_hasCone = true;
+    //   m_hasCube = false;
+    // } else if (m_range <= IntakeConstants.kMaxCubeRange) {
+    //   if (Timer.getFPGATimestamp() - m_cubeTrackingStartTime >= IntakeConstants.kCubeTimeThreshold) { // Has cube
+    //     m_hasCone = false;
+    //     m_hasCube = true;
+    //   } else { // Cone is in the middle of entering intake
+    //     m_cubeTrackingStartTime = Timer.getFPGATimestamp();
+    //     m_hasCone = false;
+    //     m_hasCube = false;
+    //   }
+    // } else { // Is empty
+    //   m_cubeTrackingStartTime = Timer.getFPGATimestamp();
+    //   m_hasCone = false;
+    //   m_hasCube = false;
+    // }
   }
 
   @Override

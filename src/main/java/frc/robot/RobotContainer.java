@@ -90,13 +90,17 @@ public class RobotContainer {
       System.out.println("Running COMPETITION robot");
 
       m_intake = new Intake(m_intakeTab);
-      m_elevator = new Elevator(m_elevatorTab, m_intake::hasCone);
+      // m_intake = null;
+      // m_elevator = new Elevator(m_elevatorTab, m_intake::hasCone);
+      // m_elevator = new Elevator(m_elevatorTab, () -> false);
+      m_elevator = null;
+
       m_arm = new Arm(m_armTab);
 
       // Setup compbot-only controls
-      OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake);
+      // OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake);
       OI.configureManualControls(m_manualJoy, m_elevator, m_arm, m_intake);
-      OI.configureTestControls(m_testJoy, m_swerve, m_elevator, m_arm, m_intake);
+      // OI.configureTestControls(m_testJoy, m_swerve, m_elevator, m_arm, m_intake);
     } else {
       System.out.println("Running TEST robot");
 
