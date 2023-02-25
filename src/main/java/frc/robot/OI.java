@@ -15,6 +15,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Arm.ArmMode;
 
 public class OI {
   public static void configureDriverControls(GameController driver, Swerve swerve) {
@@ -34,10 +35,10 @@ public class OI {
     // operator.RB.onTrue(new StartIntake(intake, elevator, arm)).onFalse(new Stow(intake, elevator, arm));
     // operator.RT.onTrue(new Outtake(intake)).onFalse(new Stow(intake, elevator, arm));
     // operator.LB.onTrue(new Stow(intake, elevator, arm));
+    operator.A.onTrue(new InstantCommand(() -> arm.setDesiredPower(0.3), arm).andThen(() -> arm.setMode(ArmMode.MANUAL), arm));
   }
 
   public static void configureManualControls(GameController manual, Elevator elevator, Arm arm, Intake intake) {
-
   }
 
   public static void configureTestControls(GameController test, Elevator elevator, Arm arm, Intake intake) {
