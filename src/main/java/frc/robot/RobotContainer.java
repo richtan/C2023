@@ -92,8 +92,8 @@ public class RobotContainer {
       m_intake = new Intake(m_intakeTab);
       // m_intake = null;
       // m_elevator = new Elevator(m_elevatorTab, m_intake::hasCone);
-      // m_elevator = new Elevator(m_elevatorTab, () -> false);
-      m_elevator = null;
+      m_elevator = new Elevator(m_elevatorTab, () -> false);
+      // m_elevator = null;
 
       m_arm = new Arm(m_armTab);
 

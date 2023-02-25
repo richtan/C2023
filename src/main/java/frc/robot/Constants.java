@@ -188,7 +188,7 @@ public final class Constants {
   // position measured along elevator axis from bottom carriage hardstop within first stage to bottom of carriage
   public static final class ElevatorConstants {
     public static final int kMotorID = 13;
-    public static final String kElevatorCAN = kRioCAN;
+    public static final String kElevatorCAN = kCANivoreCAN;
     public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.CounterClockwise; // CCW goes up
     public static final NeutralMode kNeutralMode = NeutralMode.Brake;
 
@@ -208,8 +208,8 @@ public final class Constants {
     public static final boolean kBottomLimitSwitchNC = true;
 
     // Slot 0
-    public static final double kBottomP = 1; // FIXME: Elevator
-    public static final double kBottomI = 0;
+    public static final double kBottomP = 5; // FIXME: Elevator
+    public static final double kBottomI = 0.005;
     public static final double kBottomD = 0;
     public static final double kBottomF = 0;
     public static final double kBottomGravityCompensation = 0;
@@ -222,11 +222,16 @@ public final class Constants {
     public static final double kBottomWithConeGravityCompensation = kBottomGravityCompensation;
 
     // Slot 2
-    public static final double kTopP = 1;
-    public static final double kTopI = 0;
-    public static final double kTopD = 0;
-    public static final double kTopF = 0;
-    public static final double kTopGravityCompensation = 0;
+    // public static final double kTopP = 0.1;
+    // public static final double kTopI = 0;
+    // public static final double kTopD = 0;
+    // public static final double kTopF = 0;
+    // public static final double kTopGravityCompensation = 0;
+    public static final double kTopP = kBottomP;
+    public static final double kTopI = kBottomI;
+    public static final double kTopD = kBottomD;
+    public static final double kTopF = kBottomF;
+    public static final double kTopGravityCompensation = kBottomGravityCompensation;
 
     // Slot 3
     public static final double kTopWithConeP = kTopP;
