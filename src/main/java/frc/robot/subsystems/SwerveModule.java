@@ -200,5 +200,7 @@ public class SwerveModule {
     m_swerveTab.addDouble(m_moduleAbbr + " Velocity (m/s)", () -> getState().speedMetersPerSecond);
     m_swerveTab.addDouble(m_moduleAbbr + " Desired Velocity (m/s)", () -> m_desiredState.speedMetersPerSecond);
     m_swerveTab.addBoolean(m_moduleAbbr + " Jitter prevention enabled", () -> m_angleJitterPreventionEnabled);
+    m_swerveTab.addDouble(m_moduleAbbr + " Drive Current (A)", () -> m_driveMotor.getSupplyCurrent());
+    m_swerveTab.addDouble(m_moduleAbbr + " Angle Current (A)", () -> m_angleMotor.getSupplyCurrent());
   }
 }

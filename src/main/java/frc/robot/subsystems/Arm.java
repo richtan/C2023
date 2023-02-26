@@ -137,6 +137,7 @@ public class Arm extends SubsystemBase {
     m_armTab.addDouble("Desired Power", () -> m_desiredPower);
     m_armTab.addBoolean("Reached Desired Angle", this::reachedDesiredAngle);
     m_armTab.addDouble("Absolute encoder (deg)", this::getAbsEncoder);
+    m_armTab.addDouble("Output Current (A)", m_motor::getAppliedOutput);
     m_armTab.addString("Mode", () -> m_mode.toString());
   }
 }

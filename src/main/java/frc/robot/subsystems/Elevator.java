@@ -254,8 +254,7 @@ public class Elevator extends SubsystemBase {
     m_elevatorTab.addBoolean("Reached desired position", this::reachedDesiredPosition);
     m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);
     m_elevatorTab.addBoolean("Reached Bottom Limit Switch", this::isBottomLimitSwitchReached);
-    m_elevatorTab.addDouble("Supply current (A)", m_motor::getSupplyCurrent);
-    m_elevatorTab.addDouble("Stator current (A)", m_motor::getStatorCurrent);
+    m_elevatorTab.addDouble("Supply Current (A)", m_motor::getSupplyCurrent);
     m_elevatorTab.addDouble("Commanded power", m_motor::get);
     m_elevatorTab.addString("Mode", () -> m_mode.toString());
   }

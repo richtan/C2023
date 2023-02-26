@@ -141,5 +141,7 @@ public class Intake extends SubsystemBase {
     m_intakeTab.addBoolean("Is Empty", this::isEmpty);
     m_intakeTab.addDouble("Range (in)", () -> m_range);
     m_intakeTab.addString("Mode", () -> m_mode.toString());
+    m_intakeTab.addDouble("Left Output Current (A)", () -> m_leftMotor.getOutputCurrent());
+    m_intakeTab.addDouble("Right Output Current (A)", () -> m_rightMotor.getOutputCurrent());
   }
 }
