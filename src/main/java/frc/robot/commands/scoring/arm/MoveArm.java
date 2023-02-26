@@ -10,7 +10,7 @@ public class MoveArm extends SequentialCommandGroup {
     addRequirements(arm);
     addCommands(
       new InstantCommand(() -> arm.setDesiredAngle(desiredPosition), arm),
-      new InstantCommand(() -> arm.setMode(ArmMode.SMART_MOTION), arm)
+      new InstantCommand(() -> arm.setMode(ArmMode.POSITION), arm)
     );
   }
 }

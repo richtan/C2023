@@ -5,6 +5,7 @@ import java.util.function.BooleanSupplier;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -135,7 +136,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public enum ElevatorMode {
-    CALIBRATION, MANUAL, MOTIONMAGIC, DISABLED
+    CALIBRATION, MANUAL, POSITION, DISABLED
   }
 
   public void setDesiredPosition(double desiredPosition) {
@@ -209,8 +210,9 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // Make sure we aren't going past the limit switches
-    if (isBottomLimitSwitchReached() || (isTopLimitSwitchReached() && m_mode != ElevatorMode.CALIBRATION)) {
+    double positionError = m_desiredPosition - getPosition();
+    if ((isBottomLimitSwitchReached() && (positionError < 0 || m_desiredPower < 0))
+        || (isTopLimitSwitchReached() && (positionError > 0 || m_desiredPower > 0))) {
       m_motor.stopMotor();
       return;
     }
@@ -227,7 +229,7 @@ public class Elevator extends SubsystemBase {
         updateElevatorStatus();
         m_motor.set(ControlMode.PercentOutput, m_desiredPower);
         break;
-      case MOTIONMAGIC:
+      case POSITION:
         if (!m_isCalibrated) break;
         updateElevatorStatus();
         updateClosedLoopSlot();

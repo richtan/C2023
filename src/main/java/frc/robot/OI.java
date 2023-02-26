@@ -11,7 +11,6 @@ import frc.robot.commands.scoring.elevator.MoveElevator;
 import frc.robot.commands.scoring.intake.StartIntake;
 import frc.robot.commands.swerve.CharacterizeSwerve;
 import frc.robot.commands.swerve.LockModules;
-import frc.robot.commands.scoring.intake.Outtake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -38,9 +37,9 @@ public class OI {
   }
 
   public static void configureManualControls(GameController manual, Elevator elevator, Arm arm, Intake intake) {
-    manual.B.onTrue(new InstantCommand(() -> arm.setDesiredAngle(25), arm).andThen(() -> arm.setMode(ArmMode.SMART_MOTION), arm));
-    manual.A.onTrue(new InstantCommand(() -> arm.setDesiredAngle(-5), arm).andThen(() -> arm.setMode(ArmMode.SMART_MOTION), arm));
-    manual.Y.onTrue(new InstantCommand(() -> arm.setDesiredAngle(45), arm).andThen(() -> arm.setMode(ArmMode.SMART_MOTION), arm));
+    manual.B.onTrue(new InstantCommand(() -> arm.setDesiredAngle(25), arm).andThen(() -> arm.setMode(ArmMode.POSITION), arm));
+    manual.A.onTrue(new InstantCommand(() -> arm.setDesiredAngle(-5), arm).andThen(() -> arm.setMode(ArmMode.POSITION), arm));
+    manual.Y.onTrue(new InstantCommand(() -> arm.setDesiredAngle(45), arm).andThen(() -> arm.setMode(ArmMode.POSITION), arm));
     manual.X.onTrue(new InstantCommand(() -> arm.zeroEncoder(), arm));
     manual.DPAD_DOWN.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.INTAKE)));
     manual.DPAD_RIGHT.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.DISABLED)));
@@ -53,4 +52,4 @@ public class OI {
     test.B.whileTrue(new CharacterizeSwerve(swerve, true, true));
     test.A.whileTrue(new CharacterizeSwerve(swerve, false, true));
   }
-  }
+}

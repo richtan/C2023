@@ -77,8 +77,6 @@ public class Arm extends SubsystemBase {
   }
 
   private void calibrateEncoder() {
-    System.out.println(getAbsEncoder());
-    System.out.println("Connected? " + m_absEncoder.isConnected());
     double absEncoderError = getAbsEncoder() - ArmConstants.kAbsEncoderZeroAngle;
     m_encoder.setPosition(absEncoderError);
   }
@@ -88,7 +86,7 @@ public class Arm extends SubsystemBase {
   }
 
   public enum ArmMode {
-    DISABLED, MANUAL, SMART_MOTION
+    DISABLED, MANUAL, POSITION
   }
 
   public void setMode(ArmMode mode) {
@@ -125,7 +123,7 @@ public class Arm extends SubsystemBase {
       case MANUAL:
         m_pid.setReference(m_desiredPower, ControlType.kDutyCycle);
         break;
-      case SMART_MOTION:
+      case POSITION:
         m_pid.setReference(m_desiredAngle, ControlType.kPosition, 0, 1.5 * Math.cos(Units.degreesToRadians(getAngle()))); // 
     }
   }
