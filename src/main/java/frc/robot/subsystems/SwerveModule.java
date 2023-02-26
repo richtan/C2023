@@ -93,7 +93,7 @@ public class SwerveModule {
         double largerAngle = Math.max(m_lastAngle.getDegrees(), desiredState.angle.getDegrees());
         double minAngleDifference = Math.min(largerAngle - smallerAngle, smallerAngle + (360 - largerAngle));
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.kMaxSpeed * 0.01)
-        && minAngleDifference <= 0.5) ? m_lastAngle
+        && minAngleDifference <= 1) ? m_lastAngle
             : desiredState.angle;
 
     m_angleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), SwerveConstants.kAngleGearRatio));
@@ -145,6 +145,7 @@ public class SwerveModule {
     m_angleMotor.config_kF(0, SwerveConstants.kAngleF);
     m_angleMotor.setInverted(SwerveConstants.kAngleMotorInvert);
     m_angleMotor.setNeutralMode(SwerveConstants.kAngleNeutralMode);
+    m_angleMotor.enableVoltageCompensation(true);
     resetToAbsolute();
   }
 
@@ -179,6 +180,7 @@ public class SwerveModule {
     m_driveMotor.configClosedloopRamp(SwerveConstants.kClosedLoopRamp);
     m_driveMotor.setInverted(SwerveConstants.kDriveMotorInvert);
     m_driveMotor.setNeutralMode(SwerveConstants.kDriveNeutralMode);
+    m_driveMotor.enableVoltageCompensation(true);
     m_driveMotor.setSelectedSensorPosition(0);
   }
 
@@ -200,5 +202,6 @@ public class SwerveModule {
     m_swerveTab.addDouble(m_moduleAbbr + " CANcoder Angle (deg)", getCANcoder()::getDegrees);
     m_swerveTab.addDouble(m_moduleAbbr + " FX Angle (deg)", getPosition().angle::getDegrees);
     m_swerveTab.addDouble(m_moduleAbbr + " Velocity (m/s)", () -> getState().speedMetersPerSecond);
+    m_swerveTab.addBoolean(m_moduleAbbr + " Jitter prevention enabled", () -> m_angleJitterPreventionEnabled);
   }
 }

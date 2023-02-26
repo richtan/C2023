@@ -39,7 +39,7 @@ public class OI {
 
   public static void configureManualControls(GameController manual, Elevator elevator, Arm arm, Intake intake) {
     manual.B.onTrue(new InstantCommand(() -> arm.setDesiredAngle(25), arm).andThen(() -> arm.setMode(ArmMode.SMART_MOTION), arm));
-    manual.A.onTrue(new InstantCommand(() -> arm.setDesiredAngle(-3), arm).andThen(() -> arm.setMode(ArmMode.SMART_MOTION), arm));
+    manual.A.onTrue(new InstantCommand(() -> arm.setDesiredAngle(-5), arm).andThen(() -> arm.setMode(ArmMode.SMART_MOTION), arm));
     manual.Y.onTrue(new InstantCommand(() -> arm.setDesiredAngle(45), arm).andThen(() -> arm.setMode(ArmMode.SMART_MOTION), arm));
     manual.X.onTrue(new InstantCommand(() -> arm.zeroEncoder(), arm));
     manual.DPAD_DOWN.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.INTAKE)));
@@ -50,7 +50,7 @@ public class OI {
   }
 
   public static void configureTestControls(GameController test, Swerve swerve, Elevator elevator, Arm arm, Intake intake) {
-    // test.B.whileTrue(new CharacterizeSwerve(swerve, true, true));
-    // test.A.whileTrue(new CharacterizeSwerve(swerve, false, true));
+    test.B.whileTrue(new CharacterizeSwerve(swerve, true, true));
+    test.A.whileTrue(new CharacterizeSwerve(swerve, false, true));
   }
-}
+  }
