@@ -72,7 +72,7 @@ public final class Constants {
   // Units are degrees, zero is max deploy position, positive is towards the robot,
   // angle measurement is angle of polycarb plates on intake from horizontal
   public static final class ArmConstants {
-    public static final int kMotorID = 5;
+    public static final int kMotorID = 5; // sm6
     public static final IdleMode kIdleMode = IdleMode.kBrake;
     public static final boolean kMotorInvert = false; // FIXME: Arm
     public static final double kMotorToAbsEncoderGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0);
@@ -115,8 +115,8 @@ public final class Constants {
 
   // Positive is outtaking direction
   public static final class IntakeConstants {
-    public static final int kLeftMotorID = 6;
-    public static final int kRightMotorID = 8;
+    public static final int kLeftMotorID = 6; // sm7
+    public static final int kRightMotorID = 11; // sm5
     public static final boolean kLeftMotorInvert = false;
     public static final boolean kRightMotorInvert = true;
     public static final IdleMode kLeftMotorIdleMode = IdleMode.kBrake;
@@ -129,6 +129,7 @@ public final class Constants {
     public static final double kShootingPower = 0.6;
     public static final double kOuttakePower = 0.2;
     public static final double kEjectPower = 0.4;
+    public static final double kDroppingPower = 0.4;
 
     public static final Port kDistanceSensorPort = Port.kOnboard;
     public static final double kMaxConeRange = 1.0;
@@ -202,7 +203,7 @@ public final class Constants {
     public static final int kBottomLimitSwitchPort = 8;
     public static final int kTopLimitSwitchPort = 9;
 
-    public static final double kPositionTolerance = 0.04;
+    public static final double kPositionTolerance = 0.01;
     public static final double kVelocityTolerance = 0.05; // FIXME: Elevator
     
     // Whether limit switch is normally-closed (activated = open circuit) or normally-open (activated = closed circuit)
@@ -210,7 +211,7 @@ public final class Constants {
     public static final boolean kBottomLimitSwitchNC = true;
 
     // Slot 0
-    public static final double kBottomP = 0.5; // FIXME: Elevator
+    public static final double kBottomP = 0.05; // FIXME: Elevator
     public static final double kBottomI = 0;
     public static final double kBottomD = 0;
     public static final double kBottomF = 0;
@@ -229,11 +230,11 @@ public final class Constants {
     // public static final double kTopD = 0;
     // public static final double kTopF = 0;
     // public static final double kTopGravityCompensation = 0;
-    public static final double kTopP = kBottomP;
+    public static final double kTopP = 0.05;
     public static final double kTopI = kBottomI;
     public static final double kTopD = kBottomD;
     public static final double kTopF = kBottomF;
-    public static final double kTopGravityCompensation = kBottomGravityCompensation;
+    public static final double kTopGravityCompensation = 0.2;
 
     // Slot 3
     public static final double kTopWithConeP = kTopP;

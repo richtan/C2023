@@ -19,5 +19,6 @@ public class PowerManager {
 
   private void setupShuffleboard() {
     m_powerTab.addDouble("Total Current (A)", m_PDModule::getTotalCurrent);
+    m_powerTab.addDouble("Elevator current (A)", () -> m_PDModule.getCurrent(7));
   }
 }

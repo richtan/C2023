@@ -60,6 +60,7 @@ public class SwerveModule {
     configDriveMotor();
 
     m_lastAngle = getState().angle;
+    setDesiredState(new SwerveModuleState(0, m_lastAngle), false);
 
     setupShuffleboard();
   }
@@ -141,6 +142,7 @@ public class SwerveModule {
     m_angleMotor.config_kF(0, SwerveConstants.kAngleF);
     m_angleMotor.setInverted(SwerveConstants.kAngleMotorInvert);
     m_angleMotor.setNeutralMode(SwerveConstants.kAngleNeutralMode);
+    m_angleMotor.configVoltageCompSaturation(Constants.kNormalOperatingVoltage);
     m_angleMotor.enableVoltageCompensation(true);
     resetToAbsolute();
   }
@@ -176,6 +178,7 @@ public class SwerveModule {
     m_driveMotor.configClosedloopRamp(SwerveConstants.kClosedLoopRamp);
     m_driveMotor.setInverted(SwerveConstants.kDriveMotorInvert);
     m_driveMotor.setNeutralMode(SwerveConstants.kDriveNeutralMode);
+    m_driveMotor.configVoltageCompSaturation(Constants.kNormalOperatingVoltage);
     m_driveMotor.enableVoltageCompensation(true);
     m_driveMotor.setSelectedSensorPosition(0);
   }

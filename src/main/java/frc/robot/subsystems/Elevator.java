@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.Conversions;
+import frc.robot.Constants;
 import frc.robot.Constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
@@ -25,7 +26,7 @@ public class Elevator extends SubsystemBase {
   private final WPI_TalonFX m_motor;
   private final DigitalInput m_bottomLimitSwitch;
   private final DigitalInput m_topLimitSwitch;
-  private double m_desiredPosition = 0;
+  private double m_desiredPosition = 0.02;
   private double m_desiredPower = 0;
   private boolean m_isCalibrated;
 
@@ -79,6 +80,7 @@ public class Elevator extends SubsystemBase {
 
     m_motor.setInverted(ElevatorConstants.kMotorInvert);
     m_motor.setNeutralMode(ElevatorConstants.kNeutralMode);
+    m_motor.configVoltageCompSaturation(Constants.kNormalOperatingVoltage);
     m_motor.enableVoltageCompensation(true);
 
     m_motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -260,7 +262,10 @@ public class Elevator extends SubsystemBase {
     m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);
     m_elevatorTab.addBoolean("Reached Bottom Limit Switch", this::isBottomLimitSwitchReached);
     m_elevatorTab.addDouble("Supply Current (A)", m_motor::getSupplyCurrent);
+    m_elevatorTab.addDouble("Stator Current (A)", m_motor::getStatorCurrent);
     m_elevatorTab.addDouble("Commanded power", m_motor::get);
     m_elevatorTab.addString("Mode", () -> m_mode.toString());
+    m_elevatorTab.addString("Status", () -> m_status.toString());
+    m_elevatorTab.addDouble("Gravity compensation", () -> m_gravityCompensation);
   }
 }

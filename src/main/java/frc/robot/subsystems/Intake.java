@@ -61,7 +61,7 @@ public class Intake extends SubsystemBase {
   }
 
   public enum IntakeMode {
-    DISABLED, INTAKE, OUTTAKE, EJECT
+    DISABLED, INTAKE, OUTTAKE, EJECT, DROPPING
   }
 
   public void setMode(IntakeMode mode) {
@@ -85,8 +85,12 @@ public class Intake extends SubsystemBase {
   }
 
   private void setMotorPowers(double power) {
-    m_leftMotor.set(power);
-    m_rightMotor.set(power);
+    setMotorPowers(power, power);
+  }
+
+  private void setMotorPowers(double leftPower, double rightPower) {
+    m_leftMotor.set(leftPower);
+    m_rightMotor.set(rightPower);
   }
 
   private void updateSensorValues() {
@@ -129,6 +133,8 @@ public class Intake extends SubsystemBase {
       case OUTTAKE:
         setMotorPowers(IntakeConstants.kOuttakePower);
         break;
+      case DROPPING:
+        setMotorPowers(IntakeConstants.kDroppingPower, -IntakeConstants.kDroppingPower);
       case EJECT:
         setMotorPowers(IntakeConstants.kEjectPower);
         break;
