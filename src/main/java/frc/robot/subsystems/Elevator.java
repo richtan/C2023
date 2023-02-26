@@ -116,6 +116,11 @@ public class Elevator extends SubsystemBase {
     return m_bottomLimitSwitch.get() != ElevatorConstants.kBottomLimitSwitchNC;
   }
 
+  public void setMaxOutput(double power) {
+    m_motor.configPeakOutputForward(power);
+    m_motor.configPeakOutputReverse(power);
+  }
+
   public double getHeight() {
     return Conversions.ElevatorLengthToHeight(getPosition());
   }
