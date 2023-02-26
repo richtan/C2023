@@ -35,6 +35,8 @@ public final class Constants {
 
   public static final String kRioCAN = "rio";
   public static final String kCANivoreCAN = "CANivore";
+  
+  public static final double kNormalOperatingVoltage = 12.0;
 
   public static final class FieldConstants {
     public static final double kLength = Units.inchesToMeters(54*12 + 3.25);

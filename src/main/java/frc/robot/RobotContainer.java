@@ -98,7 +98,7 @@ public class RobotContainer {
       m_arm = new Arm(m_armTab);
 
       // Setup compbot-only controls
-      // OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake);
+      OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake);
       OI.configureManualControls(m_manualJoy, m_elevator, m_arm, m_intake);
       // OI.configureTestControls(m_testJoy, m_swerve, m_elevator, m_arm, m_intake);
     } else {

@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 
 // import com.revrobotics.Rev2mDistanceSensor;
@@ -49,6 +50,9 @@ public class Intake extends SubsystemBase {
 
     m_leftMotor.setIdleMode(IntakeConstants.kLeftMotorIdleMode);
     m_rightMotor.setIdleMode(IntakeConstants.kRightMotorIdleMode);
+
+    m_leftMotor.enableVoltageCompensation(Constants.kNormalOperatingVoltage);
+    m_rightMotor.enableVoltageCompensation(Constants.kNormalOperatingVoltage);
   }
 
   private void configDistanceSensor() {

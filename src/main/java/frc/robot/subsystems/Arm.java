@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
@@ -51,6 +52,8 @@ public class Arm extends SubsystemBase {
     m_motor.setIdleMode(ArmConstants.kIdleMode);
     m_motor.setInverted(ArmConstants.kMotorInvert);
 
+    m_motor.enableVoltageCompensation(Constants.kNormalOperatingVoltage);
+
     m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     m_motor.setSoftLimit(SoftLimitDirection.kForward, (float) 45);
@@ -76,7 +79,7 @@ public class Arm extends SubsystemBase {
     return m_absEncoder.getAbsolutePosition() * ArmConstants.kAbsEncoderDistancePerRotation;
   }
 
-  private void calibrateEncoder() {
+  public void calibrateEncoder() {
     double absEncoderError = getAbsEncoder() - ArmConstants.kAbsEncoderZeroAngle;
     m_encoder.setPosition(absEncoderError);
   }

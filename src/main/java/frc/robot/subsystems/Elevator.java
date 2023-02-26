@@ -79,6 +79,7 @@ public class Elevator extends SubsystemBase {
 
     m_motor.setInverted(ElevatorConstants.kMotorInvert);
     m_motor.setNeutralMode(ElevatorConstants.kNeutralMode);
+    m_motor.enableVoltageCompensation(true);
 
     m_motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 

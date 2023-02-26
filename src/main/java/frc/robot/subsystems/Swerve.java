@@ -20,7 +20,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -37,10 +36,6 @@ public class Swerve extends SubsystemBase {
   private final PIDController m_xController;
   private final PIDController m_yController;
   private final PIDController m_rotationController;
-
-  private GenericEntry m_driveKPEntry;
-
-  private double m_driveKP;
 
   private final Field2d m_field;
 
@@ -207,26 +202,13 @@ public class Swerve extends SubsystemBase {
     m_field.setRobotPose(getPose());
   }
 
-  private void updateShuffleboard() {
-    double newDriveKP = m_driveKPEntry.getDouble(-1);
-    if (m_driveKP != newDriveKP) {
-      m_driveKP = newDriveKP;
-    }
-  }
-
-  private void updatePidGains() {
-
-  }
-
   private void setupShuffleboard() {
     m_swerveTab.addDouble("Yaw (deg)", () -> getYaw().getDegrees());
     m_swerveTab.add("Field", m_field);
-    m_driveKPEntry = m_swerveTab.add("Drive kP", m_driveKP).getEntry();
   }
 
   @Override
   public void periodic() {
     updateOdometry();
-    updateShuffleboard();
   }
 }

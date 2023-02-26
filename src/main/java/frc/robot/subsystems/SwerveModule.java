@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
+import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -31,6 +32,7 @@ public class SwerveModule {
   private final WPI_TalonFX m_angleMotor;
   private final WPI_TalonFX m_driveMotor;
   private final WPI_CANCoder m_CANcoder;
+  private SwerveModuleState m_desiredState;
 
   private boolean m_angleJitterPreventionEnabled;
 
@@ -68,6 +70,7 @@ public class SwerveModule {
      * continuous controller which CTRE and Rev onboard is not
      */
     desiredState = CTREModuleState.optimize(desiredState, getState().angle);
+    m_desiredState = desiredState;
     setAngle(desiredState);
     setSpeed(desiredState, isOpenLoop);
   }
@@ -85,16 +88,9 @@ public class SwerveModule {
   }
 
   private void setAngle(SwerveModuleState desiredState) {
-    // Prevent rotating module if desired speed < 1%. Prevents // Jittering.
-    // Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.kMaxSpeed * 0.01)
-        // && m_angleJitterPreventionEnabled) ? m_lastAngle : desiredState.angle;
-
-        double smallerAngle = Math.min(m_lastAngle.getDegrees(), desiredState.angle.getDegrees());
-        double largerAngle = Math.max(m_lastAngle.getDegrees(), desiredState.angle.getDegrees());
-        double minAngleDifference = Math.min(largerAngle - smallerAngle, smallerAngle + (360 - largerAngle));
-        Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.kMaxSpeed * 0.01)
-        && minAngleDifference <= 1) ? m_lastAngle
-            : desiredState.angle;
+    // Prevent rotating module if desired speed < 1%. Prevents Jittering.
+    Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.kMaxSpeed * 0.01)
+        && m_angleJitterPreventionEnabled) ? m_lastAngle : desiredState.angle;
 
     m_angleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), SwerveConstants.kAngleGearRatio));
     m_lastAngle = angle;
@@ -151,11 +147,11 @@ public class SwerveModule {
 
   public void setDriveCharacterizationVoltage(double voltage) {
     m_angleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(0, SwerveConstants.kAngleGearRatio));
-    m_driveMotor.set(ControlMode.PercentOutput, voltage / 12.0);
+    m_driveMotor.set(ControlMode.PercentOutput, voltage / Constants.kNormalOperatingVoltage);
   }
 
   public void setAngleCharacterizationVoltage(double voltage) {
-    m_angleMotor.set(ControlMode.PercentOutput, voltage / 12.0);
+    m_angleMotor.set(ControlMode.PercentOutput, voltage / Constants.kNormalOperatingVoltage);
     // Set the drive motor to just enough to overcome static friction
     m_driveMotor.set(ControlMode.PercentOutput, 1.1 * SwerveConstants.kDriveKS);
   }
@@ -202,6 +198,7 @@ public class SwerveModule {
     m_swerveTab.addDouble(m_moduleAbbr + " CANcoder Angle (deg)", getCANcoder()::getDegrees);
     m_swerveTab.addDouble(m_moduleAbbr + " FX Angle (deg)", getPosition().angle::getDegrees);
     m_swerveTab.addDouble(m_moduleAbbr + " Velocity (m/s)", () -> getState().speedMetersPerSecond);
+    m_swerveTab.addDouble(m_moduleAbbr + " Desired Velocity (m/s)", () -> m_desiredState.speedMetersPerSecond);
     m_swerveTab.addBoolean(m_moduleAbbr + " Jitter prevention enabled", () -> m_angleJitterPreventionEnabled);
   }
 }
