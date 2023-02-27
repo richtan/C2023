@@ -45,7 +45,7 @@ public final class Constants {
   }
 
   public static final class OIConstants {
-    public static final double kDriverDeadband = 0.02;
+    public static final double kDriverDeadband = 0.00;
 
     public static final int kDriverJoy = 0;
     public static final int kOperatorJoy = 1;
