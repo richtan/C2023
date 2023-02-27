@@ -37,7 +37,7 @@ public class Intake extends SubsystemBase {
     configMotors();
 
     // m_distanceSensor = new Rev2mDistanceSensor(IntakeConstants.kDistanceSensorPort, Unit.kInches, RangeProfile.kDefault);
-    // configDistanceSensor();
+    configDistanceSensor();
 
     m_mode = IntakeMode.DISABLED;
 
@@ -73,15 +73,18 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean hasCone() {
-    return m_hasCone;
+    return true;
+    // return m_hasCone;
   }
 
   public boolean hasCube() {
-    return m_hasCube;
+    return false;
+    // return m_hasCube;
   }
 
   public boolean isEmpty() {
-    return !hasCone() && !hasCube();
+    // return !hasCone() && !hasCube();
+    return !hasCone();
   }
 
   private void setMotorPowers(double power) {
@@ -94,16 +97,18 @@ public class Intake extends SubsystemBase {
   }
 
   private void updateSensorValues() {
-    // if (!m_distanceSensor.isRangeValid()) {
+    // m_range = m_distanceSensor.getRange();
+    // if (m_range == -1) {
+    //   m_cubeTrackingStartTime = Timer.getFPGATimestamp();
     //   m_hasCone = false;
     //   m_hasCube = false;
+    //   return;
     // }
-    // m_range = m_distanceSensor.getRange();
     // if (m_range <= IntakeConstants.kMaxConeRange) { // Has cone
     //   m_cubeTrackingStartTime = Timer.getFPGATimestamp();
     //   m_hasCone = true;
     //   m_hasCube = false;
-    // } else if (m_range <= IntakeConstants.kMaxCubeRange) {
+    // } else if (m_range <= IntakeConstants.kMaxCubeRange && false) {
     //   if (Timer.getFPGATimestamp() - m_cubeTrackingStartTime >= IntakeConstants.kCubeTimeThreshold) { // Has cube
     //     m_hasCone = false;
     //     m_hasCube = true;
@@ -147,6 +152,7 @@ public class Intake extends SubsystemBase {
     m_intakeTab.addBoolean("Is Empty", this::isEmpty);
     m_intakeTab.addDouble("Range (in)", () -> m_range);
     m_intakeTab.addString("Mode", () -> m_mode.toString());
+    m_intakeTab.addDouble("Time delta (s)", () -> Timer.getFPGATimestamp() - m_cubeTrackingStartTime);
     m_intakeTab.addDouble("Left Output Current (A)", () -> m_leftMotor.getOutputCurrent());
     m_intakeTab.addDouble("Right Output Current (A)", () -> m_rightMotor.getOutputCurrent());
   }

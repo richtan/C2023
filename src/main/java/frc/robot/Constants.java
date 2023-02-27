@@ -100,7 +100,7 @@ public final class Constants {
     public static final double kTopCubeAngle = 0;
     public static final double kMiddleConeAngle = 28;
     public static final double kMiddleCubeAngle = 25;
-    public static final double kBottomConeAngle = 0;
+    public static final double kBottomConeAngle = -6;
     public static final double kBottomCubeAngle = 0;
     public static final double kShelfConeAngle = 0;
     public static final double kShelfCubeAngle = 0;
@@ -127,13 +127,13 @@ public final class Constants {
     // TODO: separate cube and cone intaking power
     public static final double kIntakePower = -0.7;
     public static final double kShootingPower = 0.6;
-    public static final double kOuttakePower = 0.2;
+    public static final double kOuttakePower = 0.12;
     public static final double kEjectPower = 0.4;
-    public static final double kDroppingPower = 0.4;
+    public static final double kDroppingPower = 0.2;
 
     public static final Port kDistanceSensorPort = Port.kOnboard;
-    public static final double kMaxConeRange = 1.0;
-    public static final double kMaxCubeRange = 3.6;
+    public static final double kMaxConeRange = 1.5;
+    public static final double kMaxCubeRange = 7;
     public static final double kCubeTimeThreshold = 0.8; // 0.8 seconds of an intaked cube counts as intaked
   }
 
@@ -261,15 +261,15 @@ public final class Constants {
     // Angle of elevator from the horizontal axis
     public static final double kElevatorAngle = 55.0;
 
-    public static final double kIntakeConeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
-    public static final double kIntakeCubeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
+    public static final double kIntakeConeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(3));
+    public static final double kIntakeCubeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(3));
     public static final double kTopConeHeight = Conversions.ElevatorLengthToHeight(kMaxPosition);
-    public static final double kTopCubeHeight = Units.inchesToMeters(47.15);
+    public static final double kTopCubeHeight = Units.inchesToMeters(46.15);
     public static final double kMiddleConeHeight = Units.inchesToMeters(35);
     public static final double kMiddleCubeHeight = Units.inchesToMeters(24.2);
     public static final double kBottomConeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
-    public static final double kBottomCubeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
-    public static final double kShelfConeHeight = Units.inchesToMeters(52.1);
+    public static final double kBottomCubeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(3));
+    public static final double kShelfConeHeight = Units.inchesToMeters(49.1);
     public static final double kShelfCubeHeight = Units.inchesToMeters(52.1);
     public static final double kStowHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
 
@@ -289,7 +289,7 @@ public final class Constants {
 
     public static final boolean kInvertGyro = false; // Make sure gyro is CCW+ CW- // FIXME: Swerve
 
-    public static final double kSlowDriveFactor = 0.5;
+    public static final double kSlowDriveFactor = 0.3;
 
     public static final COTSFalconSwerveConstants kModuleConstants =
         COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);   

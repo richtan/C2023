@@ -42,13 +42,29 @@ public class OI {
     // manual.B.onTrue(new InstantCommand(() -> arm.setDesiredAngle(25), arm).andThen(() -> arm.setMode(ArmMode.POSITION), arm));
     // manual.A.onTrue(new InstantCommand(() -> arm.setDesiredAngle(-5), arm).andThen(() -> arm.setMode(ArmMode.POSITION), arm));
     // manual.Y.onTrue(new InstantCommand(() -> arm.setDesiredAngle(45), arm).andThen(() -> arm.setMode(ArmMode.POSITION), arm));
-    // manual.X.onTrue(new InstantCommand(() -> arm.calibrateEncoder(), arm));
-    // manual.DPAD_DOWN.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.INTAKE)));
-    // manual.DPAD_RIGHT.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.DISABLED)));
-    // manual.DPAD_UP.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.OUTTAKE)));
+    manual.START.onTrue(new InstantCommand(() -> arm.zeroEncoder(), arm));
+    manual.DPAD_DOWN.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.INTAKE)));
+    manual.DPAD_RIGHT.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.DISABLED)));
+    manual.DPAD_LEFT.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.DROPPING)));
+    manual.DPAD_UP.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.OUTTAKE)));
     manual.BACK.onTrue(new CalibrateElevator(elevator));
-    manual.RT.onTrue(new MoveElevator(elevator, Conversions.ElevatorLengthToHeight(0.9)));
-    manual.LT.onTrue(new MoveElevator(elevator, Conversions.ElevatorLengthToHeight(0.5)));
+    // manual.LB.onTrue(new Stow(intake, elevator, arm));
+    // manual.RB.onTrue(new StartIntake(intake, elevator, arm));
+
+    //  operator.RB.onTrue(new StartIntake(intake, elevator, arm)).onFalse(new Stow(intake, elevator, arm));
+    // operator.RT.onTrue(new Outtake(intake)).onFalse(new Stow(intake, elevator, arm));
+    // operator.LB.onTrue(new Stow(intake, elevator, arm));
+    // manual.RT.onTrue(new MoveElevator(elevator, Conversions.ElevatorLengthToHeight(1.25)));
+    // manual.LT.onTrue(new MoveElevator(elevator, 1));
+
+    // manual.DPAD_DOWN.onTrue(new StartIntake(intake, elevator, arm)).onFalse(new PositionIntake(elevator, arm, intake::hasCone, Position.STOW));
+    // manual.DPAD_UP.onTrue(new Outtake(intake)).onFalse(new PositionIntake(elevator, arm, intake::hasCone, Position.STOW));
+    // manual.LB.onTrue(new Stow(intake, elevator, arm));
+    manual.Y.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.TOP));
+    manual.X.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.MIDDLE));
+    manual.A.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.BOTTOM));
+    manual.B.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.SHELF));
+    manual.RB.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.STOW));
   }
 
   public static void configureTestControls(GameController test, Swerve swerve, Elevator elevator, Arm arm, Intake intake) {

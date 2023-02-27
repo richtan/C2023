@@ -56,8 +56,8 @@ public class Arm extends SubsystemBase {
 
     m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    m_motor.setSoftLimit(SoftLimitDirection.kForward, (float) 45);
-    m_motor.setSoftLimit(SoftLimitDirection.kReverse, (float) 10);
+    m_motor.setSoftLimit(SoftLimitDirection.kForward, (float) 55);
+    m_motor.setSoftLimit(SoftLimitDirection.kReverse, (float) 0);
     
     // Rotations at motor shaft to degrees at Throughbore
     m_encoder.setPositionConversionFactor(ArmConstants.kMotorEncoderDistancePerRotation);
@@ -85,7 +85,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void zeroEncoder() {
-    m_encoder.setPosition(0);
+    m_encoder.setPosition(-4);
   }
 
   public enum ArmMode {

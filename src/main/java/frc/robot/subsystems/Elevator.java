@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -92,7 +93,7 @@ public class Elevator extends SubsystemBase {
         ElevatorConstants.kGearRatio
       )
     );
-    m_motor.configReverseSoftLimitThreshold(0);
+    m_motor.configReverseSoftLimitThreshold(Units.inchesToMeters(0.2));
 
     toggleSoftLimits(false);
   }

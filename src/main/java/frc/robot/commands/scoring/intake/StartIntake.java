@@ -15,7 +15,7 @@ public class StartIntake extends SequentialCommandGroup {
   public StartIntake(Intake intake, Elevator elevator, Arm arm) {
     addRequirements(intake);
     addCommands(
-      new PositionIntake(elevator, arm, intake::hasCone, Position.INTAKE),
+      new PositionIntake(elevator, arm, intake::hasCone, Position.BOTTOM),
       new InstantCommand(() -> intake.setMode(IntakeMode.INTAKE), intake),
       new ParallelRaceGroup(
         new WaitUntilCommand(intake::hasCube),
