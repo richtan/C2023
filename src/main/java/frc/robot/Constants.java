@@ -402,7 +402,7 @@ public final class Constants {
         public static final int kDriveMotorID = Constants.kIsComp ? 32 : 10;
         public static final int kAngleMotorID = Constants.kIsComp ? 35 : 11;
         public static final int kCANcoderID = Constants.kIsComp ? 43 : 12;
-        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 150.732 : 338.03); // FIXME: Swerve
+        public static final Rotation2d kAngleOffset = Rotation2d.fromDegrees(Constants.kIsComp ? 150.732 : 338.03);
         public static final SwerveModuleConstants constants = 
             new SwerveModuleConstants(kDriveMotorID, kAngleMotorID, kCANcoderID, kAngleOffset);
     }

@@ -11,9 +11,8 @@ public class MobilityAuto extends SequentialCommandGroup {
     m_swerve = swerve;
     addRequirements(swerve);
 
-    String pathGroupName = "MobilityAuto";
     addCommands(
-      new FollowPath(pathGroupName, 0, m_swerve),
+      new FollowPath("MobilityAuto", 0, m_swerve),
       new InstantCommand(() -> m_swerve.stop())
     );
   }
