@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
@@ -101,6 +102,9 @@ public class RobotContainer {
       OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake);
       OI.configureManualControls(m_manualJoy, m_elevator, m_arm, m_intake);
       // OI.configureTestControls(m_testJoy, m_swerve, m_elevator, m_arm, m_intake);
+
+      // Start RoboRIO driver camera stream
+      CameraServer.startAutomaticCapture();
     } else {
       System.out.println("Running TEST robot");
 
