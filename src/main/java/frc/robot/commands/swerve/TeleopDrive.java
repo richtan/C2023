@@ -43,6 +43,10 @@ public class TeleopDrive extends CommandBase {
     double strafeVal = MathUtil.applyDeadband(m_strafeSup.getAsDouble(), OIConstants.kDriverDeadband);
     double rotationVal = MathUtil.applyDeadband(m_rotationSup.getAsDouble(), OIConstants.kDriverDeadband);
 
+    translationVal = Math.copySign(translationVal * translationVal, translationVal);
+    strafeVal = Math.copySign(strafeVal * strafeVal, strafeVal);
+    rotationVal = Math.copySign(rotationVal * rotationVal, rotationVal);
+
     double slowFactor = m_slowModeSup.getAsBoolean() ? SwerveConstants.kSlowDriveFactor : 1;
 
     /* Drive */
