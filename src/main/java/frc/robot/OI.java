@@ -30,20 +30,20 @@ public class OI {
   }
 
   public static void configureOperatorControls(GameController operator, Elevator elevator, Arm arm, Intake intake) {
-    operator.BACK.onTrue(new CalibrateElevator(elevator));
-    operator.START.onTrue(new CalibrateArm(arm));
-    operator.Y.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.TOP));
-    operator.X.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.MIDDLE));
-    operator.A.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.BOTTOM));
-    operator.B.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.SHELF));
-    operator.RB.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.STOW));
-    operator.LB.onTrue(new StartIntake(intake, elevator, arm)).onFalse(new Stow(intake, elevator, arm)); // add sequence
-    operator.LT.onTrue(new Outtake(intake)).onFalse(new Stow(intake, elevator, arm));
-    operator.RT.onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
-    operator.DPAD_DOWN.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.INTAKE)));
-    operator.DPAD_RIGHT.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.DISABLED)));
-    operator.DPAD_LEFT.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.DROPPING)));
-    operator.DPAD_UP.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.OUTTAKE)));
+    // operator.BACK.onTrue(new CalibrateElevator(elevator));
+    // operator.START.onTrue(new CalibrateArm(arm));
+    // operator.Y.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.TOP));
+    // operator.X.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.MIDDLE));
+    // operator.A.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.BOTTOM));
+    // operator.B.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.SHELF));
+    // operator.RB.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.STOW));
+    // operator.LB.onTrue(new StartIntake(intake, elevator, arm)).onFalse(new Stow(intake, elevator, arm)); // add sequence
+    // operator.LT.onTrue(new Outtake(intake)).onFalse(new Stow(intake, elevator, arm));
+    // operator.RT.onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
+    // operator.DPAD_DOWN.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.INTAKE)));
+    // operator.DPAD_RIGHT.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.DISABLED)));
+    // operator.DPAD_LEFT.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.DROPPING)));
+    // operator.DPAD_UP.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.OUTTAKE)));
   }
 
   public static void configureManualControls(GameController manual, Elevator elevator, Arm arm, Intake intake) {

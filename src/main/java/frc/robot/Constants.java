@@ -123,6 +123,8 @@ public final class Constants {
     public static final IdleMode kLeftMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kRightMotorIdleMode = IdleMode.kBrake;
 
+    public static final int kMotorCurrentLimit = 10;
+
     public static final double kGearRatio = (3.0 / 1.0);
 
     // TODO: separate cube and cone intaking power
