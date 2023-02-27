@@ -93,7 +93,7 @@ public class Elevator extends SubsystemBase {
         ElevatorConstants.kGearRatio
       )
     );
-    m_motor.configReverseSoftLimitThreshold(Units.inchesToMeters(0.2));
+    m_motor.configReverseSoftLimitThreshold(Units.inchesToMeters(0));
 
     toggleSoftLimits(false);
   }
