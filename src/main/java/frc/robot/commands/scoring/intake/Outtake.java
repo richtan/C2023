@@ -9,10 +9,13 @@ import frc.robot.subsystems.Intake.IntakeMode;
 public class Outtake extends SequentialCommandGroup {
   public Outtake(Intake intake) {
     addRequirements(intake);
+    // addCommands(
+    //   new InstantCommand(() -> intake.setMode(IntakeMode.DROPPING), intake),
+    //   new WaitUntilCommand(intake::isEmpty),
+    //   new StopIntake(intake)
+    // );
     addCommands(
-      new InstantCommand(() -> intake.setMode(IntakeMode.DROPPING), intake),
-      new WaitUntilCommand(intake::isEmpty),
-      new StopIntake(intake)
+      new InstantCommand(() -> intake.setMode(IntakeMode.DROPPING), intake)
     );
   }
 }

@@ -94,16 +94,17 @@ public final class Constants {
 
     public static final double kStowAngle = 55; // Might need to use 45 or 50 since IRL assembly is different from CAD
     public static final double kDeployAngle = 0;
-    public static final double kIntakeConeAngle = 0;
+    public static final double kIntakeConeAngle = -6;
     public static final double kIntakeCubeAngle = 0;
     public static final double kTopConeAngle = 18;
     public static final double kTopCubeAngle = 0;
     public static final double kMiddleConeAngle = 28;
     public static final double kMiddleCubeAngle = 25;
-    public static final double kBottomConeAngle = -6;
+    public static final double kBottomConeAngle = 0;
     public static final double kBottomCubeAngle = 0;
     public static final double kShelfConeAngle = 0;
     public static final double kShelfCubeAngle = 0;
+    public static final double kHalfStowAngle = 20;
 
     public static final double kP = 0.01271428571; // FIXME: Arm
     public static final double kI = 0;
@@ -261,13 +262,13 @@ public final class Constants {
     // Angle of elevator from the horizontal axis
     public static final double kElevatorAngle = 55.0;
 
-    public static final double kIntakeConeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(3));
+    public static final double kIntakeConeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
     public static final double kIntakeCubeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(3));
     public static final double kTopConeHeight = Conversions.ElevatorLengthToHeight(kMaxPosition);
     public static final double kTopCubeHeight = Units.inchesToMeters(46.15);
     public static final double kMiddleConeHeight = Units.inchesToMeters(35);
     public static final double kMiddleCubeHeight = Units.inchesToMeters(24.2);
-    public static final double kBottomConeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(0));
+    public static final double kBottomConeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(3));
     public static final double kBottomCubeHeight = Conversions.ElevatorLengthToHeight(Units.inchesToMeters(3));
     public static final double kShelfConeHeight = Units.inchesToMeters(49.1);
     public static final double kShelfCubeHeight = Units.inchesToMeters(52.1);

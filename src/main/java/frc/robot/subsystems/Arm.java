@@ -28,6 +28,8 @@ public class Arm extends SubsystemBase {
   private double m_desiredAngle;
   private double m_desiredPower;
 
+  private boolean m_isCalibrated;
+
   public Arm(ShuffleboardTab armTab) {
     m_armTab = armTab;
 
@@ -37,10 +39,11 @@ public class Arm extends SubsystemBase {
     configArmMotor();
 
     m_absEncoder = new DutyCycleEncoder(ArmConstants.kAbsEncoderID);
-    Timer.delay(1);
-    calibrateEncoder();
+    m_isCalibrated = false;
+    // Timer.delay(1);
+    // calibrateEncoder();
 
-    m_mode = ArmMode.DISABLED;
+    m_mode = ArmMode.UNCALIBRATED;
     m_desiredAngle = ArmConstants.kStowAngle;
     m_desiredPower = 0.0;
 
@@ -89,10 +92,11 @@ public class Arm extends SubsystemBase {
   }
 
   public enum ArmMode {
-    DISABLED, MANUAL, POSITION
+    UNCALIBRATED, DISABLED, MANUAL, POSITION
   }
 
   public void setMode(ArmMode mode) {
+    if (!m_isCalibrated && !(mode == ArmMode.UNCALIBRATED || mode == ArmMode.DISABLED)) return;
     m_mode = mode;
   }
 
@@ -117,16 +121,25 @@ public class Arm extends SubsystemBase {
           && Math.abs(m_encoder.getVelocity()) < ArmConstants.kVelocityTolerance;
   }
 
+  public void setIsCalibrated() {
+    m_isCalibrated = true;
+  }
+
   @Override
   public void periodic() {
     switch (m_mode) {
+      case UNCALIBRATED:
+        break;
       case DISABLED:
+        if (!m_isCalibrated) break;
         m_pid.setReference(0, ControlType.kDutyCycle);
         break;
       case MANUAL:
+        if (!m_isCalibrated) break;
         m_pid.setReference(m_desiredPower, ControlType.kDutyCycle);
         break;
       case POSITION:
+        if (!m_isCalibrated) break;
         m_pid.setReference(m_desiredAngle, ControlType.kPosition, 0, 1.5 * Math.cos(Units.degreesToRadians(getAngle()))); // 
     }
   }

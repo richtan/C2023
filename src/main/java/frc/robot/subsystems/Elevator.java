@@ -161,6 +161,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setMode(ElevatorMode mode) {
+    if (!m_isCalibrated && !(mode == ElevatorMode.CALIBRATION || mode == ElevatorMode.DISABLED)) return;
     m_mode = mode;
   }
 
