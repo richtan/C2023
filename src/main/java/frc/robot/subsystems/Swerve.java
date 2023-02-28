@@ -65,8 +65,8 @@ public class Swerve extends SubsystemBase {
     m_poseEstimator.setVisionMeasurementStdDevs(VisionConstants.kBaseVisionPoseStdDevs);
 
     // Setup PID controllers for auto
-    m_xController = new PIDController(AutoConstants.kXControllerP, 0, 0);
-    m_yController = new PIDController(AutoConstants.kYControllerP, 0, 0);
+    m_xController = new PIDController(AutoConstants.kTranslationControllerP, 0, 0);
+    m_yController = new PIDController(AutoConstants.kTranslationControllerP, 0, 0);
     m_rotationController = new PIDController(AutoConstants.kRotationControllerP, 0, 0);
     m_rotationController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -87,6 +87,35 @@ public class Swerve extends SubsystemBase {
 
   public SwerveModule[] getModules() {
     return m_modules;
+  }
+
+  public ChassisSpeeds getFieldRelativeChassisSpeeds() {
+    return ChassisSpeeds.fromFieldRelativeSpeeds(
+      getChassisSpeeds(),
+      getRotation().unaryMinus()
+    );
+  }
+
+  public double getChassisSpeedsMagnitude() {
+    return Math.hypot(
+      getFieldRelativeChassisSpeeds().vxMetersPerSecond,
+      getFieldRelativeChassisSpeeds().vyMetersPerSecond
+    );
+  }
+
+  public Rotation2d getFieldRelativeHeading() {
+    return Rotation2d.fromRadians(Math.atan2(
+      getFieldRelativeChassisSpeeds().vxMetersPerSecond,
+      getFieldRelativeChassisSpeeds().vyMetersPerSecond
+    ));
+  }
+
+  public Rotation2d getPitch() {
+    return Rotation2d.fromDegrees(m_gyro.getPitch());
+  }
+
+  public Rotation2d getRoll() {
+    return Rotation2d.fromDegrees(m_gyro.getPitch());
   }
 
   public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -172,6 +201,10 @@ public class Swerve extends SubsystemBase {
     for (SwerveModule mod : m_modules) {
       mod.resetToAbsolute();
     }
+  }
+
+  public Rotation2d getRotation() {
+    return m_poseEstimator.getEstimatedPosition().getRotation();
   }
 
   public void updateOdometry() {

@@ -64,9 +64,11 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 2 * Math.PI; // rad/s
     public static final double kMaxAngularAccel = 4 * Math.PI; // rad/s^2
 
-    public static final double kXControllerP = 3; // FIXME: Auto
-    public static final double kYControllerP = 3; // FIXME: Auto
+    public static final double kTranslationControllerP = 0.8; // FIXME: Auto
     public static final double kRotationControllerP = 3; // FIXME: Auto
+
+    public static final double kBalancedAngle = 0;
+    public static final double kBalanceKP = 0.007;
   }
 
   // Units are degrees, zero is max deploy position, positive is towards the robot,
