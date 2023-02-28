@@ -20,6 +20,7 @@ import frc.robot.commands.auto.BalanceOnChargeStation;
 import frc.robot.commands.auto.OneCubeG1N2Top;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Bar;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
@@ -46,6 +47,7 @@ public class RobotContainer {
   private final ShuffleboardTab m_autoTab = Shuffleboard.getTab("Auto");
   private final ShuffleboardTab m_elevatorTab = Shuffleboard.getTab("Elevator");
   private final ShuffleboardTab m_intakeTab = Shuffleboard.getTab("Intake");
+  private final ShuffleboardTab m_barTab = Shuffleboard.getTab("Bar");
   private final ShuffleboardTab m_armTab = Shuffleboard.getTab("Arm");
   private final ShuffleboardTab m_visionTab = Shuffleboard.getTab("Vision");
   private final ShuffleboardTab m_powerTab = Shuffleboard.getTab("Power");
@@ -58,6 +60,7 @@ public class RobotContainer {
   private final Elevator m_elevator;
   private final Intake m_intake;
   private final Arm m_arm;
+  private final Bar m_bar;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -99,10 +102,13 @@ public class RobotContainer {
 
       m_arm = new Arm(m_armTab);
 
+      // m_bar = new Bar(m_barTab);
+      m_bar = null;
+
       // Setup compbot-only controls
-      OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake);
-      OI.configureManualControls(m_manualJoy, m_elevator, m_arm, m_intake);
-      // OI.configureTestControls(m_testJoy, m_swerve, m_elevator, m_arm, m_intake);
+      OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake, m_bar);
+      OI.configureManualControls(m_manualJoy, m_elevator, m_arm, m_intake, m_bar);
+      // OI.configureTestControls(m_testJoy, m_swerve, m_elevator, m_arm, m_intake, m_bar);
 
       // Start RoboRIO driver camera stream
       CameraServer.startAutomaticCapture();
@@ -113,6 +119,7 @@ public class RobotContainer {
       m_elevator = null;
       m_intake = null;
       m_arm = null;
+      m_bar = null;
     }
 
     setupSchedulerShuffleboard();

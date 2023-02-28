@@ -75,7 +75,7 @@ public final class Constants {
   // angle measurement is angle of polycarb plates on intake from horizontal
   public static final class ArmConstants {
     public static final int kMotorID = 5; // sm6
-    public static final IdleMode kIdleMode = IdleMode.kBrake;
+    public static final IdleMode kMotorIdleMode = IdleMode.kBrake;
     public static final boolean kMotorInvert = false; // FIXME: Arm
     public static final double kMotorToAbsEncoderGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0);
     public static final double kAbsEncoderToEndEffectorGearRatio = (48.0 / 32.0);
@@ -90,6 +90,7 @@ public final class Constants {
     public static final double kAbsEncoderDistancePerRotation = 126.502736;
     // public static final double kAbsEncoderDistancePerRotation = 1;
 
+    public static final double kGravityCompensationFactor = 1.5; // volts
 
     public static final double kAngleTolerance = 1;
     public static final double kVelocityTolerance = 0.5;
@@ -116,6 +117,32 @@ public final class Constants {
     public static final double kMaxAngularAccel = 15; // FIXME: Arm
   }
 
+  public static final class BarConstants {
+    public static final int kMotorID = -1; // FIXME
+    public static final boolean kMotorInvert = false;
+    public static final IdleMode kMotorIdleMode = IdleMode.kBrake;
+    public static final double kGearRatio = (25.0 / 1.0) * (32.0 / 18.0); // 44.44:1
+
+    public static final double kMotorEncoderDistancePerRotation = -1; // FIXME
+
+    public static final double kP = 0.1;
+    public static final double kI = 0;
+    public static final double kD = 0;
+
+    public static final double kGravityCompensationFactor = 0; // volts
+
+    public static final int kMotorCurrentLimit = 12;
+
+    public static final double kAngleTolerance = 0.5;
+    public static final double kVelocityTolerance = 0.5;
+
+    public static final double kStowAngle = 90;
+    public static final double kDeployAngle = 0;
+
+    public static final double kMaxAngularVelocity = 20;
+    public static final double kMaxAngularAccel = 15;
+  }
+
   // Positive is outtaking direction
   public static final class IntakeConstants {
     public static final int kLeftMotorID = 6; // sm7
@@ -127,7 +154,7 @@ public final class Constants {
 
     public static final int kMotorCurrentLimit = 10;
 
-    public static final double kGearRatio = (3.0 / 1.0);
+    public static final double kGearRatio = (3.0 / 1.0); // 3:1
 
     // TODO: separate cube and cone intaking power
     public static final double kIntakePower = -0.7;

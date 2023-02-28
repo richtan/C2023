@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -52,7 +53,7 @@ public class Arm extends SubsystemBase {
 
   private void configArmMotor() {
     m_motor.restoreFactoryDefaults();
-    m_motor.setIdleMode(ArmConstants.kIdleMode);
+    m_motor.setIdleMode(IdleMode.kCoast);
     m_motor.setInverted(ArmConstants.kMotorInvert);
 
     m_motor.enableVoltageCompensation(Constants.kNormalOperatingVoltage);
@@ -87,7 +88,7 @@ public class Arm extends SubsystemBase {
     m_encoder.setPosition(absEncoderError);
   }
 
-  public void zeroEncoder() {
+  public void zeroEncoderAtBottom() {
     m_encoder.setPosition(-4);
   }
 
@@ -102,6 +103,10 @@ public class Arm extends SubsystemBase {
 
   public ArmMode getMode() {
     return m_mode;
+  }
+
+  public void setIdleMode(IdleMode idleMode) {
+    m_motor.setIdleMode(idleMode);
   }
 
   public void setDesiredAngle(double desiredAngle) {
@@ -140,7 +145,7 @@ public class Arm extends SubsystemBase {
         break;
       case POSITION:
         if (!m_isCalibrated) break;
-        m_pid.setReference(m_desiredAngle, ControlType.kPosition, 0, 1.5 * Math.cos(Units.degreesToRadians(getAngle()))); // 
+        m_pid.setReference(m_desiredAngle, ControlType.kPosition, 0, ArmConstants.kGravityCompensationFactor * Math.cos(Units.degreesToRadians(getAngle()))); // 
     }
   }
 
