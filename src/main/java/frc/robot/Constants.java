@@ -278,6 +278,7 @@ public final class Constants {
 
 
     public static final double kCalibrationPower = -0.2;
+    public static final double kMotorRamp = 0.2;
   }
 
   // linear units are meters, angular units are radians

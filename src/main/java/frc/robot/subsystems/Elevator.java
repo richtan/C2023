@@ -84,6 +84,8 @@ public class Elevator extends SubsystemBase {
     m_motor.configVoltageCompSaturation(Constants.kNormalOperatingVoltage);
     m_motor.enableVoltageCompensation(true);
 
+    m_motor.configClosedloopRamp(ElevatorConstants.kMotorRamp);
+
     m_motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     m_motor.configForwardSoftLimitThreshold(
