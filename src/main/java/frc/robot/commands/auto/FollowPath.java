@@ -4,13 +4,15 @@ package frc.robot.commands.auto;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.Swerve;
 
 public class FollowPath extends PPSwerveControllerCommand {
   public FollowPath(PathPlannerTrajectory path, Swerve swerve) {
+    this(path, swerve, true);
+  }
+
+  public FollowPath(PathPlannerTrajectory path, Swerve swerve, boolean useAllianceColor) {
     super(
       path,
       swerve::getPose, // Pose supplier
@@ -19,7 +21,7 @@ public class FollowPath extends PPSwerveControllerCommand {
       swerve.getYController(), // Y controller (usually the same values as X controller)
       swerve.getRotationController(), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
       swerve::setModuleStates, // ChassisSpeeds consumer
-      true,
+      useAllianceColor,
       swerve // Requires this drive subsystem
     );
   } 
