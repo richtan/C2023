@@ -35,7 +35,7 @@ public class OI {
     operator.B.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.SHELF));
     operator.RB.onTrue(new PositionIntake(elevator, arm, intake::hasCone, Position.STOW));
     operator.LB.onTrue(new StartIntake(intake, elevator, arm)).onFalse(new Stow(intake, elevator, arm)); // add sequence
-    operator.LT.onTrue(new Outtake(intake)).onFalse(new Stow(intake, elevator, arm));
+    operator.LT.onTrue(new Outtake(intake, elevator, arm, true)).onFalse(new Stow(intake, elevator, arm));
     operator.RT.onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
     operator.DPAD_DOWN.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.INTAKE)));
     operator.DPAD_RIGHT.onTrue(new InstantCommand(() -> intake.setMode(IntakeMode.DISABLED)));

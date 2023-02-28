@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.controllers.GameController;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.DoNothing;
-import frc.robot.commands.auto.MobilityAuto;
+import frc.robot.commands.auto.OneCubeG1N2Top;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -132,7 +132,10 @@ public class RobotContainer {
   public void setupAutoChooser() {
     // Add auto commands here
     m_autoCommand.setDefaultOption("Do Nothing", new DoNothing());
-    m_autoCommand.addOption("Mobility Auto", new MobilityAuto(m_swerve));
+
+    if (Constants.kIsComp) {
+      m_autoCommand.addOption("Mobility Auto", new OneCubeG1N2Top(m_swerve, m_elevator, m_arm, m_intake));
+    }
 
     // Add auto chooser to Shuffleboard tab
     m_autoTab.add("Auto Chooser", m_autoCommand);
