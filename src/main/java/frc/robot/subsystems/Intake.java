@@ -60,7 +60,6 @@ public class Intake extends SubsystemBase {
 
   private void configDistanceSensor() {
     m_distanceSensor.setAutomaticMode(true);
-    m_distanceSensor.setEnabled(true);
   }
 
   public enum IntakeMode {
