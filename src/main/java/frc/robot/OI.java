@@ -10,17 +10,14 @@ import frc.robot.commands.scoring.Stow;
 import frc.robot.commands.scoring.PositionIntake.Position;
 import frc.robot.commands.scoring.arm.CalibrateArm;
 import frc.robot.commands.scoring.elevator.CalibrateElevator;
-import frc.robot.commands.scoring.elevator.MoveElevator;
 import frc.robot.commands.scoring.intake.Outtake;
 import frc.robot.commands.scoring.intake.StartIntake;
-import frc.robot.commands.scoring.intake.StopIntake;
 import frc.robot.commands.swerve.CharacterizeSwerve;
 import frc.robot.commands.swerve.LockModules;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.Arm.ArmMode;
 import frc.robot.subsystems.Intake.IntakeMode;
 
 public class OI {

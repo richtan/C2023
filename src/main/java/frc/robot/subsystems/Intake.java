@@ -10,6 +10,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 
 import com.revrobotics.Rev2mDistanceSensor;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.Rev2mDistanceSensor.Port;
 import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
 import com.revrobotics.Rev2mDistanceSensor.Unit;
@@ -122,6 +123,11 @@ public class Intake extends SubsystemBase {
       m_hasCone = false;
       m_hasCube = false;
     }
+  }
+
+  public void setIdleMode(IdleMode idleMode) {
+    m_leftMotor.setIdleMode(idleMode);
+    m_rightMotor.setIdleMode(idleMode);
   }
 
   @Override

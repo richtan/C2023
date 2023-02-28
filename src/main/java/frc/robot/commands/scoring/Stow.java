@@ -1,5 +1,8 @@
 package frc.robot.commands.scoring;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.scoring.PositionIntake.Position;
@@ -13,6 +16,7 @@ public class Stow extends ParallelCommandGroup {
   public Stow(Intake intake, Elevator elevator, Arm arm) {
     addRequirements(intake, elevator, arm);
     addCommands(
+      new InstantCommand(() -> intake.setIdleMode(IdleMode.kBrake)),
       new StopIntake(intake),
       new MoveArm(arm, ArmConstants.kHalfStowAngle),
       new PositionIntake(elevator, arm, intake::hasCone, Position.STOW)
