@@ -92,7 +92,7 @@ public class Swerve extends SubsystemBase {
   public ChassisSpeeds getFieldRelativeChassisSpeeds() {
     return ChassisSpeeds.fromFieldRelativeSpeeds(
       getChassisSpeeds(),
-      getRotation().unaryMinus()
+      getRotation()
     );
   }
 
@@ -115,7 +115,7 @@ public class Swerve extends SubsystemBase {
   }
 
   public Rotation2d getRoll() {
-    return Rotation2d.fromDegrees(m_gyro.getPitch());
+    return Rotation2d.fromDegrees(m_gyro.getRoll());
   }
 
   public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
