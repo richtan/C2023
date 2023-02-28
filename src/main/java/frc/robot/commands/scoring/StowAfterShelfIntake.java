@@ -9,12 +9,12 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 
-public class StowAfterIntake extends ParallelCommandGroup {
-  public StowAfterIntake(Intake intake, Elevator elevator, Arm arm) {
+public class StowAfterShelfIntake extends ParallelCommandGroup {
+  public StowAfterShelfIntake(Intake intake, Elevator elevator, Arm arm) {
     addRequirements(intake, elevator, arm);
     addCommands(
       new StopIntake(intake),
-      new PositionIntake(elevator, arm, intake::hasCone, Position.TOP),
+      // new PositionIntake(elevator, arm, intake::hasCone, Position.TOP),
       new MoveArm(arm, ArmConstants.kHalfStowAngle),
       new PositionIntake(elevator, arm, intake::hasCone, Position.STOW)
     );

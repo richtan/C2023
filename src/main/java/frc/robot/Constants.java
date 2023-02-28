@@ -296,7 +296,7 @@ public final class Constants {
     public static final double kSlowDriveFactor = 0.3;
 
     public static final COTSFalconSwerveConstants kModuleConstants =
-        COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);   
+        COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);
 
     /* Robot dimensions */
     public static final double kTrackWidth = Units.inchesToMeters(Constants.kIsComp ? 20.75 : 22.75); // Center to Center distance of left and right modules
