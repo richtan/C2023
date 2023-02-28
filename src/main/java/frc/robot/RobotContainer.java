@@ -117,7 +117,8 @@ public class RobotContainer {
 
       // These subsystems don't exist
       m_elevator = null;
-      m_intake = null;
+      // m_intake = null;
+      m_intake = new Intake(m_intakeTab);
       m_arm = null;
       m_bar = null;
     }

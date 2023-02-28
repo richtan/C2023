@@ -61,6 +61,7 @@ public class Intake extends SubsystemBase {
 
   private void configDistanceSensor() {
     m_distanceSensor.setAutomaticMode(true);
+    m_distanceSensor.setEnabled(true);
   }
 
   public enum IntakeMode {
@@ -114,7 +115,6 @@ public class Intake extends SubsystemBase {
         m_hasCone = false;
         m_hasCube = true;
       } else { // Cone is in the middle of entering intake
-        m_cubeTrackingStartTime = Timer.getFPGATimestamp();
         m_hasCone = false;
         m_hasCube = false;
       }
@@ -158,7 +158,7 @@ public class Intake extends SubsystemBase {
     m_intakeTab.addBoolean("Is Empty", this::isEmpty);
     m_intakeTab.addDouble("Range (in)", () -> m_range);
     m_intakeTab.addString("Mode", () -> m_mode.toString());
-    m_intakeTab.addDouble("Time delta (s)", () -> Timer.getFPGATimestamp() - m_cubeTrackingStartTime);
+    m_intakeTab.addDouble("Start time (s)", () -> Timer.getFPGATimestamp() - m_cubeTrackingStartTime);
     m_intakeTab.addDouble("Left Output Current (A)", () -> m_leftMotor.getOutputCurrent());
     m_intakeTab.addDouble("Right Output Current (A)", () -> m_rightMotor.getOutputCurrent());
   }

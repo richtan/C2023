@@ -164,8 +164,8 @@ public final class Constants {
     public static final double kDroppingPower = 0.2;
 
     public static final Port kDistanceSensorPort = Port.kOnboard;
-    public static final double kMaxConeRange = 1.5;
-    public static final double kMaxCubeRange = 7;
+    public static final double kMaxConeRange = 2;
+    public static final double kMaxCubeRange = 6;
     public static final double kCubeTimeThreshold = 0.2; // 0.2 seconds of an intaked cube counts as intaked
   }
 
