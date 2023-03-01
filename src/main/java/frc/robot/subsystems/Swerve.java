@@ -37,6 +37,8 @@ public class Swerve extends SubsystemBase {
   private final PIDController m_yController;
   private final PIDController m_rotationController;
 
+  private boolean isOnChargeStation = false;
+
   private final Field2d m_field;
 
   public Swerve(Vision vision, ShuffleboardTab swerveTab) {
@@ -226,7 +228,7 @@ public class Swerve extends SubsystemBase {
       m_poseEstimator.addVisionMeasurement(
         estimatedPose.estimatedPose.toPose2d(),
         estimatedPose.timestampSeconds,
-        VisionConstants.kBaseVisionPoseStdDevs.plus(
+        isOnChargeStation ? VisionConstants.kChargeStationVisionPoseStdDevs : VisionConstants.kBaseVisionPoseStdDevs.plus(
           currentEstimatedPoseTranslation.getDistance(closestTagPoseTranslation) * VisionConstants.kVisionPoseStdDevFactor
         )
       );
