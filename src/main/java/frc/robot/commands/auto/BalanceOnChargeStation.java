@@ -2,8 +2,8 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Swerve;
 
@@ -41,6 +41,6 @@ public class BalanceOnChargeStation extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return Math.abs(m_swerve.getPitch().getDegrees()) < 2;
+    return DriverStation.isAutonomousEnabled() ? false : Math.abs(m_swerve.getPitch().getDegrees()) < 2;
   }
 }
