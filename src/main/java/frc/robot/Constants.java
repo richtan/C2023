@@ -31,6 +31,8 @@ import com.revrobotics.Rev2mDistanceSensor.Port;
 public final class Constants {
   public static final boolean kIsComp = true;
 
+  public static final boolean kUseTelemetry = true;
+
   public static final double kLoopTime = 0.02; // Periodic loop time in seconds
 
   public static final String kRioCAN = "rio";
@@ -271,11 +273,6 @@ public final class Constants {
     public static final double kBottomWithConeGravityCompensation = kBottomGravityCompensation;
 
     // Slot 2
-    // public static final double kTopP = 0.1;
-    // public static final double kTopI = 0;
-    // public static final double kTopD = 0;
-    // public static final double kTopF = 0;
-    // public static final double kTopGravityCompensation = 0;
     public static final double kTopP = kBottomP;
     public static final double kTopI = kBottomI;
     public static final double kTopD = kBottomD;

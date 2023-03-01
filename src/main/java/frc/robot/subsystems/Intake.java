@@ -153,13 +153,15 @@ public class Intake extends SubsystemBase {
   }
 
   private void setupShuffleboard() {
-    m_intakeTab.addBoolean("Has Cone", this::hasCone);
-    m_intakeTab.addBoolean("Has Cube", this::hasCube);
-    m_intakeTab.addBoolean("Is Empty", this::isEmpty);
-    m_intakeTab.addDouble("Range (in)", () -> m_range);
-    m_intakeTab.addString("Mode", () -> m_mode.toString());
-    m_intakeTab.addDouble("Start time (s)", () -> Timer.getFPGATimestamp() - m_cubeTrackingStartTime);
-    m_intakeTab.addDouble("Left Output Current (A)", () -> m_leftMotor.getOutputCurrent());
-    m_intakeTab.addDouble("Right Output Current (A)", () -> m_rightMotor.getOutputCurrent());
+    if (Constants.kUseTelemetry) {
+      m_intakeTab.addBoolean("Has Cone", this::hasCone);
+      m_intakeTab.addBoolean("Has Cube", this::hasCube);
+      m_intakeTab.addBoolean("Is Empty", this::isEmpty);
+      m_intakeTab.addDouble("Range (in)", () -> m_range);
+      m_intakeTab.addString("Mode", () -> m_mode.toString());
+      m_intakeTab.addDouble("Start time (s)", () -> Timer.getFPGATimestamp() - m_cubeTrackingStartTime);
+      m_intakeTab.addDouble("Left Output Current (A)", () -> m_leftMotor.getOutputCurrent());
+      m_intakeTab.addDouble("Right Output Current (A)", () -> m_rightMotor.getOutputCurrent());
+    }
   }
 }

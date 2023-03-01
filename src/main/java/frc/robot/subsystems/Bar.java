@@ -159,12 +159,14 @@ public class Bar extends SubsystemBase {
   }
 
   private void setupShuffleboard() {
-    m_barTab.addDouble("Current angle (deg)", this::getAngle);
-    m_barTab.addDouble("Desired angle (deg)", () -> m_desiredAngle);
-    m_barTab.addDouble("Desired Power", () -> m_desiredPower);
-    m_barTab.addBoolean("Reached Desired Angle", this::reachedDesiredAngle);
-    m_barTab.addDouble("Output Current (A)", m_motor::getAppliedOutput);
-    m_barTab.addString("Mode", () -> m_mode.toString());
-    m_barTab.addString("Bar Position", () -> getBarPosition().toString());
+    if (Constants.kUseTelemetry) {
+      m_barTab.addDouble("Current angle (deg)", this::getAngle);
+      m_barTab.addDouble("Desired angle (deg)", () -> m_desiredAngle);
+      m_barTab.addDouble("Desired Power", () -> m_desiredPower);
+      m_barTab.addBoolean("Reached Desired Angle", this::reachedDesiredAngle);
+      m_barTab.addDouble("Output Current (A)", m_motor::getAppliedOutput);
+      m_barTab.addString("Mode", () -> m_mode.toString());
+      m_barTab.addString("Bar Position", () -> getBarPosition().toString());
+    }
   }
 }

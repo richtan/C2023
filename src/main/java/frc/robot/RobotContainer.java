@@ -166,9 +166,11 @@ public class RobotContainer {
    * Loads the command scheduler shuffleboard which will add event markers whenever a command finishes, ends, or is interrupted.
    */
   public void setupSchedulerShuffleboard() {
-    // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
-    CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker("Command initialized", command.getName(), EventImportance.kNormal));
-    CommandScheduler.getInstance().onCommandInterrupt(command -> Shuffleboard.addEventMarker("Command interrupted", command.getName(), EventImportance.kNormal));
-    CommandScheduler.getInstance().onCommandFinish(command -> Shuffleboard.addEventMarker("Command finished", command.getName(), EventImportance.kNormal));
+    if (Constants.kUseTelemetry) {
+      // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
+      CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker("Command initialized", command.getName(), EventImportance.kNormal));
+      CommandScheduler.getInstance().onCommandInterrupt(command -> Shuffleboard.addEventMarker("Command interrupted", command.getName(), EventImportance.kNormal));
+      CommandScheduler.getInstance().onCommandFinish(command -> Shuffleboard.addEventMarker("Command finished", command.getName(), EventImportance.kNormal));
+    }
   }
 }

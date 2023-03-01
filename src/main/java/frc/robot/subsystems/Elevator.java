@@ -256,20 +256,22 @@ public class Elevator extends SubsystemBase {
   }
 
   private void setupShuffleboard() {
-    m_elevatorTab.addDouble("Current Position (m)", this::getPosition);
-    m_elevatorTab.addDouble("Current Height (m)", this::getHeight);
-    m_elevatorTab.addDouble("Desired Position (m)", () -> m_desiredPosition);
-    m_elevatorTab.addDouble("Desired Height (m)", () -> Conversions.ElevatorLengthToHeight(m_desiredPosition));
-    m_elevatorTab.addDouble("Desired Power", () -> m_desiredPower);
-    m_elevatorTab.addBoolean("Is Calibrated", () -> m_isCalibrated);
-    m_elevatorTab.addBoolean("Reached desired position", this::reachedDesiredPosition);
-    m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);
-    m_elevatorTab.addBoolean("Reached Bottom Limit Switch", this::isBottomLimitSwitchReached);
-    m_elevatorTab.addDouble("Supply Current (A)", m_motor::getSupplyCurrent);
-    m_elevatorTab.addDouble("Stator Current (A)", m_motor::getStatorCurrent);
-    m_elevatorTab.addDouble("Commanded power", m_motor::get);
-    m_elevatorTab.addString("Mode", () -> m_mode.toString());
-    m_elevatorTab.addString("Status", () -> m_status.toString());
-    m_elevatorTab.addDouble("Gravity compensation", () -> m_gravityCompensation);
+    if (Constants.kUseTelemetry) {
+      m_elevatorTab.addDouble("Current Position (m)", this::getPosition);
+      m_elevatorTab.addDouble("Current Height (m)", this::getHeight);
+      m_elevatorTab.addDouble("Desired Position (m)", () -> m_desiredPosition);
+      m_elevatorTab.addDouble("Desired Height (m)", () -> Conversions.ElevatorLengthToHeight(m_desiredPosition));
+      m_elevatorTab.addDouble("Desired Power", () -> m_desiredPower);
+      m_elevatorTab.addBoolean("Is Calibrated", () -> m_isCalibrated);
+      m_elevatorTab.addBoolean("Reached desired position", this::reachedDesiredPosition);
+      m_elevatorTab.addBoolean("Reached Top Limit Switch", this::isTopLimitSwitchReached);
+      m_elevatorTab.addBoolean("Reached Bottom Limit Switch", this::isBottomLimitSwitchReached);
+      m_elevatorTab.addDouble("Supply Current (A)", m_motor::getSupplyCurrent);
+      m_elevatorTab.addDouble("Stator Current (A)", m_motor::getStatorCurrent);
+      m_elevatorTab.addDouble("Commanded power", m_motor::get);
+      m_elevatorTab.addString("Mode", () -> m_mode.toString());
+      m_elevatorTab.addString("Status", () -> m_status.toString());
+      m_elevatorTab.addDouble("Gravity compensation", () -> m_gravityCompensation);
+    }
   }
 }

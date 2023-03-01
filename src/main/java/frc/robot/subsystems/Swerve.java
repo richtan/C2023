@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.VisionConstants;
@@ -242,8 +243,10 @@ public class Swerve extends SubsystemBase {
   }
 
   private void setupShuffleboard() {
-    m_swerveTab.addDouble("Yaw (deg)", () -> getYaw().getDegrees());
-    m_swerveTab.add("Field", m_field);
+    if (Constants.kUseTelemetry) {
+      m_swerveTab.addDouble("Yaw (deg)", () -> getYaw().getDegrees());
+      m_swerveTab.add("Field", m_field);
+    }
   }
 
   @Override

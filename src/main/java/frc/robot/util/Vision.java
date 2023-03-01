@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.VisionConstants;
 
@@ -113,10 +114,12 @@ public class Vision {
     }
 
     private void setupShuffleboard() {
-      m_visionTab.addDouble(m_camera.getName() + " Est. X (m)", () -> m_estimatedPose.getFirst().getTranslation().getX());
-      m_visionTab.addDouble(m_camera.getName() + " Est. Y (m)", () -> m_estimatedPose.getFirst().getTranslation().getY());
-      m_visionTab.addDouble(m_camera.getName() + " Est. Theta (deg)", () -> m_estimatedPose.getFirst().getRotation().getDegrees());
-      m_visionTab.addDouble(m_camera.getName() + " Latency (s)", () -> m_estimatedPose.getSecond());
+      if (Constants.kUseTelemetry) {
+        m_visionTab.addDouble(m_camera.getName() + " Est. X (m)", () -> m_estimatedPose.getFirst().getTranslation().getX());
+        m_visionTab.addDouble(m_camera.getName() + " Est. Y (m)", () -> m_estimatedPose.getFirst().getTranslation().getY());
+        m_visionTab.addDouble(m_camera.getName() + " Est. Theta (deg)", () -> m_estimatedPose.getFirst().getRotation().getDegrees());
+        m_visionTab.addDouble(m_camera.getName() + " Latency (s)", () -> m_estimatedPose.getSecond());
+      }
     }
   }
 }

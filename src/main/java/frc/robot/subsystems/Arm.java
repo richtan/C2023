@@ -150,12 +150,14 @@ public class Arm extends SubsystemBase {
   }
 
   private void setupShuffleboard() {
-    m_armTab.addDouble("Current angle (deg)", this::getAngle);
-    m_armTab.addDouble("Desired angle (deg)", () -> m_desiredAngle);
-    m_armTab.addDouble("Desired Power", () -> m_desiredPower);
-    m_armTab.addBoolean("Reached Desired Angle", this::reachedDesiredAngle);
-    m_armTab.addDouble("Absolute encoder (deg)", this::getAbsEncoder);
-    m_armTab.addDouble("Output Current (A)", m_motor::getAppliedOutput);
-    m_armTab.addString("Mode", () -> m_mode.toString());
+    if (Constants.kUseTelemetry) {
+      m_armTab.addDouble("Current angle (deg)", this::getAngle);
+      m_armTab.addDouble("Desired angle (deg)", () -> m_desiredAngle);
+      m_armTab.addDouble("Desired Power", () -> m_desiredPower);
+      m_armTab.addBoolean("Reached Desired Angle", this::reachedDesiredAngle);
+      m_armTab.addDouble("Absolute encoder (deg)", this::getAbsEncoder);
+      m_armTab.addDouble("Output Current (A)", m_motor::getAppliedOutput);
+      m_armTab.addString("Mode", () -> m_mode.toString());
+    }
   }
 }
