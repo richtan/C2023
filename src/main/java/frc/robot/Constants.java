@@ -201,13 +201,13 @@ public final class Constants {
         //   )
         // )
       ) : List.of(
-        // new Pair<String, Transform3d>(
-        //   "Camera_2",
-        //   new Transform3d(
-        //     new Translation3d(Units.inchesToMeters(15), Units.inchesToMeters(-3.375), Units.inchesToMeters(6.875)),
-        //     new Rotation3d(0, 0, 0)
-        //   )
-        // )
+        new Pair<String, Transform3d>(
+          "Camera_2",
+          new Transform3d(
+            new Translation3d(Units.inchesToMeters(15), Units.inchesToMeters(-3.375), Units.inchesToMeters(6.875)),
+            new Rotation3d(0, 0, 0)
+          )
+        )
     ));
 
     // How much to trust vision measurements normally

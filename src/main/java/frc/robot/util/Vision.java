@@ -107,6 +107,7 @@ public class Vision {
           estimatedRobotPose.get().estimatedPose.toPose2d(),
           Timer.getFPGATimestamp() - estimatedRobotPose.get().timestampSeconds
         );
+        // System.out.println(estimatedRobotPose.get().estimatedPose.toString()); // test code
       }
       return estimatedRobotPose;
     }
