@@ -7,6 +7,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.scoring.PositionIntake;
+import frc.robot.commands.scoring.Stow;
 import frc.robot.commands.scoring.PositionIntake.Position;
 import frc.robot.commands.scoring.intake.Outtake;
 import frc.robot.subsystems.Elevator;
@@ -25,7 +26,7 @@ public class OneCubeG2TopCS extends SequentialCommandGroup {
       new InstantCommand(() -> swerve.resetOdometry(pathGroup.get(0).getInitialHolonomicPose()), swerve),
       new PositionIntake(elevator, arm, intake::hasCone, Position.TOP),
       new Outtake(intake, elevator, arm, false),
-      new FollowPath(pathGroup.get(0), swerve),
+      new FollowPath(pathGroup.get(0), swerve).alongWith(new Stow(intake, elevator, arm)),
       new FollowPath(pathGroup.get(1), swerve),
       new InstantCommand(() -> swerve.stop()),
       new BalanceOnChargeStation(swerve)

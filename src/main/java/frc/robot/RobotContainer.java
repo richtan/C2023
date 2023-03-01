@@ -18,7 +18,8 @@ import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.DoNothing;
 import frc.robot.commands.auto.BalanceOnChargeStation;
 import frc.robot.commands.auto.MobilityAuto;
-import frc.robot.commands.auto.OneCubeG2TopCS;
+import frc.robot.commands.auto.OneCubeG2Top;
+import frc.robot.commands.auto.OneCubeG2TopIntakeCubeCS;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Bar;
@@ -146,7 +147,9 @@ public class RobotContainer {
     m_autoCommand.addOption("MobilityAuto", new MobilityAuto(m_swerve));
 
     if (Constants.kIsComp) {
-      m_autoCommand.addOption("One Cube G1 N2 Top", new OneCubeG2TopCS(m_swerve, m_elevator, m_arm, m_intake));
+      m_autoCommand.addOption("One Cube G1 Top", new OneCubeG2Top(m_swerve, m_elevator, m_arm, m_intake));
+      m_autoCommand.addOption("One Cube G1 Top CS", new OneCubeG2TopIntakeCubeCS(m_swerve, m_elevator, m_arm, m_intake));
+      m_autoCommand.addOption("One Cube G1 Top Intake Cube CS", new OneCubeG2TopIntakeCubeCS(m_swerve, m_elevator, m_arm, m_intake));
     }
 
     // Add auto chooser to Shuffleboard tab
