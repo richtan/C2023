@@ -29,7 +29,7 @@ import frc.lib.util.SwerveModuleConstants;
 import com.revrobotics.Rev2mDistanceSensor.Port;
 
 public final class Constants {
-  public static final boolean kIsComp = true;
+  public static final boolean kIsComp = false;
 
   public static final double kLoopTime = 0.02; // Periodic loop time in seconds
 
@@ -68,7 +68,9 @@ public final class Constants {
     public static final double kRotationControllerP = 3; // FIXME: Auto
 
     public static final double kBalancedAngle = 0;
-    public static final double kBalanceKP = 0.007;
+    public static final double kBalanceKP = 0.05;
+    public static final double kBalanceKI = 0;
+    public static final double kBalanceKD = 0.006;
   }
 
   // Units are degrees, zero is max deploy position, positive is towards the robot,
@@ -379,9 +381,9 @@ public final class Constants {
 
     /* Drive Motor Characterization Values 
       * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
-    public static final double kDriveKS = (Constants.kIsComp ? 0.32 : 0.65559) / 12.0;
-    public static final double kDriveKV = (Constants.kIsComp ? 1.51 : 1.93074) / 12.0;
-    public static final double kDriveKA = (Constants.kIsComp ? 0.27 : 0.00214) / 12.0;
+    public static final double kDriveKS = (Constants.kIsComp ? 0.32 : 0.32) / 12.0; // 0.65559
+    public static final double kDriveKV = (Constants.kIsComp ? 1.51 : 1.51) / 12.0; // 1.93074
+    public static final double kDriveKA = (Constants.kIsComp ? 0.27 : 0.27) / 12.0; // 0.00214
 
     /* Angle Motor PID Values */
     public static final double kAngleP = kModuleConstants.angleKP;

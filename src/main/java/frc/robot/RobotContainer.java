@@ -17,6 +17,7 @@ import frc.lib.controllers.GameController;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.DoNothing;
 import frc.robot.commands.auto.BalanceOnChargeStation;
+import frc.robot.commands.auto.MobilityAuto;
 import frc.robot.commands.auto.OneCubeG1N2Top;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.subsystems.Arm;
@@ -117,8 +118,8 @@ public class RobotContainer {
 
       // These subsystems don't exist
       m_elevator = null;
-      // m_intake = null;
-      m_intake = new Intake(m_intakeTab);
+      m_intake = null;
+      // m_intake = new Intake(m_intakeTab);
       m_arm = null;
       m_bar = null;
     }
@@ -142,9 +143,10 @@ public class RobotContainer {
     // Add auto commands here
     m_autoCommand.setDefaultOption("Do Nothing", new DoNothing());
     m_autoCommand.addOption("Balance on Charge Station", new BalanceOnChargeStation(m_swerve));
+    m_autoCommand.addOption("MobilityAuto", new MobilityAuto(m_swerve));
 
     if (Constants.kIsComp) {
-      m_autoCommand.addOption("Mobility Auto", new OneCubeG1N2Top(m_swerve, m_elevator, m_arm, m_intake));
+      m_autoCommand.addOption("One Cube G1 N2 Top", new OneCubeG1N2Top(m_swerve, m_elevator, m_arm, m_intake));
     }
 
     // Add auto chooser to Shuffleboard tab

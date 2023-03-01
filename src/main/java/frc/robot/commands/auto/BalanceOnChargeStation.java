@@ -1,7 +1,9 @@
 package frc.robot.commands.auto;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Swerve;
 
@@ -11,18 +13,22 @@ public class BalanceOnChargeStation extends CommandBase {
   private double balanceEffort;
   private double turningEffort;
 
+  private final PIDController m_balancePID = new PIDController(AutoConstants.kBalanceKP, AutoConstants.kBalanceKI, AutoConstants.kBalanceKD);
+
   public BalanceOnChargeStation(Swerve swerve) {
     m_swerve = swerve;
     addRequirements(swerve);
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_balancePID.setSetpoint(0);
+  }
 
   @Override
   public void execute() {
     turningEffort = 0;
-    balanceEffort = (AutoConstants.kBalancedAngle - m_swerve.getPitch().getDegrees()) * AutoConstants.kBalanceKP;
+    balanceEffort = m_balancePID.calculate(m_swerve.getPitch().getDegrees());
     m_swerve.drive(new Translation2d(balanceEffort, 0), turningEffort, false, true);
   }
 
