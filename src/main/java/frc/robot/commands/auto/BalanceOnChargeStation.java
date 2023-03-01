@@ -23,6 +23,7 @@ public class BalanceOnChargeStation extends CommandBase {
   @Override
   public void initialize() {
     m_balancePID.setSetpoint(0);
+    m_swerve.setIsBalancingOnChargeStation(true);
   }
 
   @Override
@@ -35,6 +36,7 @@ public class BalanceOnChargeStation extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_swerve.stop();
+    m_swerve.setIsBalancingOnChargeStation(false);
   }
 
   @Override

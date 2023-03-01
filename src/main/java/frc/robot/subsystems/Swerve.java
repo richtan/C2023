@@ -37,7 +37,7 @@ public class Swerve extends SubsystemBase {
   private final PIDController m_yController;
   private final PIDController m_rotationController;
 
-  private boolean isOnChargeStation = false;
+  private boolean m_isOnChargeStation = false;
 
   private final Field2d m_field;
 
@@ -228,13 +228,17 @@ public class Swerve extends SubsystemBase {
       m_poseEstimator.addVisionMeasurement(
         estimatedPose.estimatedPose.toPose2d(),
         estimatedPose.timestampSeconds,
-        isOnChargeStation ? VisionConstants.kChargeStationVisionPoseStdDevs : VisionConstants.kBaseVisionPoseStdDevs.plus(
+        m_isOnChargeStation ? VisionConstants.kChargeStationVisionPoseStdDevs : VisionConstants.kBaseVisionPoseStdDevs.plus(
           currentEstimatedPoseTranslation.getDistance(closestTagPoseTranslation) * VisionConstants.kVisionPoseStdDevFactor
         )
       );
     }
 
     m_field.setRobotPose(getPose());
+  }
+
+  public void setIsBalancingOnChargeStation(boolean isBalancing) {
+    m_isOnChargeStation = isBalancing;
   }
 
   private void setupShuffleboard() {
