@@ -110,9 +110,6 @@ public class RobotContainer {
       OI.configureOperatorControls(m_operatorJoy, m_elevator, m_arm, m_intake, m_bar);
       OI.configureManualControls(m_manualJoy, m_elevator, m_arm, m_intake, m_bar);
       // OI.configureTestControls(m_testJoy, m_swerve, m_elevator, m_arm, m_intake, m_bar);
-
-      // Start RoboRIO driver camera stream
-      CameraServer.startAutomaticCapture();
     } else {
       System.out.println("Running TEST robot");
 
@@ -125,6 +122,9 @@ public class RobotContainer {
     }
 
     setupSchedulerShuffleboard();
+
+    // Start RoboRIO driver camera stream
+    CameraServer.startAutomaticCapture();
 
     // Create auto chooser and add auto command options
     setupAutoChooser();
