@@ -15,11 +15,11 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.PathLoader;
 
-public class OneCubeG1N2Top extends SequentialCommandGroup {
-  public OneCubeG1N2Top(Swerve swerve, Elevator elevator, Arm arm, Intake intake) {
+public class OneCubeG2Top extends SequentialCommandGroup {
+  public OneCubeG2Top(Swerve swerve, Elevator elevator, Arm arm, Intake intake) {
     addRequirements(swerve, elevator, arm, intake);
     
-    List<PathPlannerTrajectory> pathGroup = PathLoader.getPathGroup("OneCubeG1N1Top");
+    List<PathPlannerTrajectory> pathGroup = PathLoader.getPathGroup("OneCubeG2Top");
 
     addCommands(
       new InstantCommand(() -> swerve.resetOdometry(pathGroup.get(0).getInitialHolonomicPose()), swerve),
