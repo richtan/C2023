@@ -29,7 +29,7 @@ import frc.lib.util.SwerveModuleConstants;
 import com.revrobotics.Rev2mDistanceSensor.Port;
 
 public final class Constants {
-  public static final boolean kIsComp = true;
+  public static final boolean kIsComp = false;
 
   public static final boolean kUseTelemetry = true;
 
