@@ -4,19 +4,24 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Swerve;
 
 public class TeleopDrive extends CommandBase {
-  private final Swerve m_swerve;    
+  private final Swerve m_swerve;
+  private final PIDController m_pid;
+  
   private final DoubleSupplier m_translationSup;
   private final DoubleSupplier m_strafeSup;
   private final DoubleSupplier m_rotationSup;
   private final BooleanSupplier m_robotCentricSup;
   private final BooleanSupplier m_slowModeSup;
+  private final BooleanSupplier m_alignModeSup;
 
   public TeleopDrive(
     Swerve swerve,
@@ -24,7 +29,8 @@ public class TeleopDrive extends CommandBase {
     DoubleSupplier strafeSup,
     DoubleSupplier rotationSup,
     BooleanSupplier robotCentricSup,
-    BooleanSupplier slowModeSup
+    BooleanSupplier slowModeSup,
+    BooleanSupplier alignModeSup
   ) {
     m_swerve = swerve;
     addRequirements(swerve);
@@ -34,6 +40,11 @@ public class TeleopDrive extends CommandBase {
     m_rotationSup = rotationSup;
     m_robotCentricSup = robotCentricSup;
     m_slowModeSup = slowModeSup;
+    m_alignModeSup = alignModeSup;
+
+    m_pid = new PIDController(0.2, 0, 0);
+    m_pid.enableContinuousInput(-180, 180);
+    m_pid.setTolerance(0.25, 0.25);
   }
 
   @Override
@@ -48,11 +59,15 @@ public class TeleopDrive extends CommandBase {
     rotationVal = Math.copySign(rotationVal * rotationVal, rotationVal);
 
     double slowFactor = m_slowModeSup.getAsBoolean() ? SwerveConstants.kSlowDriveFactor : 1;
+    double turnEffort = m_alignModeSup.getAsBoolean()
+        ? (-m_pid.calculate(Units.radiansToDegrees(MathUtil.angleModulus(m_swerve.getYaw().getRadians())),
+            0))
+        : (rotationVal * SwerveConstants.kMaxAngularVelocity * slowFactor);
 
     /* Drive */
     m_swerve.drive(
       new Translation2d(translationVal, strafeVal).times(SwerveConstants.kMaxSpeed).times(slowFactor), 
-      rotationVal * SwerveConstants.kMaxAngularVelocity * slowFactor, 
+      turnEffort, 
       !m_robotCentricSup.getAsBoolean(), 
       true
     );

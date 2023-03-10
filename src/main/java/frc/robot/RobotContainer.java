@@ -136,7 +136,8 @@ public class RobotContainer {
       () -> m_driverJoy.LEFT_X(),
       () -> m_driverJoy.RIGHT_X(),
       m_driverJoy.LT,
-      m_driverJoy.RT
+      m_driverJoy.RT,
+      m_driverJoy.LB
     ));
   }
 
