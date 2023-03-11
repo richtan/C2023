@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -42,7 +43,7 @@ public class TeleopDrive extends CommandBase {
     m_slowModeSup = slowModeSup;
     m_alignModeSup = alignModeSup;
 
-    m_pid = new PIDController(0.2, 0, 0);
+    m_pid = new PIDController(0.1, 0, 0);
     m_pid.enableContinuousInput(-180, 180);
     m_pid.setTolerance(0.25, 0.25);
   }
@@ -59,9 +60,11 @@ public class TeleopDrive extends CommandBase {
     rotationVal = Math.copySign(rotationVal * rotationVal, rotationVal);
 
     double slowFactor = m_slowModeSup.getAsBoolean() ? SwerveConstants.kSlowDriveFactor : 1;
+
+    Rotation2d currentYaw = m_swerve.getYaw();
     double turnEffort = m_alignModeSup.getAsBoolean()
-        ? (-m_pid.calculate(Units.radiansToDegrees(MathUtil.angleModulus(m_swerve.getYaw().getRadians())),
-            0))
+        ? (-m_pid.calculate(Units.radiansToDegrees(MathUtil.angleModulus(currentYaw.getRadians())),
+            ((Math.abs(currentYaw.getDegrees()) % 360 > 90 && Math.abs(currentYaw.getDegrees()) % 360 < 270) ? 180 : 0)))
         : (rotationVal * SwerveConstants.kMaxAngularVelocity * slowFactor);
 
     /* Drive */
