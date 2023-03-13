@@ -28,7 +28,7 @@ public class MadCatzController {
     DPAD_RIGHT = new POVButton(m_controller, 90);
     DPAD_DOWN_RIGHT = new POVButton(m_controller, 135);
     DPAD_DOWN = new POVButton(m_controller, 180);
-    DPAD_DOWN_LEFT = new POVButton(m_controller, 235);
+    DPAD_DOWN_LEFT = new POVButton(m_controller, 225);
     DPAD_LEFT = new POVButton(m_controller, 270);
     DPAD_UP_LEFT = new POVButton(m_controller, 315);
 
