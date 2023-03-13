@@ -16,7 +16,7 @@ public class MobilityAuto extends SequentialCommandGroup {
     List<PathPlannerTrajectory> pathGroup = PathLoader.getPathGroup("MobilityAuto");
 
     addCommands(
-      new InstantCommand(() -> swerve.resetOdometry(pathGroup.get(0).getInitialHolonomicPose()), swerve),
+      new ResetToStartPose(swerve, pathGroup),
       new FollowPath(pathGroup.get(0), swerve),
       new InstantCommand(() -> swerve.stop())
     );

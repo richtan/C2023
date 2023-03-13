@@ -24,7 +24,7 @@ public class OneCubeG2TopIntakeCubeCS extends SequentialCommandGroup {
     List<PathPlannerTrajectory> pathGroup = PathLoader.getPathGroup("OneCubeG2TopIntakeCubeCS");
 
     addCommands(
-      new InstantCommand(() -> swerve.resetOdometry(pathGroup.get(0).getInitialHolonomicPose()), swerve),
+      new ResetToStartPose(swerve, pathGroup),
       new PositionIntake(elevator, arm, intake::hasCone, Position.TOP),
       new Outtake(intake, elevator, arm, false),
       new FollowPath(pathGroup.get(0), swerve).alongWith(new Stow(intake, elevator, arm)),

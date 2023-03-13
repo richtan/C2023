@@ -162,3 +162,7 @@ bin/
 *-window.json
 
 .wpilib/
+
+*.wpilog
+simgui*
+networktables.json

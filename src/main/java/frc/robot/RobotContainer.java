@@ -142,6 +142,10 @@ public class RobotContainer {
     ));
   }
 
+  public void calibrateMechanisms() {
+    m_swerve.resetModulesToAbsolute();
+  }
+
   public void setupAutoChooser() {
     // Add auto commands here
     m_autoCommand.setDefaultOption("Do Nothing", new DoNothing());
