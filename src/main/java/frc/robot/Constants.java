@@ -132,7 +132,7 @@ public final class Constants {
     public static final String kIntakeCAN = kRioCAN;
     public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.CounterClockwise;
     public static final NeutralMode kNeutralMode = NeutralMode.Brake;
-    public static final double kRollerCircumference = Math.PI * Units.inchesToMeters(1.5);// FIXME
+    public static final double kRollerCircumference = Math.PI * Units.inchesToMeters(2);
 
     public static final boolean kEnableCurrentLimit = false;
     public static final double kContinuousCurrentLimit = 60;
