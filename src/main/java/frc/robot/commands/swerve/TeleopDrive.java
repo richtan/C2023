@@ -43,9 +43,9 @@ public class TeleopDrive extends CommandBase {
     m_slowModeSup = slowModeSup;
     m_alignModeSup = alignModeSup;
 
-    m_pid = new PIDController(0.1, 0, 0);
+    m_pid = new PIDController(SwerveConstants.kAlignP, SwerveConstants.kAlignI, SwerveConstants.kAlignD);
     m_pid.enableContinuousInput(-180, 180);
-    m_pid.setTolerance(0.25, 0.25);
+    m_pid.setTolerance(SwerveConstants.kAlignPositionTolerance, SwerveConstants.kAlignVelocityTolerance);
   }
 
   @Override

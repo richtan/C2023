@@ -3,56 +3,81 @@ package frc.robot.commands.scoring;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.commands.scoring.arm.MoveArm;
+import frc.robot.commands.scoring.wrist.MoveWrist;
 import frc.robot.commands.scoring.elevator.MoveElevator;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Elevator;
 
 public class PositionIntake extends SequentialCommandGroup {
-  public PositionIntake(Elevator elevator, Arm arm, BooleanSupplier isConeColorSupplier, Position position) {
-    addRequirements(elevator, arm);
+  private final Elevator m_elevator;
+  private final Wrist m_wrist;
+
+  public PositionIntake(Elevator elevator, Wrist wrist, BooleanSupplier isConeSup, Position position) {
+    m_elevator = elevator;
+    m_wrist = wrist;
+
+    addRequirements(elevator, wrist);
     addCommands(
       new SelectCommand(Map.ofEntries(
         Map.entry(Position.TOP, new ConditionalCommand(
-          new MoveElevator(elevator, ElevatorConstants.kTopConeHeight).alongWith(new MoveArm(arm, ArmConstants.kTopConeAngle)),
-          new MoveElevator(elevator, ElevatorConstants.kTopCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kTopCubeAngle)),
-          isConeColorSupplier
+          positionIntake(ElevatorConstants.kTopConeHeight, WristConstants.kTopConeAngle),
+          positionIntake(ElevatorConstants.kTopCubeHeight, WristConstants.kTopCubeAngle),
+          isConeSup
         )),
         Map.entry(Position.MIDDLE, new ConditionalCommand(
-          new MoveElevator(elevator, ElevatorConstants.kMiddleConeHeight).alongWith(new MoveArm(arm, ArmConstants.kMiddleConeAngle)),
-          new MoveElevator(elevator, ElevatorConstants.kMiddleCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kMiddleCubeAngle)),
-          isConeColorSupplier
+          positionIntake(ElevatorConstants.kMiddleConeHeight, WristConstants.kMiddleConeAngle),
+          positionIntake(ElevatorConstants.kMiddleCubeHeight, WristConstants.kMiddleCubeAngle),
+          isConeSup
         )),
         Map.entry(Position.BOTTOM, new ConditionalCommand(
-          new MoveElevator(elevator, ElevatorConstants.kBottomConeHeight).alongWith(new MoveArm(arm, ArmConstants.kBottomConeAngle)),
-          new MoveElevator(elevator, ElevatorConstants.kBottomCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kBottomCubeAngle)),
-          isConeColorSupplier
+          positionIntake(ElevatorConstants.kBottomConeHeight, WristConstants.kBottomConeAngle),
+          positionIntake(ElevatorConstants.kBottomCubeHeight, WristConstants.kBottomCubeAngle),
+          isConeSup
         )),
         Map.entry(Position.SHELF, new ConditionalCommand(
-          new MoveElevator(elevator, ElevatorConstants.kShelfConeHeight).alongWith(new MoveArm(arm, ArmConstants.kShelfConeAngle)),
-          new MoveElevator(elevator, ElevatorConstants.kShelfCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kShelfCubeAngle)),
-          isConeColorSupplier
+          positionIntake(ElevatorConstants.kShelfConeHeight, WristConstants.kShelfConeAngle),
+          positionIntake(ElevatorConstants.kShelfCubeHeight, WristConstants.kShelfCubeAngle),
+          isConeSup
         )),
         Map.entry(Position.INTAKE, new ConditionalCommand(
-          new MoveElevator(elevator, ElevatorConstants.kIntakeConeHeight).alongWith(new MoveArm(arm, ArmConstants.kIntakeConeAngle)),
-          new MoveElevator(elevator, ElevatorConstants.kIntakeCubeHeight).alongWith(new MoveArm(arm, ArmConstants.kIntakeCubeAngle)),
-          isConeColorSupplier
+          positionIntake(ElevatorConstants.kIntakeConeHeight, WristConstants.kIntakeConeAngle),
+          positionIntake(ElevatorConstants.kIntakeCubeHeight, WristConstants.kIntakeCubeAngle),
+          isConeSup
         )),
         Map.entry(Position.STOW, 
-          new MoveElevator(elevator, ElevatorConstants.kStowHeight).alongWith(new MoveArm(arm, ArmConstants.kStowAngle))
+          positionIntake(ElevatorConstants.kStowHeight, WristConstants.kStowAngle)
         )
       ), () -> position),
       new ParallelCommandGroup(
-        new WaitUntilCommand(arm::reachedDesiredAngle),
+        new WaitUntilCommand(wrist::reachedDesiredAngle),
         new WaitUntilCommand(elevator::reachedDesiredPosition)
       )
+    );
+  }
+
+  public PositionIntake(Elevator elevator, Wrist wrist, double elevatorHeight, double wristAngle) {
+    m_elevator = elevator;
+    m_wrist = wrist;
+
+    addRequirements(elevator, wrist);
+    addCommands(
+      positionIntake(elevatorHeight, wristAngle)
+    );
+  }
+
+  private Command positionIntake(double elevatorHeight, double wristAngle) {
+    return Commands.parallel(
+      new MoveElevator(m_elevator, elevatorHeight),
+      new MoveWrist(m_wrist, wristAngle)
     );
   }
 

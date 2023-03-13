@@ -1,23 +1,26 @@
 package frc.robot.commands.scoring;
 
-import com.revrobotics.CANSparkMax.IdleMode;
+import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.scoring.PositionIntake.Position;
-import frc.robot.commands.scoring.arm.MoveArm;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.Intake.IntakeMode;
 
 public class Stow extends ParallelCommandGroup {
-  public Stow(Intake intake, Elevator elevator, Arm arm) {
-    addRequirements(intake, elevator, arm);
+  public Stow(Intake intake, Elevator elevator, Wrist wrist, BooleanSupplier isConeSup) {
+    addRequirements(intake, elevator, wrist);
     addCommands(
-      new InstantCommand(() -> intake.setIdleMode(IdleMode.kBrake)),
-      new MoveArm(arm, ArmConstants.kHalfStowAngle),
-      new PositionIntake(elevator, arm, intake::hasCone, Position.STOW)
+      new ConditionalCommand(
+        new InstantCommand(() -> intake.setMode(IntakeMode.HOLDING_CONE)),
+        new InstantCommand(() -> intake.setMode(IntakeMode.DISABLED)),
+        isConeSup
+      ),
+      new PositionIntake(elevator, wrist, isConeSup, Position.STOW)
     );
   }
 }

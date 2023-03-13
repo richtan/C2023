@@ -70,37 +70,44 @@ public final class Constants {
     public static final double kRotationControllerP = 3; // FIXME: Auto
 
     public static final double kBalancedAngle = 0;
-    public static final double kBalanceKP = 0.05;
+    public static final double kBalanceKP = 0.04;
     public static final double kBalanceKI = 0;
     public static final double kBalanceKD = 0.006;
   }
 
   // Units are degrees, zero is max deploy position, positive is towards the robot,
   // angle measurement is angle of polycarb plates on intake from horizontal
-  public static final class ArmConstants {
-    public static final int kMotorID = 5; // sm6
-    public static final IdleMode kMotorIdleMode = IdleMode.kBrake;
-    public static final boolean kMotorInvert = false; // FIXME: Arm
-    public static final double kMotorToAbsEncoderGearRatio = (5.0 / 1.0) * (3.0 / 1.0) * (3.0 / 1.0);
-    public static final double kAbsEncoderToEndEffectorGearRatio = (48.0 / 32.0);
+  public static final class WristConstants {
+    public static final int kMotorID = 2; // fx2
+    public static final String kWristCAN = kRioCAN;
+    public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+    public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.CounterClockwise; // FIXME: Wrist
+    public static final double kMotorToAbsEncoderGearRatio = (20.0 / 1.0) * (62.0 / 34.0) * (48.0 / 18.0); // 97.254902:1 reduction
+    public static final double kAbsEncoderToEndEffectorGearRatio = 1;
     // public static final double kMotorEncoderDistancePerRotation = 360.0 / kMotorToAbsEncoderGearRatio / kAbsEncoderToEndEffectorGearRatio;
     public static final double kMotorEncoderDistancePerRotation = 3.55300894;
 
 
     public static final int kAbsEncoderID = 7;
-    public static final double kAbsEncoderZeroAngle = 60.33 - 22.33;
+    public static final double kAbsEncoderZeroAngle = 0;
     public static final boolean kAbsEncoderInvert = false;
     // public static final double kAbsEncoderDistancePerRotation = 360.0 * (kAbsEncoderInvert ? -1 : 1) / kAbsEncoderToEndEffectorGearRatio;
     public static final double kAbsEncoderDistancePerRotation = 126.502736;
     // public static final double kAbsEncoderDistancePerRotation = 1;
 
-    public static final double kGravityCompensationFactor = 1.5; // volts
+    public static final double kGravityCompensationFactor = 0.15; // -1 to 1
+
+    public static final boolean kEnableCurrentLimit = false;
+    public static final double kContinuousCurrentLimit = 60;
+    public static final double kPeakCurrentLimit = 60;
+    public static final double kPeakCurrentDuration = 0.1;
 
     public static final double kAngleTolerance = 1;
     public static final double kVelocityTolerance = 0.5;
 
     public static final double kStowAngle = 55; // Might need to use 45 or 50 since IRL assembly is different from CAD
-    public static final double kDeployAngle = 0;
+    public static final double kMaxDeployAngle = 0;
+
     public static final double kIntakeConeAngle = -6;
     public static final double kIntakeCubeAngle = kIntakeConeAngle;
     public static final double kTopConeAngle = 18;
@@ -113,64 +120,39 @@ public final class Constants {
     public static final double kShelfCubeAngle = kShelfConeAngle;
     public static final double kHalfStowAngle = 20;
 
-    public static final double kP = 0.01271428571; // FIXME: Arm
+    public static final double kP = 0.01271428571; // FIXME: Wrist
     public static final double kI = 0;
     public static final double kD = 0;
-
-    public static final double kMaxAngularVelocity = 20; // FIXME: Arm
-    public static final double kMaxAngularAccel = 15; // FIXME: Arm
-  }
-
-  public static final class BarConstants {
-    public static final int kMotorID = -1; // FIXME
-    public static final boolean kMotorInvert = false;
-    public static final IdleMode kMotorIdleMode = IdleMode.kBrake;
-    public static final double kGearRatio = (25.0 / 1.0) * (32.0 / 18.0); // 44.44:1
-
-    public static final double kMotorEncoderDistancePerRotation = -1; // FIXME
-
-    public static final double kP = 0.1;
-    public static final double kI = 0;
-    public static final double kD = 0;
-
-    public static final double kGravityCompensationFactor = 0; // volts
-
-    public static final int kMotorCurrentLimit = 12;
-
-    public static final double kAngleTolerance = 0.5;
-    public static final double kVelocityTolerance = 0.5;
-
-    public static final double kStowAngle = 90;
-    public static final double kDeployAngle = 0;
-
-    public static final double kMaxAngularVelocity = 20;
-    public static final double kMaxAngularAccel = 15;
+    public static final double kF = 0;
   }
 
   // Positive is outtaking direction
   public static final class IntakeConstants {
-    public static final int kLeftMotorID = 6; // sm7
-    public static final int kRightMotorID = 11; // sm5
-    public static final boolean kLeftMotorInvert = false;
-    public static final boolean kRightMotorInvert = true;
-    public static final IdleMode kLeftMotorIdleMode = IdleMode.kBrake;
-    public static final IdleMode kRightMotorIdleMode = IdleMode.kBrake;
+    public static final int kMotorID = 9; // fx9
+    public static final String kIntakeCAN = kRioCAN;
+    public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.CounterClockwise;
+    public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+    public static final double kRollerCircumference = Math.PI * Units.inchesToMeters(1.5);// FIXME
 
-    public static final int kMotorCurrentLimit = 10;
+    public static final boolean kEnableCurrentLimit = false;
+    public static final double kContinuousCurrentLimit = 60;
+    public static final double kPeakCurrentLimit = 60;
+    public static final double kPeakCurrentDuration = 0.1;
 
     public static final double kGearRatio = (3.0 / 1.0); // 3:1
 
-    // TODO: separate cube and cone intaking power
-    public static final double kIntakePower = -0.7;
-    public static final double kShootingPower = 0.6;
-    public static final double kOuttakePower = 0.12;
-    public static final double kEjectPower = 0.4;
-    public static final double kDroppingPower = 0.2;
+    // Intaking cone is negative
+    public static final double kIntakeConePower = -0.3;
+    public static final double kIntakeCubePower = 0.4;
+    public static final double kOuttakeConePower = 0.4;
+    public static final double kOuttakeCubePower = -0.3;
+    public static final double kEjectConePower = 0.8;
+    public static final double kEjectCubePower = -0.8;
 
-    public static final Port kDistanceSensorPort = Port.kOnboard;
-    public static final double kMaxConeRange = 2;
-    public static final double kMaxCubeRange = 6;
-    public static final double kCubeTimeThreshold = 0.2; // 0.2 seconds of an intaked cube counts as intaked
+    public static final double kP = 0.01271428571; // FIXME: Intake hold
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
   }
 
   public static final class VisionConstants {
@@ -334,6 +316,12 @@ public final class Constants {
     public static final boolean kInvertGyro = false; // Make sure gyro is CCW+ CW- // FIXME: Swerve
 
     public static final double kSlowDriveFactor = 0.3;
+
+    public static final double kAlignP = 0.1;
+    public static final double kAlignI = 0;
+    public static final double kAlignD = 0;
+    public static final double kAlignPositionTolerance = 0.25;
+    public static final double kAlignVelocityTolerance = 0.25;
 
     public static final COTSFalconSwerveConstants kModuleConstants =
         COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);

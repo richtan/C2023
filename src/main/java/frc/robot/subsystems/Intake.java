@@ -1,71 +1,72 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.math.Conversions;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
-
-import com.revrobotics.Rev2mDistanceSensor;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.Rev2mDistanceSensor.Port;
-import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
-import com.revrobotics.Rev2mDistanceSensor.Unit;
 
 public class Intake extends SubsystemBase {
   private final ShuffleboardTab m_intakeTab;
 
-  private final CANSparkMax m_leftMotor;
-  private final CANSparkMax m_rightMotor;
-
-  private final Rev2mDistanceSensor m_distanceSensor;
-
-  private double m_range = -1;
-  private boolean m_hasCone = false;
-  private boolean m_hasCube = false;
-  private double m_cubeTrackingStartTime = 0;
+  private final WPI_TalonFX m_motor;
 
   private IntakeMode m_mode;
+
+  private double m_holdingPosition;
 
   public Intake(ShuffleboardTab intakeTab) {
     m_intakeTab = intakeTab;
 
-    m_leftMotor = new CANSparkMax(IntakeConstants.kLeftMotorID, MotorType.kBrushless);
-    m_rightMotor = new CANSparkMax(IntakeConstants.kRightMotorID, MotorType.kBrushless);
-    configMotors();
-
-    m_distanceSensor = new Rev2mDistanceSensor(IntakeConstants.kDistanceSensorPort, Unit.kInches, RangeProfile.kDefault);
-    configDistanceSensor();
+    m_motor = new WPI_TalonFX(IntakeConstants.kMotorID, IntakeConstants.kIntakeCAN);
+    configIntakeMotor();
 
     m_mode = IntakeMode.DISABLED;
+    m_holdingPosition = getPosition();
 
     setupShuffleboard();
   }
 
-  private void configMotors() {
-    m_leftMotor.setInverted(IntakeConstants.kLeftMotorInvert);
-    m_rightMotor.setInverted(IntakeConstants.kRightMotorInvert);
+  private void configIntakeMotor() {
+    m_motor.configFactoryDefault();
 
-    m_leftMotor.setIdleMode(IntakeConstants.kLeftMotorIdleMode);
-    m_rightMotor.setIdleMode(IntakeConstants.kRightMotorIdleMode);
+    m_motor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
+      IntakeConstants.kEnableCurrentLimit,
+      IntakeConstants.kContinuousCurrentLimit,
+      IntakeConstants.kPeakCurrentLimit,
+      IntakeConstants.kPeakCurrentDuration
+    ));
 
-    m_leftMotor.enableVoltageCompensation(Constants.kNormalOperatingVoltage);
-    m_rightMotor.enableVoltageCompensation(Constants.kNormalOperatingVoltage);
+    m_motor.config_kP(0, IntakeConstants.kP);
+    m_motor.config_kI(0, IntakeConstants.kI);
+    m_motor.config_kD(0, IntakeConstants.kD);
+    m_motor.config_kF(0, IntakeConstants.kF);
 
-    m_leftMotor.setSmartCurrentLimit(IntakeConstants.kMotorCurrentLimit);
-    m_rightMotor.setSmartCurrentLimit(IntakeConstants.kMotorCurrentLimit);
-  }
+    m_motor.setInverted(IntakeConstants.kMotorInvert);
+    m_motor.setNeutralMode(IntakeConstants.kNeutralMode);
 
-  private void configDistanceSensor() {
-    m_distanceSensor.setAutomaticMode(true);
-    m_distanceSensor.setEnabled(true);
+    m_motor.configVoltageCompSaturation(Constants.kNormalOperatingVoltage);
+    m_motor.enableVoltageCompensation(true);
+
+    m_motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
   }
 
   public enum IntakeMode {
-    DISABLED, INTAKE, OUTTAKE, EJECT, DROPPING
+    DISABLED, HOLDING_CONE, INTAKE_CONE, INTAKE_CUBE, OUTTAKE_CONE, OUTTAKE_CUBE, EJECT_CONE, EJECT_CUBE
+  }
+
+  public double getPosition() {
+    return m_motor.getSelectedSensorPosition();
+  }
+
+  public void setHoldingPosition(double holdingPosition) {
+    m_holdingPosition = holdingPosition;
   }
 
   public void setMode(IntakeMode mode) {
@@ -76,92 +77,49 @@ public class Intake extends SubsystemBase {
     return m_mode;
   }
 
-  public boolean hasCone() {
-    // return true;
-    return m_hasCone;
+  public void setNeutralMode(NeutralMode neutralMode) {
+    m_motor.setNeutralMode(neutralMode);
   }
 
-  public boolean hasCube() {
-    // return false;
-    return m_hasCube;
-  }
-
-  public boolean isEmpty() {
-    return !hasCone() && !hasCube();
-    // return !hasCone();
-  }
-
-  private void setMotorPowers(double power) {
-    setMotorPowers(power, power);
-  }
-
-  private void setMotorPowers(double leftPower, double rightPower) {
-    m_leftMotor.set(leftPower);
-    m_rightMotor.set(rightPower);
-  }
-
-  private void updateSensorValues() {
-    m_range = m_distanceSensor.getRange();
-    if (m_range == -1) {
-      m_cubeTrackingStartTime = Timer.getFPGATimestamp();
-      m_hasCone = false;
-      m_hasCube = false;
-    } else if (m_range <= IntakeConstants.kMaxConeRange) { // Has cone
-      m_cubeTrackingStartTime = Timer.getFPGATimestamp();
-      m_hasCone = true;
-      m_hasCube = false;
-    } else if (m_range <= IntakeConstants.kMaxCubeRange) {
-      if (Timer.getFPGATimestamp() - m_cubeTrackingStartTime >= IntakeConstants.kCubeTimeThreshold) { // Has cube
-        m_hasCone = false;
-        m_hasCube = true;
-      } else { // Cone is in the middle of entering intake
-        m_hasCone = false;
-        m_hasCube = false;
-      }
-    } else { // Is empty
-      m_cubeTrackingStartTime = Timer.getFPGATimestamp();
-      m_hasCone = false;
-      m_hasCube = false;
-    }
-  }
-
-  public void setIdleMode(IdleMode idleMode) {
-    m_leftMotor.setIdleMode(idleMode);
-    m_rightMotor.setIdleMode(idleMode);
+  public double getTangentialVelocity() {
+    return Conversions.falconToMPS(m_motor.getSelectedSensorVelocity(), IntakeConstants.kRollerCircumference, IntakeConstants.kGearRatio);
   }
 
   @Override
   public void periodic() {
-    updateSensorValues();
-
     switch (m_mode) {
       case DISABLED:
-        setMotorPowers(0);
+        m_motor.stopMotor();
         break;
-      case INTAKE:
-        setMotorPowers(IntakeConstants.kIntakePower);
+      case HOLDING_CONE:
+        m_motor.set(ControlMode.Position, m_holdingPosition);
         break;
-      case OUTTAKE:
-        setMotorPowers(IntakeConstants.kOuttakePower);
+      case INTAKE_CONE:
+        m_motor.set(ControlMode.PercentOutput, IntakeConstants.kIntakeConePower);
         break;
-      case DROPPING:
-        setMotorPowers(IntakeConstants.kDroppingPower, -IntakeConstants.kDroppingPower);
-      case EJECT:
-        setMotorPowers(IntakeConstants.kEjectPower);
+      case INTAKE_CUBE:
+        m_motor.set(ControlMode.PercentOutput, IntakeConstants.kIntakeCubePower);
+        break;
+      case OUTTAKE_CONE:
+        m_motor.set(ControlMode.PercentOutput, IntakeConstants.kOuttakeConePower);
+        break;
+      case OUTTAKE_CUBE:
+        m_motor.set(ControlMode.PercentOutput, IntakeConstants.kOuttakeCubePower);
+        break;
+      case EJECT_CONE:
+        m_motor.set(ControlMode.PercentOutput, IntakeConstants.kEjectConePower);
+        break;
+      case EJECT_CUBE:
+        m_motor.set(ControlMode.PercentOutput, IntakeConstants.kEjectCubePower);
         break;
     }
   }
 
   private void setupShuffleboard() {
     if (Constants.kUseTelemetry) {
-      m_intakeTab.addBoolean("Has Cone", this::hasCone);
-      m_intakeTab.addBoolean("Has Cube", this::hasCube);
-      m_intakeTab.addBoolean("Is Empty", this::isEmpty);
-      m_intakeTab.addDouble("Range (in)", () -> m_range);
       m_intakeTab.addString("Mode", () -> m_mode.toString());
-      m_intakeTab.addDouble("Start time (s)", () -> Timer.getFPGATimestamp() - m_cubeTrackingStartTime);
-      m_intakeTab.addDouble("Left Output Current (A)", () -> m_leftMotor.getOutputCurrent());
-      m_intakeTab.addDouble("Right Output Current (A)", () -> m_rightMotor.getOutputCurrent());
+      m_intakeTab.addDouble("Holding position", () -> m_holdingPosition);
+      m_intakeTab.addDouble("Tangential velocity (m/s)", () -> getTangentialVelocity());
     }
   }
 }

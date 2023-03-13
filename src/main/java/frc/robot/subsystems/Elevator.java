@@ -64,27 +64,27 @@ public class Elevator extends SubsystemBase {
     m_motor.config_kD(0, ElevatorConstants.kBottomD);
     m_motor.config_kF(0, ElevatorConstants.kBottomF);
 
-    m_motor.config_kP(1, ElevatorConstants.kBottomWithConeP);
-    m_motor.config_kI(1, ElevatorConstants.kBottomWithConeI);
-    m_motor.config_kD(1, ElevatorConstants.kBottomWithConeD);
-    m_motor.config_kF(1, ElevatorConstants.kBottomWithConeF);
+    // m_motor.config_kP(1, ElevatorConstants.kBottomWithConeP);
+    // m_motor.config_kI(1, ElevatorConstants.kBottomWithConeI);
+    // m_motor.config_kD(1, ElevatorConstants.kBottomWithConeD);
+    // m_motor.config_kF(1, ElevatorConstants.kBottomWithConeF);
 
-    m_motor.config_kP(2, ElevatorConstants.kTopP);
-    m_motor.config_kI(2, ElevatorConstants.kTopI);
-    m_motor.config_kD(2, ElevatorConstants.kTopD);
-    m_motor.config_kF(2, ElevatorConstants.kTopF);
+    // m_motor.config_kP(2, ElevatorConstants.kTopP);
+    // m_motor.config_kI(2, ElevatorConstants.kTopI);
+    // m_motor.config_kD(2, ElevatorConstants.kTopD);
+    // m_motor.config_kF(2, ElevatorConstants.kTopF);
 
-    m_motor.config_kP(3, ElevatorConstants.kTopWithConeP);
-    m_motor.config_kI(3, ElevatorConstants.kTopWithConeI);
-    m_motor.config_kD(3, ElevatorConstants.kTopWithConeD);
-    m_motor.config_kF(3, ElevatorConstants.kTopWithConeF);
+    // m_motor.config_kP(3, ElevatorConstants.kTopWithConeP);
+    // m_motor.config_kI(3, ElevatorConstants.kTopWithConeI);
+    // m_motor.config_kD(3, ElevatorConstants.kTopWithConeD);
+    // m_motor.config_kF(3, ElevatorConstants.kTopWithConeF);
 
     m_motor.setInverted(ElevatorConstants.kMotorInvert);
     m_motor.setNeutralMode(ElevatorConstants.kNeutralMode);
     m_motor.configVoltageCompSaturation(Constants.kNormalOperatingVoltage);
     m_motor.enableVoltageCompensation(true);
 
-    m_motor.configClosedloopRamp(ElevatorConstants.kMotorRamp);
+    // m_motor.configClosedloopRamp(ElevatorConstants.kMotorRamp);
 
     m_motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
@@ -196,19 +196,19 @@ public class Elevator extends SubsystemBase {
   private void updateClosedLoopSlot() {
     switch (m_status) {
       case BOTTOM:
-        m_motor.selectProfileSlot(0, 0);
+        // m_motor.selectProfileSlot(0, 0);
         m_gravityCompensation = ElevatorConstants.kBottomGravityCompensation;
         break;
       case BOTTOM_CONE:
-        m_motor.selectProfileSlot(1, 0);
+        // m_motor.selectProfileSlot(1, 0);
         m_gravityCompensation = ElevatorConstants.kBottomWithConeGravityCompensation;
         break;
       case TOP:
-        m_motor.selectProfileSlot(2, 0);
+        // m_motor.selectProfileSlot(2, 0);
         m_gravityCompensation = ElevatorConstants.kTopGravityCompensation;
         break;
       case TOP_CONE:
-        m_motor.selectProfileSlot(3, 0);
+        // m_motor.selectProfileSlot(3, 0);
         m_gravityCompensation = ElevatorConstants.kTopWithConeGravityCompensation;
         break;
       case NONE:
