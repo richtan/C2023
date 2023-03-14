@@ -29,7 +29,7 @@ import frc.lib.util.SwerveModuleConstants;
 import com.revrobotics.Rev2mDistanceSensor.Port;
 
 public final class Constants {
-  public static final boolean kIsComp = false;
+  public static final boolean kIsComp = true;
 
   public static final boolean kUseTelemetry = true;
 
@@ -78,21 +78,21 @@ public final class Constants {
   // Units are degrees, zero is max deploy position, positive is towards the robot,
   // angle measurement is angle of polycarb plates on intake from horizontal
   public static final class WristConstants {
-    public static final int kMotorID = 2; // fx2
+    public static final int kMotorID = 16; // fx2
     public static final String kWristCAN = kRioCAN;
-    public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+    public static final NeutralMode kNeutralMode = NeutralMode.Coast;
     public static final TalonFXInvertType kMotorInvert = TalonFXInvertType.CounterClockwise; // FIXME: Wrist
     public static final double kMotorToAbsEncoderGearRatio = (20.0 / 1.0) * (62.0 / 34.0) * (48.0 / 18.0); // 97.254902:1 reduction
     public static final double kAbsEncoderToEndEffectorGearRatio = 1;
     // public static final double kMotorEncoderDistancePerRotation = 360.0 / kMotorToAbsEncoderGearRatio / kAbsEncoderToEndEffectorGearRatio;
-    public static final double kMotorEncoderDistancePerRotation = 3.55300894;
+    public static final double kMotorEncoderDistancePerRotation = 110.0 / (125.108 - 17.67); // the one closer to zero is stow // 70.0 / (117.376 - 8.999) * (119 - 13)
 
 
     public static final int kAbsEncoderID = 7;
-    public static final double kAbsEncoderZeroAngle = 0;
+    public static final double kAbsEncoderZeroAngle = -145.721 - 110; // -145.721
     public static final boolean kAbsEncoderInvert = false;
     // public static final double kAbsEncoderDistancePerRotation = 360.0 * (kAbsEncoderInvert ? -1 : 1) / kAbsEncoderToEndEffectorGearRatio;
-    public static final double kAbsEncoderDistancePerRotation = 126.502736;
+    public static final double kAbsEncoderDistancePerRotation = 110.0 / (0.399 - 0.701); // 70.0 / (0.39907 - 0.69859)
     // public static final double kAbsEncoderDistancePerRotation = 1;
 
     public static final double kGravityCompensationFactor = 0.15; // -1 to 1

@@ -57,6 +57,9 @@ public class OI {
     manual.A.onTrue(new PositionIntake(elevator, wrist, manual.RT, Position.INTAKE));
     manual.B.onTrue(new PositionIntake(elevator, wrist, manual.RT, Position.SHELF));
     manual.DPAD_DOWN.onTrue(new PositionIntake(elevator, wrist, manual.RT, Position.STOW));
+
+    manual.DPAD_UP.onTrue(new InstantCommand(() -> wrist.zeroEncoder()));
+    manual.DPAD_RIGHT.onTrue(new InstantCommand(() -> wrist.calibrateEncoder()));
   }
 
   public static void configureTestControls(GameController test, Swerve swerve, Elevator elevator, Wrist wrist, Intake intake) {

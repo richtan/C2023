@@ -138,7 +138,9 @@ public class RobotContainer {
 
   public void calibrateMechanisms() {
     m_swerve.resetModulesToAbsolute();
-    m_wrist.calibrateEncoder();
+    if (Constants.kIsComp) {
+      m_wrist.calibrateEncoder();
+    }
   }
 
   public void setupAutoChooser() {

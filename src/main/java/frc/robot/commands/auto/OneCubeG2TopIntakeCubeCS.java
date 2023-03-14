@@ -24,16 +24,16 @@ public class OneCubeG2TopIntakeCubeCS extends SequentialCommandGroup {
     List<PathPlannerTrajectory> pathGroup = PathLoader.getPathGroup("OneCubeG2TopIntakeCubeCS");
 
     addCommands(
-      new ResetToStartPose(swerve, pathGroup),
-      new PositionIntake(elevator, wrist, () -> false, Position.TOP),
-      new Outtake(intake, () -> false),
-      new Stow(intake, elevator, wrist, () -> false),
-      new FollowPath(pathGroup.get(0), swerve),
-      new PositionIntake(elevator, wrist, () -> false, Position.INTAKE),
-      new FollowPath(pathGroup.get(1), swerve).alongWith(new StartIntake(intake, () -> false).andThen(new Stow(intake, elevator, wrist, () -> false))),
-      new FollowPath(pathGroup.get(2), swerve),
-      new InstantCommand(() -> swerve.stop()),
-      new BalanceOnChargeStation(swerve)
+      // new ResetToStartPose(swerve, pathGroup),
+      // new PositionIntake(elevator, wrist, () -> false, Position.TOP),
+      // new Outtake(intake, () -> false),
+      // new Stow(intake, elevator, wrist, () -> false),
+      // new FollowPath(pathGroup.get(0), swerve),
+      // new PositionIntake(elevator, wrist, () -> false, Position.INTAKE),
+      // new FollowPath(pathGroup.get(1), swerve).alongWith(new StartIntake(intake, () -> false).andThen(new Stow(intake, elevator, wrist, () -> false))),
+      // new FollowPath(pathGroup.get(2), swerve),
+      // new InstantCommand(() -> swerve.stop()),
+      // new BalanceOnChargeStation(swerve)
     );
   }
 }

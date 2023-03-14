@@ -83,7 +83,11 @@ public class Wrist extends SubsystemBase {
 
   public void calibrateEncoder() {
     double absEncoderError = getAbsEncoder() - WristConstants.kAbsEncoderZeroAngle;
-    m_motor.setSelectedSensorPosition(absEncoderError);
+    m_motor.setSelectedSensorPosition(absEncoderError / 360 * 2048);
+  }
+
+  public void zeroEncoder() {
+    m_motor.setSelectedSensorPosition(0);
   }
 
   public enum WristMode {
